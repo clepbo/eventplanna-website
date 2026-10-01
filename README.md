@@ -32,13 +32,13 @@ Opening `index.html` directly with `file://` also works.
 A workflow is already included at `.github/workflows/pages.yml`. Once pushed:
 
 ```bash
-git remote add origin https://github.com/<you>/eventplanna-web.git
-git branch -M main
-git push -u origin main
+git remote add origin https://github.com/clepbo/eventplanna_frontend.git
+git branch -M website
+git push -u origin website
 ```
 
 Then in the repo: **Settings → Pages → Source → GitHub Actions**. The site publishes on
-every push to `main`.
+every push to `website`.
 
 ## Images
 
