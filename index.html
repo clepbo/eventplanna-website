@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventPlanna — Find every vendor you need, right where you plan it all</title>
+<meta name="description" content="EventPlanna is the marketplace and workspace for events. Clients find planners, planners find vendors, and budgets, timelines and bookings all live in one place.">
+<link rel="icon" href="assets/logo/logo-icon-light.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="index.html" aria-label="EventPlanna home">
+      <img class="light-only" src="assets/logo/logo-full-light.svg" alt="EventPlanna">
+      <img class="dark-only" src="assets/logo/logo-full-dark.svg" alt="EventPlanna">
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="marketplace.html">Marketplace</a>
+      <a href="index.html#how">How it works</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="vendors.html">For vendors</a>
+      <a href="about.html">About</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="signin" href="#">Sign in</a>
+      <a class="btn btn--primary btn--sm" href="#">Get started free</a>
+      <button class="nav__burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" role="dialog" aria-label="Menu">
+  <button class="mobile-menu__close" aria-label="Close menu">&times;</button>
+  <a href="marketplace.html">Marketplace</a>
+  <a href="index.html#how">How it works</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="vendors.html">For vendors</a>
+  <a href="about.html">About</a>
+  <a href="#" style="color:var(--brand)">Get started free</a>
+</div>
+
+<main>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="float-layer" aria-hidden="true">
+    <div class="float-card tint-blush" style="width:150px;height:112px;top:16%;left:4%"></div>
+    <div class="float-card tint-mint"  style="width:120px;height:150px;top:62%;left:8%"></div>
+    <div class="float-card tint-blue"  style="width:132px;height:100px;top:22%;right:5%"></div>
+    <div class="float-card tint-cream" style="width:112px;height:138px;top:66%;right:9%"></div>
+  </div>
+
+  <div class="wrap hero__inner center">
+    <p class="eyebrow">The marketplace for events</p>
+
+    <h1>
+      <span class="ln" style="display:block">Find every vendor
+        <span class="chip-stack">
+          <span class="chip tint-blush"><img src="assets/img/chip-cake.png" alt="" data-fallback></span>
+          <span class="chip tint-mint"><img src="assets/img/chip-florals.png" alt="" data-fallback></span>
+          <span class="chip tint-lilac"><img src="assets/img/chip-camera.png" alt="" data-fallback></span>
+        </span>
+      </span>
+      <span class="ln" style="display:block">you need
+        <svg class="swoosh" viewBox="0 0 120 40" aria-hidden="true">
+          <path d="M4 20 C 34 20, 64 20, 104 20 M 84 6 L 108 20 L 84 34 M 68 10 L 86 20 L 68 30"/>
+        </svg>, right where
+      </span>
+      <span class="ln" style="display:block">you
+        <a class="inline-cta" href="marketplace.html">Browse now</a>
+        plan it all
+      </span>
+    </h1>
+
+    <p class="lead hero__sub">Clients find planners. Planners find vendors. Budgets, timelines,
+      bookings and payments all live in one place — so nothing falls through the cracks.</p>
+
+    <div class="hero__ctas">
+      <a class="btn btn--primary btn--lg" href="marketplace.html">I'm planning an event</a>
+      <a class="btn btn--ghost btn--lg" href="vendors.html">I'm a planner or vendor</a>
+    </div>
+
+    <p class="hero__note">
+      <span><i class="dot-ok"></i>200 free credits</span>
+      <span><i class="dot-ok"></i>No card required</span>
+      <span><i class="dot-ok"></i>2,400+ verified vendors</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ MARQUEE ============================ -->
+<section class="section--tight band--cream" style="padding:26px 0">
+  <div class="marquee">
+    <div class="marquee__track">
+      <span class="marquee__item">Catering</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Photography</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Decor &amp; Styling</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Venues</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Entertainment</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Makeup &amp; Hair</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Sound &amp; Lighting</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Transport</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Catering</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Photography</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Decor &amp; Styling</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Venues</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Entertainment</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Makeup &amp; Hair</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Sound &amp; Lighting</span><span class="marquee__item">&#9679;</span>
+      <span class="marquee__item">Transport</span><span class="marquee__item">&#9679;</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MISSION (brand band) ============================ -->
+<section class="section band band--brand" data-morph="#5047E1">
+  <div class="drape has-img" style="background-image:url('assets/img/tex-drape.jpg')" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,6vw,80px);align-items:center" class="mission-grid">
+      <div>
+        <p class="eyebrow on-brand">Why we built this</p>
+        <p class="reveal-text">Planning an event should not mean forty open tabs, six WhatsApp groups and a spreadsheet nobody trusts.</p>
+      </div>
+      <div class="stack g16">
+        <div class="orbit" style="position:relative;align-self:flex-start">
+          <span class="orbit__ico" style="background:var(--t-blush)">&#127874;</span>
+          <span>Royal Feast Catering<small>Quoted in 2 hours</small></span>
+        </div>
+        <div class="orbit" style="position:relative;align-self:center">
+          <span class="orbit__ico" style="background:var(--t-lilac)">&#128247;</span>
+          <span>LensArt Studios<small>Booked &#183; &#8358;350,000</small></span>
+        </div>
+        <div class="orbit" style="position:relative;align-self:flex-end">
+          <span class="orbit__ico" style="background:var(--t-mint)">&#127803;</span>
+          <span>Bloom Events Decor<small>3 packages sent</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TWO DOORS ============================ -->
+<section class="section band band--cream" id="how" data-morph="#F6F4FB">
+  <div class="wrap">
+    <div class="center" style="max-width:62ch;margin:0 auto 54px">
+      <p class="eyebrow">One marketplace, two doors</p>
+      <h2>Whichever side you're on,<br>you start in the same place</h2>
+    </div>
+
+    <div class="doors">
+      <article class="door door--client r-up">
+        <span class="door__tag">For clients</span>
+        <h3>Find a planner who gets your event</h3>
+        <p class="lead" style="font-size:1rem">Tell us the date, the headcount and the budget. Compare real planners with
+          real portfolios, real reviews and transparent pricing — then book in-app.</p>
+        <ul class="door__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Matched on budget, date and event type</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Verified portfolios and genuine reviews</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Quotes, contracts and payment in one thread</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Follow progress without chasing anyone</li>
+        </ul>
+        <div class="door__foot">
+          <a class="btn btn--primary" href="marketplace.html">Browse planners</a>
+        </div>
+      </article>
+
+      <article class="door door--pro r-up" data-delay="0.12">
+        <span class="door__tag">For planners &amp; vendors</span>
+        <h3>Win better work, and run it properly</h3>
+        <p class="lead" style="font-size:1rem">List your business, receive briefs that actually match what you do, and
+          manage every booking, task and payment from the same workspace.</p>
+        <ul class="door__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Briefs filtered to your category and city</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Source your own vendors from the same pool</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Budgets, phases, tasks and team built in</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Paid out every two weeks, no chasing</li>
+        </ul>
+        <div class="door__foot">
+          <a class="btn btn--gold" href="vendors.html">List your business</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BENTO ============================ -->
+<section class="section band band--white" data-morph="#FFFFFF">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px">
+      <div style="max-width:52ch">
+        <p class="eyebrow">Browse the marketplace</p>
+        <h2>Every category, <br>every price point</h2>
+      </div>
+      <a class="btn btn--ghost" href="marketplace.html">See all 2,400+ vendors</a>
+    </div>
+
+    <div class="bento">
+      <a class="bento__cell bento__cell--wide tint-cream r-up" href="marketplace.html">
+        <img src="assets/img/cat-catering.png" alt="" data-fallback>
+        <span class="bento__plus">+</span>
+        <h3>Catering</h3>
+        <span class="bento__count">612 vendors &#183; from &#8358;4,500 per guest</span>
+      </a>
+      <a class="bento__cell bento__cell--tall tint-blush r-up" data-delay="0.08" href="marketplace.html">
+        <img src="assets/img/cat-decor.png" alt="" data-fallback>
+        <span class="bento__plus">+</span>
+        <h3>Decor &amp; Styling</h3>
+        <span class="bento__count">438 vendors &#183; from &#8358;180,000</span>
+      </a>
+      <a class="bento__cell tint-lilac r-up" data-delay="0.16" href="marketplace.html">
+        <img src="assets/img/cat-photo.png" alt="" data-fallback>
+        <span class="bento__plus">+</span>
+        <h3>Photography</h3>
+        <span class="bento__count">517 vendors</span>
+      </a>
+      <a class="bento__cell is-dark r-up" data-delay="0.24" href="marketplace.html" style="background:#14163A">
+        <img src="assets/img/cat-entertainment.png" alt="" data-fallback>
+        <span class="bento__plus">+</span>
+        <h3>Entertainment</h3>
+        <span class="bento__count">389 vendors</span>
+      </a>
+      <a class="bento__cell bento__cell--wide tint-blue r-up" data-delay="0.3" href="marketplace.html">
+        <span class="bento__plus">+</span>
+        <h3>Venues &amp; Marquees</h3>
+        <span class="bento__count">444 listings across 12 cities</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PHONE SHOWCASE ============================ -->
+<section class="section band band--ink" data-morph="#14163A" data-phone-stage>
+  <div class="wrap center" style="margin-bottom:56px">
+    <p class="eyebrow on-dark">One app, both sides</p>
+    <h2 style="max-width:18ch;margin-inline:auto">The whole event, in your pocket</h2>
+  </div>
+
+  <div class="wrap" style="display:flex;justify-content:center;position:relative">
+    <div class="orbit" data-fromx="-140" data-fromy="40" style="left:2%;top:14%;position:absolute">
+      <span class="orbit__ico" style="background:var(--t-mint)">&#8358;</span>
+      <span>Budget on track<small>&#8358;848,000 of &#8358;1.6M</small></span>
+    </div>
+    <div class="orbit" data-fromx="-120" data-fromy="-30" style="left:0;bottom:18%;position:absolute">
+      <span class="orbit__ico" style="background:var(--t-blue)">&#128197;</span>
+      <span>23 days to go<small>Sage's Wedding</small></span>
+    </div>
+    <div class="orbit" data-fromx="140" data-fromy="-50" style="right:1%;top:20%;position:absolute">
+      <span class="orbit__ico" style="background:var(--t-blush)">&#9733;</span>
+      <span>New quote<small>LensArt &#183; &#8358;350,000</small></span>
+    </div>
+    <div class="orbit" data-fromx="120" data-fromy="40" style="right:3%;bottom:14%;position:absolute">
+      <span class="orbit__ico" style="background:var(--t-cream)">&#10003;</span>
+      <span>24 of 45 tasks<small>Vendor booking phase</small></span>
+    </div>
+
+    <div class="phone">
+      <div class="phone__notch"></div>
+      <div class="phone__screen">
+        <div class="phone__status"><span>9:41</span><span>&#9679;&#9679;&#9679;</span></div>
+        <div class="phone__body">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="width:36px;height:36px;border-radius:99px;background:var(--brand-wash);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--brand)">AP</span>
+            <div style="flex:1">
+              <div style="font-size:10px;color:var(--body)">Welcome back,</div>
+              <div style="font-size:13px;font-weight:700">Abraham Peter</div>
+            </div>
+          </div>
+          <div style="background:var(--brand);border-radius:13px;padding:12px;color:#fff">
+            <div style="font-size:9.5px;opacity:.78">Total budget</div>
+            <div style="font-size:19px;font-weight:800;letter-spacing:-.02em">&#8358;1,600,000</div>
+            <div style="height:6px;border-radius:99px;background:rgba(255,255,255,.26);margin-top:9px;overflow:hidden">
+              <div style="width:53%;height:100%;background:#fff;border-radius:99px"></div>
+            </div>
+            <div style="font-size:9px;opacity:.78;margin-top:7px">53% allocated &#183; on track</div>
+          </div>
+          <div class="mini-card">
+            <span class="mini-card__ico tint-blush"></span>
+            <span style="flex:1"><span class="mini-card__l1"></span><span class="mini-card__l2"></span></span>
+            <span class="mini-pill" style="background:var(--ok-wash);color:#2F8F60">Booked</span>
+          </div>
+          <div class="mini-card">
+            <span class="mini-card__ico tint-mint"></span>
+            <span style="flex:1"><span class="mini-card__l1"></span><span class="mini-card__l2"></span></span>
+            <span class="mini-pill" style="background:var(--warn-wash);color:#B98900">Quote</span>
+          </div>
+          <div class="mini-card">
+            <span class="mini-card__ico tint-lilac"></span>
+            <span style="flex:1"><span class="mini-card__l1"></span><span class="mini-card__l2"></span></span>
+            <span class="mini-pill" style="background:var(--brand-wash);color:var(--brand)">New</span>
+          </div>
+          <div class="mini-card">
+            <span class="mini-card__ico tint-blue"></span>
+            <span style="flex:1"><span class="mini-card__l1"></span><span class="mini-card__l2"></span></span>
+            <span class="mini-pill" style="background:var(--page);color:var(--body)">Draft</span>
+          </div>
+        </div>
+        <div class="phone__nav"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHY (sticky split) ============================ -->
+<section class="section band band--ink" data-morph="#14163A">
+  <div class="wrap sticky-split">
+    <div class="sticky-split__left">
+      <p class="eyebrow on-dark">Why EventPlanna</p>
+      <h2 style="color:#fff">Built for how<br>events actually<br>get made</h2>
+      <p class="lead mt24" style="max-width:38ch">Not a directory. Not a spreadsheet. The sourcing and the
+        running of the event, in one system that both sides can see.</p>
+      <div class="mt32"><a class="btn btn--onDark btn--light" href="pricing.html">See pricing</a></div>
+    </div>
+
+    <div>
+      <article class="benefit r-up">
+        <div class="benefit__ico" style="background:var(--t-lilac)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5047E1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </div>
+        <h3>Matched, not listed</h3>
+        <p>Briefs are filtered by budget, date, city and event type — so clients see vendors who are actually free and in range, and vendors stop reading briefs they were never going to win.</p>
+      </article>
+      <article class="benefit r-up" data-delay="0.06">
+        <div class="benefit__ico" style="background:var(--t-mint)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F9D6E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 9.1 8 10 4.6-.9 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3>Verified before they're visible</h3>
+        <p>Government ID, business registration and proof of address are checked before a vendor can take a booking. The badge means something.</p>
+      </article>
+      <article class="benefit r-up" data-delay="0.12">
+        <div class="benefit__ico" style="background:var(--t-blue)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
+        </div>
+        <h3>The money is never a mystery</h3>
+        <p>Every quote, deposit and balance lands against a budget line. You always know what is committed, what is paid and what is still open.</p>
+      </article>
+      <article class="benefit r-up" data-delay="0.18">
+        <div class="benefit__ico" style="background:var(--t-cream)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B98900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h3>Pay as you go, not per seat</h3>
+        <p>Credits are spent on the things that cost us money to run — creating an event, sending a booking request, inviting a teammate. Browsing and planning are always free.</p>
+      </article>
+      <article class="benefit r-up" data-delay="0.24">
+        <div class="benefit__ico" style="background:var(--t-blush)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C2478E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        </div>
+        <h3>Your whole team, properly</h3>
+        <p>Managers, coordinators and assistants each get the access they should have — and only see the events they're actually on.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STATS ============================ -->
+<section class="section--tight band band--brand" data-morph="#5047E1" style="padding:clamp(54px,7vw,86px) 0">
+  <div class="wrap">
+    <div class="stats center">
+      <div><div class="stat__n tnum" data-count="2.3" data-pre="&#8358;" data-suf="B+" data-dec="1">&#8358;2.3B+</div><div class="stat__l">Paid out to vendors</div></div>
+      <div><div class="stat__n tnum" data-count="2400" data-suf="+">2,400+</div><div class="stat__l">Verified vendors</div></div>
+      <div><div class="stat__n tnum" data-count="18000" data-suf="+">18,000+</div><div class="stat__l">Events run</div></div>
+      <div><div class="stat__n tnum" data-count="4.8" data-dec="1">4.8</div><div class="stat__l">Average vendor rating</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOW CREDITS WORK ============================ -->
+<section class="section band band--cream" data-morph="#F6F4FB">
+  <div class="wrap">
+    <div class="center" style="max-width:56ch;margin:0 auto 48px">
+      <p class="eyebrow">How credits work</p>
+      <h2>No subscription.<br>Pay for what you use.</h2>
+    </div>
+    <div class="steps">
+      <div class="step r-up"><h3>Buy a credit pack</h3><p>Packs start at &#8358;10,000 for 500 credits. Every new account begins with 200 free credits — roughly 40 events.</p></div>
+      <div class="step r-up" data-delay="0.08"><h3>Spend them on actions</h3><p>Creating an event costs 5. Sending a booking request costs 5. Inviting a teammate costs 2. Browsing, planning and messaging are free.</p></div>
+      <div class="step r-up" data-delay="0.16"><h3>Top up when you need to</h3><p>Credits never expire. Top up any time, or leave the account dormant between events and pay nothing at all.</p></div>
+    </div>
+    <div class="center mt48"><a class="btn btn--primary btn--lg" href="pricing.html">See all packs</a></div>
+  </div>
+</section>
+
+<!-- ============================ TESTIMONIALS ============================ -->
+<section class="section band band--ink" data-morph="#14163A">
+  <div class="wrap">
+    <div class="center" style="max-width:52ch;margin:0 auto 48px">
+      <p class="eyebrow on-dark">From both sides</p>
+      <h2 style="color:#fff">What people say</h2>
+    </div>
+    <div class="quotes">
+      <article class="quote r-up">
+        <div class="quote__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;I found a planner on a Tuesday and had three quotes by Thursday. Everything — contract, deposit, the lot — stayed in one thread instead of my WhatsApp.&rdquo;</p>
+        <div class="quote__who">
+          <span class="avatar" style="background:var(--t-blue);color:#3B82F6">CO</span>
+          <span><b style="font-size:.9rem">Chidi Okeke</b><br><small style="color:rgba(255,255,255,.55)">Wedding, 400 guests &#183; Lagos</small></span>
+        </div>
+      </article>
+      <article class="quote r-up" data-delay="0.08">
+        <div class="quote__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;We ran 40 events last year on EventPlanna. The budget tracking alone paid for itself — I stopped finding out about overspend three weeks too late.&rdquo;</p>
+        <div class="quote__who">
+          <span class="avatar" style="background:var(--brand-wash);color:var(--brand)">AP</span>
+          <span><b style="font-size:.9rem">Abraham Peter</b><br><small style="color:rgba(255,255,255,.55)">M&amp;K Events Venture &#183; Lagos</small></span>
+        </div>
+      </article>
+      <article class="quote r-up" data-delay="0.16">
+        <div class="quote__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;We went from four bookings a month to fourteen. The verified badge made the difference — people stopped asking us to prove we were real.&rdquo;</p>
+        <div class="quote__who">
+          <span class="avatar" style="background:var(--t-blush);color:#C2478E">LA</span>
+          <span><b style="font-size:.9rem">LensArt Studios</b><br><small style="color:rgba(255,255,255,.55)">Photography &#183; Lagos</small></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA ============================ -->
+<section class="section band band--cream" data-morph="#F6F4FB">
+  <div class="wrap">
+    <div style="background:var(--brand);border-radius:var(--r-xl);padding:clamp(36px,5.4vw,76px);color:#fff;position:relative;overflow:hidden">
+      <div style="position:relative;z-index:2;max-width:56ch">
+        <p class="eyebrow on-brand">Get started</p>
+        <h2 style="color:#fff">Your next event starts with 200 free credits</h2>
+        <p class="lead mt16" style="color:rgba(255,255,255,.8);max-width:46ch">No card, no subscription, no sales call.
+          Create an account and you can be browsing vendors in under a minute.</p>
+        <div class="row g12 mt32" style="flex-wrap:wrap">
+          <a class="btn btn--light btn--lg" href="marketplace.html">Browse the marketplace</a>
+          <a class="btn btn--outlineLight btn--lg" href="vendors.html">List your business</a>
+        </div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;right:-60px;bottom:-90px;width:340px;height:340px;border-radius:999px;background:rgba(255,255,255,.08)"></div>
+      <div aria-hidden="true" style="position:absolute;right:120px;top:-110px;width:240px;height:240px;border-radius:999px;background:rgba(255,255,255,.06)"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <img src="assets/logo/logo-full-dark.svg" alt="EventPlanna" style="height:30px;width:auto">
+        <p style="margin-top:18px;color:rgba(255,255,255,.62);font-size:.93rem;max-width:34ch">
+          The marketplace and workspace for events in Nigeria. Plan, source, book and pay in one place.</p>
+        <div class="social">
+          <a href="#" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.1 8.1L23.2 22h-6.6l-5.2-6.8L5.5 22H2.4l7.6-8.7L1.2 2h6.8l4.7 6.2Zm-1.1 18h1.8L7.3 3.9H5.4Z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9Z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Marketplace</h4>
+        <ul>
+          <li><a href="marketplace.html">Find a planner</a></li>
+          <li><a href="marketplace.html">Find a vendor</a></li>
+          <li><a href="marketplace.html">Browse by category</a></li>
+          <li><a href="marketplace.html">Browse by city</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index.html#how">How it works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="vendors.html">For vendors</a></li>
+          <li><a href="#">Mobile app</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="pricing.html#faq">FAQs</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Stay in the loop</h4>
+        <p style="color:rgba(255,255,255,.62);font-size:.9rem;margin:0">Occasional notes on running better events. No spam.</p>
+        <form class="newsletter" onsubmit="return false">
+          <input type="email" placeholder="you@example.com" aria-label="Email address">
+          <button class="btn btn--primary btn--sm" type="submit">Join</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2026 EventPlanna. All rights reserved.</span>
+      <span style="display:flex;gap:22px"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/js/site.js"></script>
+<style>
+@media (max-width: 860px){ .mission-grid{ grid-template-columns:1fr !important; } }
+</style>
+</body>
+</html>
