@@ -27,18 +27,30 @@ python -m http.server 8000
 
 Opening `index.html` directly with `file://` also works.
 
-## Deploying to GitHub Pages
+## Deploying (Vercel)
 
-A workflow is already included at `.github/workflows/pages.yml`. Once pushed:
+This site lives on the `website` branch of `clepbo/eventplanna_frontend`, separate from
+the Next.js app on `dev`. GitHub Pages is not an option here — Pages is disabled on a
+private fork, which inherits the parent repo's settings. Vercel has no such restriction.
+
+**One-time import**
+
+1. vercel.com/new -> Import `clepbo/eventplanna_frontend`
+2. **Production Branch: `website`** (Settings -> Git). This is the important one.
+3. Framework Preset: **Other**. Root Directory: `./`
+4. Deploy.
+
+`vercel.json` already pins this as a static site with no build and no install step, so
+Vercel will not try to build it as the Next.js app that lives on `dev`.
+
+After that, every push to `website` redeploys automatically.
+
+**Or from the CLI**
 
 ```bash
-git remote add origin https://github.com/clepbo/eventplanna_frontend.git
-git branch -M website
-git push -u origin website
+npx vercel login      # one-time, opens a browser
+npx vercel --prod     # from this folder
 ```
-
-Then in the repo: **Settings → Pages → Source → GitHub Actions**. The site publishes on
-every push to `website`.
 
 ## Images
 
