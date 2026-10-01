@@ -29,21 +29,24 @@ Opening `index.html` directly with `file://` also works.
 
 ## Deploying (Vercel)
 
-This site lives on the `website` branch of `clepbo/eventplanna_frontend`, separate from
-the Next.js app on `dev`. GitHub Pages is not an option here — Pages is disabled on a
-private fork, which inherits the parent repo's settings. Vercel has no such restriction.
+This is a standalone repo — the marketing site only, no app code. That keeps it out of
+`eventplanna_frontend` and means hosting needs no special configuration.
 
 **One-time import**
 
-1. vercel.com/new -> Import `clepbo/eventplanna_frontend`
-2. **Production Branch: `website`** (Settings -> Git). This is the important one.
-3. Framework Preset: **Other**. Root Directory: `./`
-4. Deploy.
+1. vercel.com/new -> Import `clepbo/eventplanna-website`
+2. Framework Preset: **Other**. Root Directory: `./`
+3. Deploy.
+
+Nothing else to configure: `main` is the default branch and the repo root is the site.
 
 `vercel.json` already pins this as a static site with no build and no install step, so
-Vercel will not try to build it as the Next.js app that lives on `dev`.
+Vercel treats it as a plain static site.
 
-After that, every push to `website` redeploys automatically.
+After that, every push to `main` redeploys automatically.
+
+GitHub Pages also works on this repo if you ever want a free fallback URL:
+**Settings -> Pages -> Source -> Deploy from a branch -> `main` / root**.
 
 **Or from the CLI**
 
