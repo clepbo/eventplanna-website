@@ -108,45 +108,47 @@
 
     // entrance  runs on load, independent of scroll
     if (hasGSAP && !reduced) {
+      // NOTE: select across BOTH layers, never just .hero__light.
+      // The veil is a pixel-identical copy of the light layer; if an entrance
+      // tween touches only one copy they stop aligning and the wipe shows a
+      // doubled, mismatched headline. (That bug shipped once — the light
+      // "Browse now" was left at scale .5 while the veil's sat at 1.)
       var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.from('.hero__light .ln > .seg', { y: 30, opacity: 0, duration: .85, stagger: .05 })
-        .from('.hero__light .chip', { scale: .4, opacity: 0, rotate: -24, duration: .7,
-          stagger: .06, ease: 'back.out(1.8)' }, '-=.6')
-        .from('.hero__light .inline-cta', { scale: .5, opacity: 0, duration: .5,
-          ease: 'back.out(2)' }, '-=.45')
-        .from('.hero__sub, .hero__ctas, .hero__note', { y: 20, opacity: 0, duration: .6,
-          stagger: .08 }, '-=.35');
+      tl.from('.hero .ln > .seg', { y: 28, opacity: 0, duration: .8, stagger: .05 })
+        .from('.hero .chip', { scale: .5, opacity: 0, rotate: -20, duration: .65,
+          stagger: .055, ease: 'back.out(1.7)' }, '-=.55')
+        .from('.hero .inline-cta', { scale: .62, opacity: 0, duration: .45,
+          ease: 'back.out(1.8)' }, '-=.4')
+        .from('.hero__sub, .hero__ctas, .hero__note', { y: 18, opacity: 0, duration: .55,
+          stagger: .07 }, '-=.3')
+        .set('.hero .ln > .seg, .hero .chip, .hero .inline-cta, .hero__sub, .hero__ctas, .hero__note',
+             { clearProps: 'transform' });
     }
 
     if (!hasGSAP || reduced || window.innerWidth < 860) return;
 
     var veil = hero.querySelector('.hero__veil');
-    var veilInner = hero.querySelector('.hero__veil .hero__content');
     if (!veil) return;
 
     var wipe = gsap.timeline({
       scrollTrigger: {
-        trigger: hero,
-        start: 'top top',
-        end: '+=110%',
-        scrub: 0.8,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true
+        trigger: hero, start: 'top top', end: '+=120%',
+        scrub: 0.75, pin: true, anticipatePin: 1, invalidateOnRefresh: true
       }
     });
 
-    wipe.to(veil, { yPercent: 0, ease: 'none' }, 0)
-        .to(veilInner, { yPercent: 0, ease: 'none' }, 0);
+    // the colour window grows upward from the bottom edge; nothing inside moves
+    wipe.fromTo(veil,
+      { clipPath: 'inset(100% 0% 0% 0%)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', duration: 1 }, 0);
 
-    // cards tumble up through the frame on the same scrub
-    var cards = hero.querySelectorAll('.tumble');
-    cards.forEach(function (c, i) {
+    // cards tumble up past the frame on the same scrub
+    hero.querySelectorAll('.tumble').forEach(function (c, i) {
       var rot = parseFloat(c.dataset.rot || (i % 2 ? 16 : -14));
       wipe.fromTo(c,
-        { yPercent: 160, rotate: rot * -0.4, opacity: 0 },
-        { yPercent: -190, rotate: rot, opacity: 1, ease: 'none' },
-        0.06 * i);
+        { yPercent: 190, rotate: rot * -0.35, opacity: 0 },
+        { yPercent: -210, rotate: rot, opacity: 1, ease: 'none', duration: 1 },
+        0.05 * i);
     });
   }
 
