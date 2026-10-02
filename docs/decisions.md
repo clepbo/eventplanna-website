@@ -149,3 +149,29 @@ anywhere on the page. It was caught by reading the computed
 screenshot of this bug is indistinguishable from "the images have not arrived
 yet". The gotcha is now commented at `.ph` in `components.css` and in
 `docs/image-prompts.md`.
+
+## Asset caching
+
+**`vercel.json` was serving `/assets/*` with `max-age=31536000, immutable`.**
+That header is a promise that the bytes at a URL will never change, and it is
+only safe when filenames carry a content hash. These filenames are plain, and
+there is no build step to hash them, so the promise was false.
+
+The failure mode is unpleasant because it is invisible from the origin:
+`index.html` revalidates on every visit, so a returning visitor received the
+**new markup** and styled it with the **stylesheet they first cached**, pinned
+for a year. New markup plus old CSS looks exactly like a broken deploy. In our
+case the hero's floating chips arrived as unstyled inline text, while `curl` of
+the same URL showed the correct file — the server was never wrong.
+
+Two changes, and both were needed:
+
+1. **The links are versioned** — `assets/styles.css?v=2` and so on. Changing
+   the header does nothing for a cache that is already poisoned; only a
+   different URL does. This is a one-time repair, not a convention to keep up.
+2. **The header is now honest.** CSS and JS are `max-age=0, must-revalidate`,
+   which costs a conditional request and returns a 304 when nothing changed.
+   Images and SVG get seven days, since replacing one is a deliberate act.
+
+If an image ever is replaced in place, either rename it or accept up to a week
+of staleness. Do not reintroduce `immutable` without content hashing.
