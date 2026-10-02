@@ -5,7 +5,12 @@ markup points at one by name.
 
 | File | Size | Slot |
 |---|---|---|
-| `hero-venue.webp` | 1600 × 2000 (4:5) | Home hero |
+| `hero-venue.webp` | 1200 × 1600 (3:4) | Hero, left column |
+| `hero-catering.webp` | 1200 × 1600 (3:4) | Hero, left column |
+| `hero-decor.webp` | 1200 × 1600 (3:4) | Hero, left column |
+| `hero-photography.webp` | 1200 × 1600 (3:4) | Hero, right column |
+| `hero-entertainment.webp` | 1200 × 1600 (3:4) | Hero, right column |
+| `hero-beauty.webp` | 1200 × 1600 (3:4) | Hero, right column |
 | `door-client.webp` | 1600 × 1000 (16:10) | "Planning an event" card |
 | `door-planner.webp` | 1600 × 1000 (16:10) | "Event planners" card |
 | `door-vendor.webp` | 1600 × 1000 (16:10) | "Vendors" card |

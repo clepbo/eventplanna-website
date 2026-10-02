@@ -315,21 +315,9 @@ td.yes { color: var(--green); font-weight: 600; } td.no { color: var(--grey); }
                   transition: transform .8s var(--ease); }
 a.card:hover .card-photo .ph { transform: scale(1.05); }
 
-/* ---------- hero: one photograph, two floating chips ----------
-   The template's hero was two scrolling columns of cards, which is a lot of
-   reading above the fold. One venue shot says "event" faster than twelve
-   listings do, and the chips carry the product idea without a paragraph. */
-.hero-shot { display: block; position: relative; overflow: visible;
-             -webkit-mask-image: none; mask-image: none; }
-.hero-shot .shot { position: absolute; inset: 0; border-radius: var(--r-xl);
-                   overflow: hidden; box-shadow: var(--shadow-lg); }
-/* A slow drift, so the frame is alive without anything moving under the cursor. */
-.hero-shot .shot::before { content: ""; position: absolute; inset: -4%;
-  background-image: inherit; background-size: cover; background-position: center;
-  animation: drift 26s ease-in-out infinite alternate; }
-@keyframes drift { from { transform: scale(1) translate3d(0,0,0); }
-                   to   { transform: scale(1.07) translate3d(-1.5%,-1%,0); } }
-
+/* ---------- hero: two floating chips over the scrolling columns ----------
+   They sit on .hero-media-wrap rather than .hero-media, because that element
+   clips its own overflow to run the marquee and would cut them off. */
 .hfloat { position: absolute; z-index: 2; background: rgba(255,255,255,.95);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,.7); border-radius: 15px; padding: 11px 14px;
@@ -348,7 +336,6 @@ a.card:hover .card-photo .ph { transform: scale(1.05); }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
 
 @media (max-width:1000px) {
-  .hero-shot { height: min(58vh, 460px); }
   .hfloat.a { left: 12px; }
   .hfloat.b { right: 12px; }
 }
@@ -356,4 +343,130 @@ a.card:hover .card-photo .ph { transform: scale(1.05); }
   .hfloat { padding: 9px 12px; border-radius: 13px; }
   .hfloat.b { min-width: 140px; }
   .hfloat.b b { font-size: 18px; }
+}
+
+/* ============================================================
+   HERO: two scrolling columns of photo cards
+   The cards are photographs with a single caption pill, not the four-line
+   listing tiles the first build used - the column reads as imagery rather than
+   as something to read, which is what made the original version heavy.
+   Each column holds its three cards ONCE. app.js duplicates the contents of
+   .col and .ticker-track at runtime (`t.innerHTML += t.innerHTML`), which is
+   what makes the -50% keyframe loop without a jump. Writing the cards out
+   twice by hand gives you four copies and twice the DOM for nothing.
+   The floating chips live OUTSIDE .hero-media, because that element clips its
+   own overflow for the marquee and would cut them off at the edges.
+   ============================================================ */
+.hero-media-wrap { position: relative; }
+.pcard .plabel { position: absolute; left: 10px; right: 10px; bottom: 10px;
+  background: rgba(20,22,58,.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: #fff; border-radius: 999px; padding: 6px 12px; font-size: 11px; font-weight: 500;
+  text-align: center; letter-spacing: .01em; }
+
+/* ============================================================
+   MOTION PASS
+   All of it is CSS. app.js is untouched: each rule hangs off the .in class the
+   engine already sets on .reveal / .stagger / .brow / .split / .cluster /
+   .chartbox, off :hover, or off a view() timeline where the browser has one.
+
+   Anything that starts hidden is gated on being INSIDE one of those
+   containers, so an element can never be left invisible because its container
+   was not an animated one.
+   ============================================================ */
+
+/* nav and footer links: an underline sweeps in from the left */
+.nav-links a { position: relative; }
+.nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px;
+  height: 1.5px; background: var(--green); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left; transition: transform .38s var(--ease); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* footer a is already display:block + width:fit-content in styles.css, which is
+   what stacks these. Do NOT set display here - inline-block runs them together
+   on one line. The logo is also an <a> in this grid, so exclude it. */
+footer .foot-grid a:not(.logo) { position: relative; }
+footer .foot-grid a:not(.logo)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px;
+  height: 1px; background: currentColor; opacity: .55;
+  transform: scaleX(0); transform-origin: left; transition: transform .38s var(--ease); }
+footer .foot-grid a:not(.logo):hover::after { transform: scaleX(1); }
+
+/* buttons and chips lift a little under the cursor */
+.btn { transition: background .25s, color .25s, border-color .25s, transform .3s var(--ease), box-shadow .3s var(--ease); }
+.btn:hover { transform: translateY(-2px); }
+.btn-dark:hover, .btn-green:hover { box-shadow: 0 12px 26px rgba(20,22,58,.26); }
+.chip { transition: transform .3s var(--ease), background .25s; }
+.chip:hover { transform: translateY(-2px); }
+.tag { transition: transform .3s var(--ease), border-color .25s; }
+.tag:hover { transform: translateY(-2px); border-color: #c9c5f2; }
+
+/* stat tiles */
+.stat { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.stat:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(80,71,225,.34); }
+
+/* step numbers slide in behind their row */
+.step .step-n { transition: transform .75s var(--ease), opacity .75s var(--ease); }
+.reveal .step-n, .step.reveal .step-n { transform: translateX(-18px); opacity: .25; }
+.step.in .step-n, .in .step-n { transform: none; opacity: 1; }
+
+/* tick lists arrive one line after another */
+.reveal .ticks li, .stagger .ticks li, .brow .ticks li, .split .ticks li {
+  opacity: 0; transform: translateY(9px);
+  transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.in .ticks li { opacity: 1; transform: none; }
+.in .ticks li:nth-child(2) { transition-delay: .07s; }
+.in .ticks li:nth-child(3) { transition-delay: .14s; }
+.in .ticks li:nth-child(4) { transition-delay: .21s; }
+.in .ticks li:nth-child(5) { transition-delay: .28s; }
+
+/* the booking-state rail deals itself out */
+.reveal .rail span, .stagger .rail span, .feature .rail span {
+  opacity: 0; transform: translateY(8px) scale(.96);
+  transition: opacity .45s var(--ease), transform .45s var(--ease); }
+.in .rail span { opacity: 1; transform: none; }
+.in .rail span:nth-child(2) { transition-delay: .06s; }
+.in .rail span:nth-child(3) { transition-delay: .12s; }
+.in .rail span:nth-child(4) { transition-delay: .18s; }
+.in .rail span:nth-child(5) { transition-delay: .24s; }
+.in .rail span:nth-child(6) { transition-delay: .30s; }
+
+/* contrast tiers and plans answer the cursor */
+.plan { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.plan:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+
+/* category tiles in the footer mosaic */
+.mosaic .pcard { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+.mosaic .pcard:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.catile b, .catile span { transition: transform .45s var(--ease); }
+.mosaic .pcard:hover .catile b, .mosaic .pcard:hover .catile span { transform: translateX(3px); }
+
+/* the dark CTA gets a slow drifting glow */
+.cta::before { content: ""; position: absolute; inset: -40%;
+  background: radial-gradient(42% 42% at 30% 30%, rgba(80,71,225,.55), rgba(20,22,58,0) 70%);
+  animation: ctaGlow 18s ease-in-out infinite alternate; pointer-events: none; }
+.cta > * { position: relative; z-index: 1; }
+@keyframes ctaGlow { from { transform: translate3d(-6%,-4%,0) scale(1); }
+                     to   { transform: translate3d(10%,6%,0) scale(1.18); } }
+
+/* Scroll-linked polish, only where the browser has a view() timeline and only
+   on elements app.js does not already scrub. Everything below is additive:
+   without support, the page is exactly as it was. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .foot-mark { animation: markRise linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+    @keyframes markRise { from { transform: translateY(26px); opacity: .4; } to { transform: none; opacity: 1; } }
+
+    .split .sw { animation: swDrift linear both; animation-timeline: view(); animation-range: entry 10% cover 55%; }
+    @keyframes swDrift { from { letter-spacing: .02em; opacity: .55; } to { letter-spacing: -.03em; opacity: 1; } }
+
+    .statement p { animation: stateLift linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
+    @keyframes stateLift { from { transform: translateY(22px); } to { transform: none; } }
+  }
+}
+
+/* Motion off: everything the pass hides must come back. */
+@media (prefers-reduced-motion: reduce) {
+  .ticks li, .rail span, .step-n { opacity: 1 !important; transform: none !important; }
+  .cta::before { animation: none !important; }
+  .col.up, .col.down { animation: none !important; }
 }

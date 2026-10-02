@@ -175,3 +175,40 @@ Two changes, and both were needed:
 
 If an image ever is replaced in place, either rename it or accept up to a week
 of staleness. Do not reintroduce `immutable` without content hashing.
+
+## The motion pass
+
+**The scrolling columns came back, as photographs.** Cutting them in the
+declutter pass threw out the thing that made the hero feel alive. The version
+that was actually too heavy was the *content* of the cards — four lines of
+listing text each, twelve of them above the fold. The columns now carry
+photographs with a single caption pill, so the motion is kept and the reading
+is not.
+
+**app.js already duplicates `.col` and `.ticker-track`** at runtime
+(`t.innerHTML += t.innerHTML`, line 304) — that is what makes the `-50%`
+keyframe loop without a jump. The first attempt wrote each card out twice by
+hand as well, producing four copies and twice the DOM. It looked completely
+correct in a screenshot; it was caught by reading `children.length` in the
+running page. Three cards per column in the markup is the right number.
+
+**Everything added in the motion pass is CSS.** `app.js` is still untouched.
+Each rule hangs off the `.in` class the engine already sets, off `:hover`, or
+off a `view()` timeline inside `@supports`, so a browser without scroll-linked
+animation gets exactly the page it got before.
+
+**Anything that starts hidden is gated on being inside an animated container** —
+`.reveal .ticks li`, not `.ticks li`. An element can then never be stranded
+invisible because somebody put it in a container the engine does not touch.
+
+**A new check exists for exactly that failure.** It runs with motion ON —
+`prefers-reduced-motion` would force everything visible and hide the bug — walks
+each page down in 420px steps, and asserts that anything sitting comfortably
+inside the viewport is actually painted. It also confirms both hero columns are
+really translating and that each column's two halves match.
+
+**One regression it did not catch, and a screenshot did:** adding
+`display: inline-block` to the footer links for an underline sweep overrode the
+`display: block` that stacks them, and the whole footer column ran together on
+one line. `footer a` is already `display:block; width:fit-content` — the sweep
+needed `position:relative` and nothing else.

@@ -57,45 +57,78 @@ hands, duplicated faces, low resolution, oversaturated
 
 ---
 
-# Tier 1 — the one that matters most
+# Tier 1 — the six hero cards
 
-## 1. `assets/img/hero-venue.webp` — **1600 × 2000 px, 4:5 portrait**
+The hero is two columns scrolling in opposite directions, three photo cards in
+each. They are the first thing anyone sees, so do these first. Generate all six
+in one session: they sit next to each other and must look like one set — same
+light, same grade, same distance from the subject.
 
-The single most important image on the site. It is the first thing anyone sees
-and it has to say "event" in a quarter of a second. It is cropped **portrait**
-on desktop and to a **centre landscape band** on phones, so keep the subject
-roughly centred with headroom top and bottom.
+**All six: 1200 × 1600 px, 3:4 portrait.** A caption pill sits across the bottom
+~12% of each card, so keep the subject in the upper two thirds and leave the
+bottom edge quiet.
+
+## 1. `assets/img/hero-venue.webp` — "Venue · Victoria Island"
 
 ```
-A large reception hall in Lagos dressed for a wedding reception, photographed
-from the back of the room at eye level before guests arrive. Long banquet
-tables in crisp white linen running into the frame, tall floral centrepieces in
-blush, cream and deep green, gold-rimmed charger plates and polished glassware
-catching the light, gold chiavari chairs with sashes. A draped backdrop and a
-sweetheart table at the far end, warm string lights and uplighting washing the
-walls, a chandelier overhead. Late-afternoon daylight from high windows mixing
-with the warm practical lights. Rich, elegant, unmistakably a Nigerian
-celebration — opulent but not gaudy. Nobody in frame, or one decorator in the
-far distance making a final adjustment. Vertical composition with headroom
-above the chandelier and the nearest table edge at the bottom of the frame.
+A large reception hall in Lagos dressed for a wedding, photographed from the
+back of the room at eye level before guests arrive. Long banquet tables in
+crisp white linen running into the frame, tall floral centrepieces in blush,
+cream and deep green, gold-rimmed charger plates and polished glassware
+catching the light, gold chiavari chairs. A draped backdrop and sweetheart
+table at the far end, warm uplighting on the walls, chandeliers overhead.
+Late-afternoon daylight from high windows mixing with the practical lights.
+Opulent but not gaudy. Nobody in frame. Vertical composition, the chandeliers
+in the upper third and the nearest table edge sitting above the bottom eighth.
 ```
 
-Then the STYLE and NEGATIVE blocks.
+## 2. `assets/img/hero-catering.webp` — "Catering · Lagos"
 
-> **If you want a people-forward hero instead**, use this variant — same file,
-> same crop:
->
-> ```
-> A Nigerian couple in traditional aso-ebi — the bride in a coral gele and
-> beaded blouse, the groom in a cream agbada — standing together at the edge of
-> their decorated reception hall just before guests are let in, laughing at
-> something off-camera. Behind them, long banquet tables with tall floral
-> centrepieces, gold chairs, a draped backdrop and warm uplighting, slightly
-> soft but clearly readable. Vertical composition, the couple occupying the
-> lower two thirds, decor and chandeliers filling the upper third.
-> ```
+```
+A Nigerian caterer in a clean chef's jacket plating small chops and jollof rice
+on a long prep table at an event venue, hands mid-motion with tongs, steam
+rising, two colleagues working further down the line softly out of focus.
+Practical overhead light with daylight from a service door. Vertical
+composition, hands and plates in the upper two thirds.
+```
 
----
+## 3. `assets/img/hero-decor.webp` — "Decor · Lekki"
+
+```
+A Nigerian florist on a short ladder finishing a tall floral arch in blush,
+cream and deep green inside an event hall, reaching up to place a final stem.
+Draped fabric and warm uplighting behind her, the room still half-dressed.
+Daylight from tall windows. Vertical composition, the arch filling the frame
+with the florist in the upper two thirds.
+```
+
+## 4. `assets/img/hero-photography.webp` — "Photography · Lagos"
+
+```
+A Nigerian wedding photographer in working clothes raising a professional
+camera to frame a shot inside a decorated reception hall, the dressed tables
+and warm lighting glowing softly out of focus behind him. Caught mid-work, not
+posed. Vertical composition, the photographer and camera in the upper two
+thirds.
+```
+
+## 5. `assets/img/hero-entertainment.webp` — "Entertainment · Ikeja"
+
+```
+A Nigerian DJ behind a lit controller at a reception, hands on the mixer, head
+slightly down, warm stage light on him and a crowd glowing softly out of focus
+beyond. Deep colour, no harsh flash. Vertical composition, the DJ and deck in
+the upper two thirds.
+```
+
+## 6. `assets/img/hero-beauty.webp` — "Makeup & hair · Abuja"
+
+```
+A Nigerian makeup artist applying finishing touches to a bride's face, the
+bride in a beaded coral gele, soft window light from the side, a dressing table
+with brushes softly out of focus behind. Calm, careful, pre-ceremony. Vertical
+composition, both faces in the upper two thirds.
+```
 
 # Tier 2 — the three audience cards (high value)
 

@@ -57,7 +57,7 @@ page before measuring it.
 image slot**, with the exact crop, a shared style block, a shared negative
 prompt and the conversion commands. That is the file to use.
 
-The site has five photo slots and **ships working with none of them filled**.
+The site has ten photo slots and **ships working with none of them filled**.
 A slot is a tinted tile with the photograph layered over it as a CSS background
 image, never an `<img>`: a missing file leaves the tint showing rather than a
 broken-image icon and a collapsed layout. Drop a correctly-named file into
@@ -66,11 +66,15 @@ can arrive one at a time and the page is never half-finished.
 
 | Slot | File | Size |
 |---|---|---|
-| Home hero | `hero-venue.webp` | 1600 × 2000 (4:5) |
+| Hero, six scrolling cards | `hero-venue` `hero-catering` `hero-decor` `hero-photography` `hero-entertainment` `hero-beauty` `.webp` | 1200 × 1600 (3:4) |
 | "Planning an event" card | `door-client.webp` | 1600 × 1000 (16:10) |
 | "Event planners" card | `door-planner.webp` | 1600 × 1000 (16:10) |
 | "Vendors" card | `door-vendor.webp` | 1600 × 1000 (16:10) |
 | "Verified / Before listed" | `verified-vendor.webp` | 1200 × 1500 (4:5) |
+
+The hero is two columns scrolling in opposite directions; `app.js` duplicates
+each column's contents at runtime so the loop joins without a jump, which is
+why the markup holds three cards per column rather than six.
 
 Everything else is still DOM — the category mosaic, the testimonial portraits,
 the orbit and all the product mock-ups (`.catile`, `.tavatar`, `.ui-card`).
