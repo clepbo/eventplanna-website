@@ -158,22 +158,64 @@ def generate(key, model, methods, prompt, ratio):
         raise RuntimeError("model rejected every request shape: " + detail)
 
 
+class QuotaExhausted(Exception):
+    """A per-DAY free-tier quota. No amount of retrying inside a run fixes it,
+    so the run stops instead of burning the remaining images on backoff."""
+    def __init__(self, msg, retry_after=None, per_model=False):
+        Exception.__init__(self, msg)
+        self.retry_after = retry_after
+        self.per_model = per_model
+
+
+def _read_error(e):
+    """Pull quotaIds and the server's own retryDelay out of a 429 body."""
+    raw, quota_ids, retry_after = "", set(), None
+    try:
+        raw = e.read().decode("utf-8", "replace")
+        j = json.loads(raw)
+        err = j.get("error", {})
+        for det in err.get("details", []):
+            for v in det.get("violations", []) or []:
+                if v.get("quotaId"):
+                    quota_ids.add(v["quotaId"])
+            if det.get("retryDelay"):
+                m = re.match(r"([0-9.]+)s", str(det["retryDelay"]))
+                if m:
+                    retry_after = float(m.group(1))
+        raw = err.get("message", raw)
+    except Exception:
+        pass
+    return raw[:200], quota_ids, retry_after
+
+
 def with_retry(fn, tries=4, label=""):
     for i in range(tries):
         try:
             return fn()
         except urllib.error.HTTPError as e:
-            body = ""
-            try:
-                body = e.read().decode("utf-8", "replace")[:200]
-            except Exception:
-                pass
-            if e.code in (429, 500, 502, 503, 504) and i < tries - 1:
+            body, quota_ids, retry_after = _read_error(e)
+            if e.code == 429:
+                per_day = any("PerDay" in q for q in quota_ids)
+                # A per-minute burst clears on its own; a per-day allowance does
+                # not, and the server tells us which by how long it wants us to
+                # wait. Anything over two minutes is a day quota in practice.
+                if per_day or (retry_after or 0) > 120:
+                    raise QuotaExhausted(
+                        body, retry_after,
+                        per_model=any("PerModel" in q for q in quota_ids))
+                wait = retry_after if retry_after else (2 ** i) * 5 + random.random() * 3
+                if i < tries - 1:
+                    print("      rate limited, waiting %.0fs" % wait)
+                    time.sleep(min(wait, 90))
+                    continue
+            if e.code in (500, 502, 503, 504) and i < tries - 1:
                 wait = (2 ** i) * 5 + random.random() * 3
                 print("      %s %s - retrying in %.0fs" % (e.code, label, wait))
                 time.sleep(wait)
                 continue
             raise RuntimeError("HTTP %s %s %s" % (e.code, e.reason, body))
+        except QuotaExhausted:
+            raise
         except (urllib.error.URLError, RuntimeError) as e:
             if i < tries - 1:
                 wait = (2 ** i) * 4 + random.random() * 2
@@ -347,39 +389,100 @@ def main():
     except ImportError:
         raise SystemExit("Pillow is needed for the crop and the WebP encode:\n  pip install pillow")
 
-    model, methods = pick_model(args.key, args.model)
-    print("model: %s  (%s)" % (model, ",".join(methods)))
-    print("out:   %s\n" % os.path.relpath(OUTDIR, ROOT))
+    # Day quotas are counted PER MODEL, so one being spent does not mean the
+    # next is. Keep an ordered queue and fall through it as each runs dry.
+    if args.model:
+        queue = [pick_model(args.key, args.model)]
+    else:
+        avail = list_models(args.key)
+        queue = []
+        for want in PREFERRED:
+            for name, methods in avail:
+                if name.startswith(want) and name not in [q[0] for q in queue]:
+                    queue.append((name, methods))
+        for nm in avail:
+            if nm[0] not in [q[0] for q in queue]:
+                queue.append(nm)
+    if not queue:
+        raise SystemExit("No image-capable model is visible to this key. Try --list-models.")
+
+    model, methods = queue.pop(0)
+    print("model: %s" % model)
+    if queue:
+        print("       (fallbacks: %s)" % ", ".join(m for m, _ in queue[:4]))
+    print("out:   %s" % os.path.relpath(OUTDIR, ROOT))
+    print("")
 
     done = skipped = failed = 0
     total_bytes = 0
+    stopped = None
     for im in items:
         path = os.path.join(OUTDIR, im["file"] + ".webp")
         if os.path.exists(path) and not args.force:
             print("  %-22s exists, skipping" % im["file"])
             skipped += 1
             continue
-        print("  %-22s %dx%d ..." % (im["file"], im["w"], im["h"]), end="", flush=True)
-        try:
-            raw = with_retry(lambda: generate(args.key, model, methods, full(im), im["ratio"]),
-                             label=im["file"])
-            size = save_webp(raw, path, im["w"], im["h"], args.quality)
-            total_bytes += size
-            print(" %d KB" % (size // 1024))
-            done += 1
-        except Exception as e:
-            print(" FAILED")
-            print("      %s" % e)
-            failed += 1
+        while True:
+            print("  %-22s %dx%d ..." % (im["file"], im["w"], im["h"]), end="", flush=True)
+            try:
+                raw = with_retry(lambda: generate(args.key, model, methods, full(im), im["ratio"]),
+                                 label=im["file"])
+                size = save_webp(raw, path, im["w"], im["h"], args.quality)
+                total_bytes += size
+                print(" %d KB" % (size // 1024))
+                done += 1
+                break
+            except QuotaExhausted as q:
+                print(" quota spent on %s" % model)
+                if queue:
+                    model, methods = queue.pop(0)
+                    print("      falling back to %s" % model)
+                    continue
+                stopped = q
+                break
+            except Exception as e:
+                print(" FAILED")
+                print("      %s" % e)
+                failed += 1
+                break
+        if stopped:
+            break
         time.sleep(args.delay)
 
-    print("\n%d generated, %d skipped, %d failed   %d KB added"
+    print("")
+    print("%d generated, %d skipped, %d failed   %d KB added"
           % (done, skipped, failed, total_bytes // 1024))
+
+    if stopped:
+        secs = stopped.retry_after or 0
+        print("")
+        print("-" * 68)
+        print("STOPPED: the daily free-tier image quota is spent on every model")
+        print("this key can reach. Retrying will not help today.")
+        if secs:
+            hrs, mins = int(secs // 3600), int((secs % 3600) // 60)
+            when = time.strftime("%H:%M on %a %d %b", time.localtime(time.time() + secs))
+            print("")
+            print("The server asks for %dh %dm - quota resets around %s your time." % (hrs, mins, when))
+        print("")
+        print("Three ways forward:")
+        print("  1. Wait for the reset and re-run. Finished files are skipped,")
+        print("     so it picks up exactly where it stopped.")
+        print("  2. Enable billing on the Google Cloud project behind this key.")
+        print("     That lifts the free-tier daily cap; ten images costs cents.")
+        print("  3. Use a key from a different project with unspent quota:")
+        print("     python tools/generate-images.py --key OTHER_KEY")
+        print("-" * 68)
+        sys.exit(2)
+
     if failed:
         print("Re-run to retry just the failures - finished files are skipped.")
         sys.exit(1)
     if done:
-        print("\nLook at them, then:  git add assets/img && git commit && git push")
+        print("")
+        print("Look at them, then:  git add assets/img && git commit && git push")
+
+
 
 
 if __name__ == "__main__":

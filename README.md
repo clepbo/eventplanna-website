@@ -63,7 +63,11 @@ python tools/generate-images.py
 ```
 
 A key is free at <https://aistudio.google.com/apikey>. It discovers whichever
-image model your key can reach (names change often, so nothing is hardcoded),
+image models your key can reach (names change often, so nothing is hardcoded)
+and keeps the rest as a fallback queue — the free tier counts its daily image
+allowance *per model*, so when one runs dry the script moves to the next rather
+than stopping. If they are all spent it says so, with the time the quota
+resets; re-running later picks up exactly where it stopped. It
 generates every slot that is still missing, crops each result to its exact size
 and writes WebP straight into `assets/img/`. Re-run it any time — it skips
 files that already exist unless you pass `--force`. `--only hero` does just the

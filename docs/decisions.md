@@ -258,3 +258,29 @@ as a hint, but every result is cover-cropped to the slot's exact pixel size and
 re-encoded as WebP at quality 82. That half is testable without a key, and it
 is: feeding a square source through all nineteen slots returns nineteen exactly
 correct sizes.
+
+## Running the generator against a real key
+
+**Every image model on the free tier shares one daily allowance, and it is
+counted per model per project.** The first real run found all six image models
+the key could reach already at zero, with the server asking for a 3h 8m wait
+and naming `GenerateRequestsPerDayPerProjectPerModel-FreeTier`.
+
+Two things came out of that, both now in the script:
+
+**A 429 is not one thing.** A per-minute burst clears on its own; a per-day
+allowance does not, and backing off through four retries just wastes time
+before failing anyway. The script now reads `violations[].quotaId` and the
+server's own `retryDelay`, treats anything naming `PerDay` (or asking for more
+than two minutes) as terminal, stops the whole run rather than the one image,
+and prints the local time the quota resets alongside the three actual ways
+forward.
+
+**Day quotas are per model, so one being spent does not mean the next is.** The
+script keeps the whole discovered model list as a fallback queue and walks down
+it as each runs dry, instead of picking one model up front and giving up with
+five unused models still available.
+
+Both were found by running it, not by reading the docs. The failure path is now
+the only part of this script that has actually been exercised end to end — the
+success path still has not, because the quota has not reset.
