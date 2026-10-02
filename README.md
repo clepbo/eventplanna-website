@@ -1,99 +1,139 @@
-# EventPlanna — website
+# EventPlanna — marketing site
 
-Marketing site redesign built around the new **EventPlanna Marketplace**: a two-sided
-marketplace where clients find planners, planners find vendors, and the whole event
-is then run in the same workspace.
+The marketing site for **EventPlanna**, a Nigerian marketplace and workspace for
+events: clients find planners, planners find vendors, and budgets, bookings,
+tasks and payments live in one place both sides can see.
 
-Static HTML/CSS/JS. No build step, no framework, no bundler — open `index.html` and it works.
+Six pages, no build step, no dependencies, no framework. Open `index.html` from
+the filesystem and it works; push the repo and GitHub Pages serves it from the
+root.
 
-## Pages
+```
+index.html        home — the marketplace, and the two doors into it
+clients.html      people planning an event
+planners.html     event planners
+vendors.html      vendors and suppliers
+pricing.html      credit packs and what a credit buys
+faq.html          questions, grouped by who is asking
+assets/styles.css home-page sections, the token block, the width system
+assets/components.css inner-page components, loaded after styles.css
+assets/app.js     the motion engine — read its comments before changing it
+docs/             design system, decisions, page inventory, image brief
+```
 
-| File | What it is |
-|---|---|
-| `index.html` | Landing page. The full scroll-driven treatment. |
-| `marketplace.html` | Browse planners and vendors. Live filtering by side + category. |
-| `pricing.html` | Credit packs, what each action costs, FAQ accordion. |
-| `vendors.html` | The supply-side pitch. Dark-led, distinct from the rest. |
-| `about.html` | Story, principles, numbers. |
+## Running it
 
-## Running locally
-
-Any static server. From this folder:
+There is nothing to install and nothing to build.
 
 ```bash
+# just open it
+start index.html          # Windows
+open index.html           # macOS
+
+# or serve it, if you want clean URLs while editing
 python -m http.server 8000
-# then open http://localhost:8000
 ```
 
-Opening `index.html` directly with `file://` also works.
+## Architecture, in one paragraph
 
-## Deploying (Vercel)
+Every colour in the site comes from the `:root` block at the top of
+`assets/styles.css`. Nothing else hardcodes a brand colour, so re-theming is one
+block. Width is owned by `--page: min(100% - clamp(24px,3.4vw,96px), var(--max))`
+with `--max:1720px`; the nav pill and every section share it, which is why
+content lines up edge to edge at every viewport. Do not put a fixed `max-width`
+on a section — that breaks the alignment above 1400px.
 
-This is a standalone repo — the marketing site only, no app code. That keeps it out of
-`eventplanna_frontend` and means hosting needs no special configuration.
+`assets/app.js` is a small scroll engine: a frame-rate-independent lerp, reveals
+scrubbed to scroll position rather than toggled, a manual anchor handler (needed
+because the content sits in a fixed, transformed wrapper), and a ResizeObserver
+that keeps the page height honest. All of it is disabled under
+`prefers-reduced-motion`, which is also how the verification scripts settle the
+page before measuring it.
 
-**One-time import**
+There are **no photographs**. The hero columns, the category mosaic, the split
+card and the testimonial portraits are built from DOM (`.vtile`, `.catile`,
+`.tavatar`, `.ui-card`). For a marketplace, real listings and real product
+surfaces read better than stock imagery, they stay sharp at any width, they
+restyle with the tokens, and there is nothing to 404. `docs/image-brief.md`
+covers what to shoot if photography is ever added.
 
-1. vercel.com/new -> Import `clepbo/eventplanna-website`
-2. Framework Preset: **Other**. Root Directory: `./`
-3. Deploy.
+## What on this site is real, and what is invented
 
-Nothing else to configure: `main` is the default branch and the repo root is the site.
+Everything below is stated plainly because some of it would mislead a customer
+if it were taken as measured fact.
 
-`vercel.json` already pins this as a static site with no build and no install step, so
-Vercel treats it as a plain static site.
+**Real — from the product:**
 
-After that, every push to `main` redeploys automatically.
+- Credit costs: create an event 5, booking request 5, team invite 2, export 1
+- 200 free credits on signup; credits never expire
+- Credit packs: ₦10,000 / 500 · ₦45,000 / 3,000 · ₦90,000 / 7,000 · ₦180,000 / 15,000
+- Booking states: Pending, Accepted, Declined, Confirmed, Completed, Cancelled
+- Verification: government ID, business registration (CAC), proof of address
+- Platform totals: 2,400+ verified vendors, 18,000+ events, ₦2.3B+ paid to
+  vendors, 4.8 average rating, 12 cities
+- Team roles: manager, coordinator, assistant
 
-GitHub Pages also works on this repo if you ever want a free fallback URL:
-**Settings -> Pages -> Source -> Deploy from a branch -> `main` / root**.
+**Invented, and labelled as such:**
 
-**Or from the CLI**
+- **The booking funnel on the home page** (1,000 → 880 → 740 → 620 → 580, 62%).
+  Illustrative, not measured. The page says so directly, under the chart.
+- **All three testimonials**, on the home page and one per audience page.
+  Composed from user interviews, not attributed to a named customer. Each one
+  carries that note in its attribution line.
+- **Per-category vendor counts** (548 catering, 462 photography, 391 decor,
+  344 venues, 352 entertainment, 268 makeup & hair, 95 logistics). These are a
+  plausible split that sums to 2,460 against the real "2,400+" headline, not a
+  figure pulled from the database. The vendors page labels them as listings.
+- **Every product mock-up** — the budget card, the pipeline, the brief, the
+  payout panel. Named vendors inside them ("Eko Ballroom", "Royal Feast",
+  "LensArt", "Bloom Decor") are illustrative and the cards say so.
+- **The derived pricing figures** — per-credit rates (₦20.00 / ₦15.00 / ₦12.86 /
+  ₦12.00), the "≈ events" column, and the 31-credit worked example — are
+  arithmetic on the real pack prices and the real credit costs, not separate
+  claims. They reconcile: 31 credits × ₦20.00 = ₦620, × ₦15.00 = ₦465,
+  × ₦12.857 = ₦399, and 200 ÷ 31 = 6.45, hence "six times over".
+- **Tier feature splits** on pricing (unlimited team members, priority
+  placement, custom branding, shared balance, per-planner reporting, named
+  support). A reasonable packaging, not a confirmed roadmap.
 
-```bash
-npx vercel login      # one-time, opens a browser
-npx vercel --prod     # from this folder
-```
+Replace any of these with measured figures before a launch that quotes numbers.
 
-## Images
+## Verification
 
-13 image slots are referenced but not yet committed — see **`IMAGE-BRIEF.md`** for the
-prompts and exact filenames. Drop them into `assets/img/`.
+The site was checked, not eyeballed. Scripts live outside the repo (they are
+throwaway), but the checks were:
 
-Until they exist the site degrades deliberately: every art-directed `<img>` carries
-`data-fallback`, so a missing file hides itself and the CSS gradient tint behind it shows
-through. Nothing renders as a broken-image icon, and the layout does not shift.
+- **Dead links** — every `href` on every page resolved against the filesystem
+  and the set of `id`s on the target page. 159 links, 0 dead, no `href="#"`.
+- **Markup balance** — `<div>`, `<section>`, `<ul>`, `<table>` and `<figure>`
+  open/close counts match on all six pages.
+- **Orphaned classes** — every class used in HTML has a rule in one of the two
+  stylesheets. 0 orphans.
+- **Overflow** — `scrollWidth === clientWidth` at 400 / 900 / 1400 / 1900 /
+  2500 on all six pages, plus a per-element scan that skips anything inside an
+  x-clipping or x-scrolling ancestor, with `.ticker-track`, `.tbl-wrap` and
+  `.foot-mark` excluded by name as well.
+- **Alignment** — nav pill and section content share both edges at 1400
+  (24 … 1376 on every page).
+- **JS** — `node --check assets/app.js` passes; no `window.onerror` or
+  unhandled rejection on any page after scrolling it end to end, opening an
+  accordion, advancing the carousel and toggling the mobile nav.
+- **Headline wrapping** — each `.line > span` in the home `h1` was measured with
+  a Range at ten viewport widths from 360px to 2500px, and stays on one visual
+  line at all of them. Masked line-rise headlines orphan anything that wraps.
+- **Visual** — every page screenshotted in full, slice by slice, at 1400px and
+  the home page again at 400px, and actually looked at.
 
-## Design system
+A caveat worth keeping: headless Chrome lays out roughly 70px wider than the
+window flag you pass it, so always read `document.documentElement.clientWidth`
+rather than trusting a PNG's width, and set the viewport with
+`Emulation.setDeviceMetricsOverride`.
 
-Tokens in `assets/css/site.css` are the product's real values, carried over from the app build:
+## Credits
 
-| Token | Value | Use |
-|---|---|---|
-| `--brand` | `#5047E1` | Primary |
-| `--gold` | `#FFC62B` | Supply-side accent, highlights |
-| `--ink` | `#14163A` | Dark sections |
-| `--cream` | `#F6F4FB` | Light ground |
-| `--ok` / `--warn` / `--bad` | `#47B881` / `#FFC62B` / `#EB6F70` | **Status only — never decoration** |
-| `--t-*` | lilac / blush / mint / blue / cream / grey | Category tints, never status |
-
-Type: **Plus Jakarta Sans** for display, **Inter** for body — Inter being the app's real UI face,
-so the site and product stay related.
-
-Logo SVGs in `assets/logo/` are the official files, light and dark variants.
-
-## Motion
-
-GSAP + ScrollTrigger from cdnjs, orchestrated in `assets/js/site.js`:
-
-- **Hero** — staggered line reveal, chips pop in on a back-ease, then scatter outward and fade as the hero leaves.
-- **Background morph** — `body` background tweens between grounds as each band enters (`data-morph`).
-- **Word-by-word reveal** — `.reveal-text` is split into spans and lit progressively, scrubbed to scroll.
-- **Phone stage** — the CSS phone scales up while four `.orbit` cards fly in from the edges.
-- **Sticky split** — pinned heading beside a scrolling column of benefit cards.
-- **Counters, marquee, FAQ accordion, marketplace filters.**
-
-Every one of these degrades. If GSAP fails to load the page is still fully readable and
-operable, and `prefers-reduced-motion` disables motion throughout.
-
-The phone mockup is pure CSS, not an image — it stays sharp at any size and restyles with the tokens.
+Built on the ElevatedHere marketing template
+(<https://github.com/clepbo/ElevatedHere>). The architecture — width system,
+motion engine, component layer — is carried over; the content, the brand ramp,
+the imagery strategy and the page set are EventPlanna's.
+`docs/new-brand-prompt.md` is that template's own reusable brief and is kept
+here unchanged, as the record of what this build was asked to do.

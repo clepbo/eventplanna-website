@@ -3,214 +3,199 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricing — EventPlanna</title>
-<meta name="description" content="No subscription. Buy credits and spend them only on the actions that cost us money to run. Every account starts with 200 free credits.">
-<link rel="icon" href="assets/logo/logo-icon-light.svg">
+<title>Pricing &mdash; EventPlanna</title>
+<meta name="description" content="No subscription. Buy credits once and spend them on four actions. Packs from &#8358;10,000 for 500 credits, 200 free on signup, and credits never expire.">
+<link rel="icon" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="assets/css/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/components.css">
 </head>
 <body>
 
-<header class="nav">
-  <div class="nav__inner">
-    <a class="nav__logo" href="index.html" aria-label="EventPlanna home">
-      <img class="light-only" src="assets/logo/logo-full-light.svg" alt="EventPlanna">
-      <img class="dark-only" src="assets/logo/logo-full-dark.svg" alt="EventPlanna">
-    </a>
-    <nav class="nav__links" aria-label="Primary">
-      <a href="marketplace.html">Marketplace</a>
-      <a href="index.html#how">How it works</a>
+<div class="progress"><i></i></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>
+    <a class="chip" href="#cta">Start free &#8599;</a>
+    <div class="nav-links">
+      <a href="clients.html">Planning an event</a>
+      <a href="planners.html">Planners</a>
+      <a href="vendors.html">Vendors</a>
       <a href="pricing.html" aria-current="page">Pricing</a>
-      <a href="vendors.html">For vendors</a>
-      <a href="about.html">About</a>
-    </nav>
-    <div class="nav__actions">
-      <a class="signin" href="#">Sign in</a>
-      <a class="btn btn--primary btn--sm" href="#">Get started free</a>
-      <button class="nav__burger" aria-label="Open menu"><span></span></button>
+      <a href="faq.html">FAQ</a>
     </div>
+    <a class="btn btn-dark btn-sm" href="#cta">Start free <span class="cap">&#8599;</span></a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
-</header>
+</nav>
 
-<div class="mobile-menu" role="dialog" aria-label="Menu">
-  <button class="mobile-menu__close" aria-label="Close menu">&times;</button>
-  <a href="marketplace.html">Marketplace</a><a href="index.html#how">How it works</a>
-  <a href="pricing.html">Pricing</a><a href="vendors.html">For vendors</a><a href="about.html">About</a>
-  <a href="#" style="color:var(--brand)">Get started free</a>
-</div>
+<div class="wrap"><div class="shell">
 
-<main>
-
-<section class="section" style="padding-top:calc(var(--nav-h) + 72px)">
-  <div class="wrap center" style="max-width:58ch">
-    <p class="eyebrow">Pricing</p>
-    <h1>Pay for what you use,<br>not for a seat</h1>
-    <p class="lead mt16">There is no monthly fee. You buy credits, and they are spent only on actions that
-      cost us money to run. Browsing the marketplace, planning and messaging are always free.</p>
-    <p class="pill-note mt24">Every new account starts with 200 free credits &#183; about 40 events</p>
-  </div>
-</section>
-
-<section class="section--tight" style="padding-top:0">
-  <div class="wrap">
-    <div class="plans">
-      <article class="plan r-up">
-        <h3>Starter</h3>
-        <p class="plan__sub">For a single event</p>
-        <div class="plan__price">&#8358;10,000</div>
-        <p class="plan__sub">500 credits &#183; &#8358;20 per credit</p>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> About 100 events</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Up to 3 team members</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Full marketplace access</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Email support</li>
+  <section class="section" style="padding-top:clamp(96px,12vw,150px)">
+    <div class="shead center reveal">
+      <span class="eyebrow">Pricing</span>
+      <h2>No subscription. <span class="mark">You pay for actions.</span></h2>
+      <p>Event work is seasonal, so a monthly fee through a quiet quarter is a tax on a bad month. Buy credits once, spend them on four actions, and let the account sit idle for free when there is nothing on.</p>
+    </div>
+    <div class="plans-3 stagger">
+      <div class="plan">
+        <span class="eyebrow">Starter</span>
+        <div class="plan-price">&#8358;10,000 <small>/ 500 credits</small></div>
+        <p class="muted" style="font-size:14px">&#8358;20.00 per credit &middot; about 100 events. For someone planning their own event, or a planner taking their first few.</p>
+        <a class="btn btn-light" href="#how-credits">What a credit buys <span class="cap">&#8599;</span></a>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Full marketplace access and search</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Verified vendors in all 7 categories</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Budgets, phases, tasks and bookings</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Up to 3 team members</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Client portal and exports</li>
         </ul>
-        <div class="plan__cta"><a class="btn btn--ghost" href="#" style="width:100%">Choose Starter</a></div>
-      </article>
-
-      <article class="plan plan--hot r-up" data-delay="0.08">
-        <span class="plan__badge">Most popular</span>
-        <h3 style="color:#fff">Professional</h3>
-        <p class="plan__sub">For working planners</p>
-        <div class="plan__price" style="color:#fff">&#8358;45,000</div>
-        <p class="plan__sub">3,000 credits &#183; &#8358;15 per credit</p>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> About 600 events</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Unlimited team members</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Priority marketplace placement</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Custom branding on client shares</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFC62B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Priority support</li>
+      </div>
+      <div class="plan featured">
+        <span class="eyebrow">Professional</span>
+        <div class="plan-price">&#8358;45,000 <small>/ 3,000 credits</small></div>
+        <p style="font-size:14px">&#8358;15.00 per credit &middot; about 600 events. For a working planner with a team and a calendar that does not empty.</p>
+        <a class="btn btn-green" href="#how-credits">What a credit buys <span class="cap">&#8599;</span></a>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Everything in Starter</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Unlimited team members</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Priority placement in matched briefs</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Custom branding on client shares</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Saved vendor panel</li>
         </ul>
-        <div class="plan__cta"><a class="btn btn--light" href="#" style="width:100%">Choose Professional</a></div>
-      </article>
-
-      <article class="plan r-up" data-delay="0.16">
-        <h3>Enterprise</h3>
-        <p class="plan__sub">For agencies and teams</p>
-        <div class="plan__price">&#8358;180,000</div>
-        <p class="plan__sub">15,000 credits &#183; &#8358;12 per credit</p>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> About 3,000 events</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Multiple workspaces</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Dedicated account manager</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> API access</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#47B881" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Invoicing and PO support</li>
+      </div>
+      <div class="plan">
+        <span class="eyebrow">Business</span>
+        <div class="plan-price">&#8358;90,000 <small>/ 7,000 credits</small></div>
+        <p class="muted" style="font-size:14px">&#8358;12.86 per credit &middot; about 1,400 events. For agencies running several planners against one balance.</p>
+        <a class="btn btn-light" href="#how-credits">What a credit buys <span class="cap">&#8599;</span></a>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Everything in Professional</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> One shared balance across the agency</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Per-planner usage reporting</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Named support contact</li>
         </ul>
-        <div class="plan__cta"><a class="btn btn--ghost" href="#" style="width:100%">Talk to us</a></div>
-      </article>
-    </div>
-
-    <div class="mt48" style="background:#fff;border:1px solid var(--divider);border-radius:var(--r-lg);padding:28px">
-      <div class="row g16" style="flex-wrap:wrap;justify-content:space-between">
-        <div><b style="font-family:'Plus Jakarta Sans',sans-serif">Other packs</b>
-          <p class="muted" style="margin:6px 0 0;font-size:.92rem">Standard 1,200 credits &#8358;20,000 &#183;
-            Premium 5,600 credits &#8358;85,000 &#183; Single credits &#8358;20 each</p></div>
-        <a class="btn btn--ghost btn--sm" href="#">Compare all packs</a>
       </div>
     </div>
-  </div>
-</section>
+    <p class="center muted" style="font-size:13px;margin-top:20px">Larger volumes buy at &#8358;180,000 for 15,000 credits (&#8358;12.00 per credit). Every new account starts with 200 free credits, and credits never expire.</p>
+  </section>
 
-<!-- what credits cost -->
-<section class="section band band--cream">
+  <section class="section" id="how-credits" style="padding-bottom:20px">
+    <div class="shead reveal">
+      <span class="eyebrow">What a credit buys</span>
+      <h2>Four actions draw down your balance</h2>
+      <p>Nothing else on the platform costs a credit. Browsing the marketplace, reading portfolios, messaging a vendor and viewing your own budget are free, always.</p>
+    </div>
+    <div class="cards pay-grid stagger">
+      <div class="card"><h3>Create an event <span class="cost">5</span></h3><p>Builds the workspace from the event type: phases, a starter checklist, a category budget and a client portal.</p></div>
+      <div class="card"><h3>Booking request <span class="cost">5</span></h3><p>Carries the date, headcount and budget to the vendor, so what comes back is a priced quote rather than a question.</p></div>
+      <div class="card"><h3>Invite a team member <span class="cost">2</span></h3><p>Adds a coordinator or assistant with their own role, permissions and assigned events. Charged once, not monthly.</p></div>
+      <div class="card"><h3>Export a report <span class="cost">1</span></h3><p>A client-ready budget or progress pack, recording the figures as they stood at the moment you exported.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shead reveal"><span class="eyebrow">Worked example</span><h2>What one real event actually costs</h2><p>A 400-guest traditional wedding with four vendors booked, two coordinators and two client exports.</p></div>
+    <div class="split-2 stagger">
+      <div class="card">
+        <h3>31 credits, end to end</h3>
+        <p>Create the event: 5. Four booking requests &mdash; venue, catering, photography, decor: 20. Two team invites: 4. Two client exports: 2. That is 31 credits for the whole event.</p>
+        <div class="rail">
+          <span class="done">5 create</span><span class="done">20 requests</span><span class="done">4 invites</span><span class="done">2 exports</span><span class="now">31 total</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>&#8358;620 at the Starter rate</h3>
+        <p>31 credits at &#8358;20.00 each. On the Professional pack the same event costs &#8358;465, and on Business &#8358;399. Your 200 free credits cover it six times over before you pay anything at all.</p>
+        <div class="kpi-row" style="margin-top:4px">
+          <div class="kpi"><div class="kpi-label">Starter</div><div class="kpi-value" data-count="&#8358;620">&#8358;0</div><div class="delta info">&#8358;20.00 / credit</div></div>
+          <div class="kpi"><div class="kpi-label">Professional</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;465">&#8358;0</div><div class="delta up">&#8358;15.00 / credit</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="note reveal">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Credits are only spent when you take one of the four actions. An unused balance is never charged for and never expires.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shead reveal"><span class="eyebrow">Vendors</span><h2>Vendors do not buy credits</h2></div>
+    <div class="split-2 stagger">
+      <div class="card"><h3>Listing is free</h3><p>Building a listing, clearing the three verification checks, appearing in search and receiving matched briefs all cost nothing. Replying to a brief with a quote costs nothing either &mdash; the credit was spent by whoever sent it.</p></div>
+      <div class="card"><h3>Payment processing &mdash; at cost</h3><p>Deposits and balances are paid in-app. Card payments carry the gateway fee plus VAT on that fee, itemised before anyone confirms; bank transfer is free. Funds are released to the vendor once delivery is confirmed.</p></div>
+    </div>
+    <p class="muted" style="margin-top:22px;font-size:14px">Prices are in Nigerian naira and include VAT where it applies. Vendors are paid in naira to a verified business account.</p>
+  </section>
+
+  <section class="section">
+    <div class="shead reveal"><span class="eyebrow">Compare</span><h2>Every pack, side by side</h2></div>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>Pack</th><th>Price</th><th>Credits</th><th>Per credit</th><th>&asymp; events</th></tr></thead>
+        <tbody>
+          <tr><td>Free on signup</td><td>&#8358;0</td><td>200</td><td>&mdash;</td><td>40</td></tr>
+          <tr><td>Starter</td><td>&#8358;10,000</td><td>500</td><td>&#8358;20.00</td><td>100</td></tr>
+          <tr><td>Professional</td><td>&#8358;45,000</td><td>3,000</td><td>&#8358;15.00</td><td>600</td></tr>
+          <tr><td>Business</td><td>&#8358;90,000</td><td>7,000</td><td>&#8358;12.86</td><td>1,400</td></tr>
+          <tr><td>Volume</td><td>&#8358;180,000</td><td>15,000</td><td>&#8358;12.00</td><td>3,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>Capability</th><th>Starter</th><th>Professional</th><th>Business</th></tr></thead>
+        <tbody>
+          <tr><td>Marketplace search &amp; verified vendors</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Budgets, phases, tasks, bookings</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Client portal &amp; exports</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Team members</td><td>Up to 3</td><td>Unlimited</td><td>Unlimited</td></tr>
+          <tr><td>Saved vendor panel</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Priority placement in matched briefs</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Custom branding on client shares</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Shared balance across several planners</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Per-planner usage reporting</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Named support contact</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&#10003;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="cta">
+    <div class="cta reveal">
+      <h2>Try it on 200 free credits first</h2>
+      <p>That is about 40 events, or one real wedding six times over. No card, nothing to cancel, and the balance does not expire while you decide.</p>
+      <div class="cta-actions">
+        <a class="btn btn-green" href="clients.html">Planning an event <span class="cap">&#8599;</span></a>
+        <a class="btn btn-light" href="planners.html">I am a planner <span class="cap">&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+</div></div>
+
+<footer>
   <div class="wrap">
-    <div class="center" style="max-width:52ch;margin:0 auto 44px">
-      <p class="eyebrow">What costs what</p>
-      <h2>Only actions cost credits</h2>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
+        <p>The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.</p>
+      </div>
+      <div><h4>Marketplace</h4><a href="clients.html">Planning an event</a><a href="planners.html">For planners</a><a href="vendors.html">For vendors</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Company</h4><a href="index.html">Home</a><a href="faq.html">FAQ</a></div>
     </div>
-    <div class="steps" style="grid-template-columns:repeat(4,1fr)">
-      <div class="step r-up" style="counter-increment:none"><h3>5 credits</h3><p>Create an event</p></div>
-      <div class="step r-up" data-delay="0.06" style="counter-increment:none"><h3>5 credits</h3><p>Send a booking request</p></div>
-      <div class="step r-up" data-delay="0.12" style="counter-increment:none"><h3>2 credits</h3><p>Invite a team member</p></div>
-      <div class="step r-up" data-delay="0.18" style="counter-increment:none"><h3>1 credit</h3><p>Export a report</p></div>
-    </div>
-    <p class="center muted mt32" style="font-size:.92rem">Browsing the marketplace, planning, messaging and
-      receiving quotes are free, always.</p>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section band band--white" id="faq">
-  <div class="wrap" style="max-width:860px">
-    <div class="center" style="margin-bottom:40px">
-      <p class="eyebrow">FAQs</p>
-      <h2>Questions, answered</h2>
-    </div>
-    <div class="faq">
-      <div class="faq__item open">
-        <button class="faq__q">What exactly is a credit?<span class="ic">+</span></button>
-        <div class="faq__a" style="max-height:400px"><p>A credit is spent when you do something that costs us money to run —
-          creating an event, sending a booking request, inviting a team member or exporting a report.
-          Browsing, planning, messaging and receiving quotes are always free.</p></div>
-      </div>
-      <div class="faq__item">
-        <button class="faq__q">Do credits expire?<span class="ic">+</span></button>
-        <div class="faq__a"><p>No. Credits stay on your account indefinitely. If you run two events a year,
-          a Starter pack can last you two years.</p></div>
-      </div>
-      <div class="faq__item">
-        <button class="faq__q">Can I use EventPlanna for a single event?<span class="ic">+</span></button>
-        <div class="faq__a"><p>Yes, and plenty of people do. Your 200 free credits cover a full event end to end —
-          creating it, booking several vendors and inviting a couple of helpers.</p></div>
-      </div>
-      <div class="faq__item">
-        <button class="faq__q">How do vendors get verified?<span class="ic">+</span></button>
-        <div class="faq__a"><p>Government ID, business registration (CAC) and proof of address are all checked
-          before a vendor can take a booking. Verification usually completes within two business days.</p></div>
-      </div>
-      <div class="faq__item">
-        <button class="faq__q">Do you charge vendors commission?<span class="ic">+</span></button>
-        <div class="faq__a"><p>Listing is free. A small platform fee is deducted per completed booking, shown on
-          every quote before you accept it, so there are no surprises at payout.</p></div>
-      </div>
-      <div class="faq__item">
-        <button class="faq__q">What happens when I run out of credits?<span class="ic">+</span></button>
-        <div class="faq__a"><p>Nothing is deleted or locked. You keep full access to everything you have already
-          created — you just cannot start new credit-costing actions until you top up.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section band band--ink">
-  <div class="wrap center" style="max-width:52ch">
-    <h2 style="color:#fff">Start with 200 free credits</h2>
-    <p class="lead mt16" style="color:rgba(255,255,255,.72)">No card required. Upgrade whenever you are ready.</p>
-    <div class="row g12 mt32" style="justify-content:center;flex-wrap:wrap">
-      <a class="btn btn--light btn--lg" href="#">Create your account</a>
-      <a class="btn btn--outlineLight btn--lg" href="marketplace.html">Browse first</a>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer__grid">
+    <div class="foot-bot">
       <div>
-        <img src="assets/logo/logo-full-dark.svg" alt="EventPlanna" style="height:30px;width:auto">
-        <p style="margin-top:18px;color:rgba(255,255,255,.62);font-size:.93rem;max-width:34ch">
-          The marketplace and workspace for events in Nigeria. Plan, source, book and pay in one place.</p>
+        <div>EventPlanna &middot; Victoria Island, Lagos, Nigeria &middot; serving 12 cities across Nigeria.</div>
+        <div style="margin-top:6px">&copy; 2026 EventPlanna. All rights reserved.</div>
       </div>
-      <div><h4>Marketplace</h4><ul><li><a href="marketplace.html">Find a planner</a></li><li><a href="marketplace.html">Find a vendor</a></li><li><a href="marketplace.html">Browse by category</a></li><li><a href="marketplace.html">Browse by city</a></li></ul></div>
-      <div><h4>Product</h4><ul><li><a href="index.html#how">How it works</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="vendors.html">For vendors</a></li><li><a href="#">Mobile app</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="#">Blog</a></li><li><a href="pricing.html#faq">FAQs</a></li><li><a href="#">Contact</a></li></ul></div>
-      <div><h4>Stay in the loop</h4>
-        <p style="color:rgba(255,255,255,.62);font-size:.9rem;margin:0">Occasional notes on running better events. No spam.</p>
-        <form class="newsletter" onsubmit="return false"><input type="email" placeholder="you@example.com" aria-label="Email address"><button class="btn btn--primary btn--sm" type="submit">Join</button></form></div>
-    </div>
-    <div class="footer__bottom">
-      <span>&copy; 2026 EventPlanna. All rights reserved.</span>
-      <span style="display:flex;gap:22px"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a></span>
     </div>
   </div>
+  <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="assets/js/site.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>

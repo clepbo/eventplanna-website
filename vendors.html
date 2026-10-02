@@ -3,180 +3,215 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>For Vendors — EventPlanna</title>
-<meta name="description" content="List your business free, receive briefs that match what you actually do, and get paid every two weeks. 2,400+ vendors already on EventPlanna.">
-<link rel="icon" href="assets/logo/logo-icon-light.svg">
+<title>For vendors &mdash; EventPlanna</title>
+<meta name="description" content="List your business free, get verified, and receive briefs filtered to your category, city and availability. Paid out once delivery is confirmed. 2,400+ verified vendors across 12 Nigerian cities.">
+<link rel="icon" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-<link rel="stylesheet" href="assets/css/site.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/components.css">
 </head>
-<body style="background:var(--ink)">
+<body>
 
-<header class="nav">
-  <div class="nav__inner">
-    <a class="nav__logo" href="index.html" aria-label="EventPlanna home">
-      <img class="light-only" src="assets/logo/logo-full-light.svg" alt="EventPlanna">
-      <img class="dark-only" src="assets/logo/logo-full-dark.svg" alt="EventPlanna">
-    </a>
-    <nav class="nav__links" aria-label="Primary">
-      <a href="marketplace.html">Marketplace</a>
-      <a href="index.html#how">How it works</a>
+<div class="progress"><i></i></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>
+    <a class="chip" href="#cta">Start free &#8599;</a>
+    <div class="nav-links">
+      <a href="clients.html">Planning an event</a>
+      <a href="planners.html">Planners</a>
+      <a href="vendors.html" aria-current="page">Vendors</a>
       <a href="pricing.html">Pricing</a>
-      <a href="vendors.html" aria-current="page">For vendors</a>
-      <a href="about.html">About</a>
-    </nav>
-    <div class="nav__actions">
-      <a class="signin" href="#">Sign in</a>
-      <a class="btn btn--primary btn--sm" href="#">List your business</a>
-      <button class="nav__burger" aria-label="Open menu"><span></span></button>
+      <a href="faq.html">FAQ</a>
     </div>
+    <a class="btn btn-dark btn-sm" href="#cta">Start free <span class="cap">&#8599;</span></a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
-</header>
+</nav>
 
-<div class="mobile-menu" role="dialog" aria-label="Menu">
-  <button class="mobile-menu__close" aria-label="Close menu">&times;</button>
-  <a href="marketplace.html">Marketplace</a><a href="index.html#how">How it works</a>
-  <a href="pricing.html">Pricing</a><a href="vendors.html">For vendors</a><a href="about.html">About</a>
-  <a href="#" style="color:var(--brand)">List your business</a>
-</div>
+<div class="wrap"><div class="shell">
 
-<main>
-
-<!-- hero -->
-<section class="band band--ink" data-nav="dark" style="padding:calc(var(--nav-h) + 86px) 0 clamp(70px,9vw,120px);position:relative;overflow:hidden">
-  <div aria-hidden="true" style="position:absolute;top:-180px;right:-140px;width:520px;height:520px;border-radius:999px;background:radial-gradient(circle,rgba(80,71,225,.42),transparent 68%)"></div>
-  <div class="wrap" style="position:relative;z-index:2">
-    <div style="max-width:56ch">
-      <p class="pill-note">Free to list &#183; no monthly fee</p>
-      <h1 class="mt24" style="color:#fff">Get booked by people who are actually ready</h1>
-      <p class="lead mt16" style="color:rgba(255,255,255,.72);max-width:48ch">Briefs come to you filtered by category,
-        city, date and budget — so you stop reading enquiries you were never going to win.</p>
-      <div class="row g12 mt32" style="flex-wrap:wrap">
-        <a class="btn btn--light btn--lg" href="#">List your business</a>
-        <a class="btn btn--outlineLight btn--lg" href="marketplace.html">See the marketplace</a>
-      </div>
-    </div>
-
-    <div class="stats mt48" style="margin-top:68px">
-      <div><div class="stat__n tnum" data-count="2.3" data-pre="&#8358;" data-suf="B+" data-dec="1">&#8358;2.3B+</div><div class="stat__l">Paid out to vendors</div></div>
-      <div><div class="stat__n tnum" data-count="2400" data-suf="+">2,400+</div><div class="stat__l">Vendors listed</div></div>
-      <div><div class="stat__n tnum" data-count="18000" data-suf="+">18,000+</div><div class="stat__l">Events connected</div></div>
-      <div><div class="stat__n tnum" data-count="14" data-suf=" days">14 days</div><div class="stat__l">Payout cycle</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- how it works -->
-<section class="section band band--white">
-  <div class="wrap">
-    <div class="center" style="max-width:52ch;margin:0 auto 48px">
-      <p class="eyebrow">How it works</p>
-      <h2>Four steps to your first booking</h2>
-    </div>
-    <div class="steps" style="grid-template-columns:repeat(4,1fr)">
-      <div class="step r-up"><h3>Create your profile</h3><p>Add packages, photos and the areas you cover. Takes about ten minutes.</p></div>
-      <div class="step r-up" data-delay="0.06"><h3>Get verified</h3><p>Upload ID and your CAC document. Verified vendors rank higher and win more.</p></div>
-      <div class="step r-up" data-delay="0.12"><h3>Receive briefs</h3><p>Matching enquiries arrive with the date, headcount and budget already attached.</p></div>
-      <div class="step r-up" data-delay="0.18"><h3>Get paid</h3><p>Deposits and balances settle into your bank every two weeks. No chasing.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- benefits sticky -->
-<section class="section band band--cream">
-  <div class="wrap sticky-split">
-    <div class="sticky-split__left">
-      <p class="eyebrow">Why list with us</p>
-      <h2>More of the work<br>you actually want</h2>
-      <p class="lead mt24" style="max-width:38ch">EventPlanna is not a directory you get buried in.
-        Briefs are matched, and the planner on the other side is using the same workspace you are.</p>
-      <div class="mt32"><a class="btn btn--primary" href="#">List your business</a></div>
-    </div>
-    <div>
-      <article class="benefit r-up">
-        <div class="benefit__ico" style="background:var(--t-mint)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F9D6E" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
-        <h3>Qualified briefs, not cold leads</h3>
-        <p>Every enquiry arrives with the date, guest count and budget range already filled in. If it is outside your range or you are booked, you never see it.</p>
-      </article>
-      <article class="benefit r-up" data-delay="0.06">
-        <div class="benefit__ico" style="background:var(--t-lilac)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5047E1" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5 3.4 9.1 8 10 4.6-.9 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-        <h3>The verified badge actually means something</h3>
-        <p>Because we check ID, CAC and address before anyone can take a booking, clients stop asking you to prove you are real. Vendors tell us this is the single biggest difference.</p>
-      </article>
-      <article class="benefit r-up" data-delay="0.12">
-        <div class="benefit__ico" style="background:var(--t-cream)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B98900" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M2 10h20"/></svg></div>
-        <h3>Paid on a schedule you can plan around</h3>
-        <p>Deposits and balances clear into your bank every two weeks. You can see exactly what is pending and what has cleared, per booking.</p>
-      </article>
-      <article class="benefit r-up" data-delay="0.18">
-        <div class="benefit__ico" style="background:var(--t-blue)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg></div>
-        <h3>One calendar, no double-bookings</h3>
-        <p>Block out dates once and they are gone from every brief you receive. Your availability is the same thing clients see.</p>
-      </article>
-      <article class="benefit r-up" data-delay="0.24">
-        <div class="benefit__ico" style="background:var(--t-blush)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C2478E" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></div>
-        <h3>Everything stays in one thread</h3>
-        <p>Quotes, revisions, contracts and payment all sit against the booking. No hunting through WhatsApp for what was agreed.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- quote -->
-<section class="section band band--brand">
-  <div class="wrap center" style="max-width:56ch">
-    <div class="quote__stars center" style="justify-content:center;font-size:1.2rem;color:var(--gold)">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-    <p class="mt24" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.3;letter-spacing:-.025em;color:#fff">
-      &ldquo;We went from four bookings a month to fourteen. The verified badge made the difference.&rdquo;</p>
-    <div class="row g12 mt32" style="justify-content:center">
-      <span class="avatar" style="background:rgba(255,255,255,.2);color:#fff">LA</span>
-      <span style="text-align:left;color:#fff"><b style="font-size:.93rem">LensArt Studios</b><br>
-        <small style="color:rgba(255,255,255,.7)">Photography &#183; Lagos</small></span>
-    </div>
-  </div>
-</section>
-
-<!-- cta -->
-<section class="section band band--white">
-  <div class="wrap center" style="max-width:52ch">
-    <p class="eyebrow">Ready when you are</p>
-    <h2>Listing is free. Always has been.</h2>
-    <p class="lead mt16">Set up your profile in about ten minutes. Verification usually completes
-      within two business days, and you can take briefs the moment it clears.</p>
-    <div class="row g12 mt32" style="justify-content:center;flex-wrap:wrap">
-      <a class="btn btn--primary btn--lg" href="#">List your business</a>
-      <a class="btn btn--ghost btn--lg" href="pricing.html">See pricing</a>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer__grid">
+  <header class="phero">
+    <div class="phero-grid">
       <div>
-        <img src="assets/logo/logo-full-dark.svg" alt="EventPlanna" style="height:30px;width:auto">
-        <p style="margin-top:18px;color:rgba(255,255,255,.62);font-size:.93rem;max-width:34ch">
-          The marketplace and workspace for events in Nigeria. Plan, source, book and pay in one place.</p>
+        <span class="eyebrow fade-up">For vendors</span>
+        <h1 class="fade-up d1">Be found by people who are <span class="hl">ready to book</span>.</h1>
+        <p class="lead fade-up d2">Listing is free. Once you are verified, briefs reach you already carrying <b>the date, the city, the headcount and the budget</b> &mdash; filtered to what you actually do and whether you are free. You stop quoting blind, and clients stop asking you to prove you are real.</p>
+        <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#verify">How verification works <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#briefs">What a brief looks like <span class="cap">&#8599;</span></a></div>
       </div>
-      <div><h4>Marketplace</h4><ul><li><a href="marketplace.html">Find a planner</a></li><li><a href="marketplace.html">Find a vendor</a></li><li><a href="marketplace.html">Browse by category</a></li><li><a href="marketplace.html">Browse by city</a></li></ul></div>
-      <div><h4>Product</h4><ul><li><a href="index.html#how">How it works</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="vendors.html">For vendors</a></li><li><a href="#">Mobile app</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="#">Blog</a></li><li><a href="pricing.html#faq">FAQs</a></li><li><a href="#">Contact</a></li></ul></div>
-      <div><h4>Stay in the loop</h4>
-        <p style="color:rgba(255,255,255,.62);font-size:.9rem;margin:0">Occasional notes on running better events. No spam.</p>
-        <form class="newsletter" onsubmit="return false"><input type="email" placeholder="you@example.com" aria-label="Email address"><button class="btn btn--primary btn--sm" type="submit">Join</button></form></div>
+      <div class="fade-up d2"><div class="ui-card chartbox">
+        <div class="ui-head"><div><div class="ui-title">Catering &middot; Lagos</div><div class="ui-sub">Verified &middot; since Mar 2025</div></div><span class="delta up">&#8593; 3 bookings</span></div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Paid out this quarter</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;6.4M">&#8358;0</div><div class="delta up">14 events</div></div>
+          <div class="kpi"><div class="kpi-label">Quote win rate</div><div class="kpi-value" data-count="54%">0%</div><div class="delta up">&#8593; 9 pts</div></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="prow"><span class="nm">Briefs matched</span><span class="track"><i style="--w:100%"></i></span><span class="val">26</span></div>
+          <div class="prow"><span class="nm">You quoted</span><span class="track"><i style="--w:73%"></i></span><span class="val">19</span></div>
+          <div class="prow"><span class="nm">Confirmed</span><span class="track"><i style="--w:54%"></i></span><span class="val">14</span></div>
+        </div>
+        <div class="ui-sub" style="margin-top:12px">Illustrative figures for one verified vendor profile.</div>
+      </div></div>
     </div>
-    <div class="footer__bottom">
-      <span>&copy; 2026 EventPlanna. All rights reserved.</span>
-      <span style="display:flex;gap:22px"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a></span>
+  </header>
+
+  <section class="statement wide">
+    <p data-words data-green="the|badge|has|to|mean|something">Anyone can call themselves a vendor. The badge has to mean something, or it is worth nothing to the people trusting it.</p>
+  </section>
+
+  <section class="section" id="verify">
+    <div class="shead reveal">
+      <span class="eyebrow">Getting listed</span>
+      <h2>Four steps, and the first three are free</h2>
+      <p>Vendors do not buy credits to be found. Credits are spent by whoever creates and runs an event.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-n">1</div><div><h3>Build the listing</h3><p>Category, city, the areas you cover, your price basis &mdash; per guest, per package or per day &mdash; and a real portfolio. The listing is what clients compare you on, so it is worth an hour rather than ten minutes.</p></div></div>
+      <div class="step reveal"><div class="step-n">2</div><div><h3>Get verified</h3><p>Government ID, business registration and proof of address. Nothing goes live and no booking can reach you until all three clear. This is the step that makes a client stop asking for references.</p></div></div>
+      <div class="step reveal"><div class="step-n">3</div><div><h3>Receive briefs you can price</h3><p>A brief arrives with the date, city, headcount and budget range already attached, and only if it matches your category, your area and your availability. Reply with a quote, or decline without it counting against you.</p></div></div>
+      <div class="step reveal"><div class="step-n">4</div><div><h3>Deliver, and get paid out</h3><p>The client pays the deposit in-app to hold the date and the balance before the event. Funds are released to you once delivery is confirmed &mdash; not whenever an invoice eventually surfaces.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="briefs">
+    <div class="feature reveal">
+      <div>
+        <span class="eyebrow">Demand</span>
+        <h3>A brief, not an enquiry</h3>
+        <p>&ldquo;Hi, do you do weddings?&rdquo; costs you twenty minutes and tells you nothing. On EventPlanna the client has already answered the questions you were going to ask, because the platform asked them when the event was created.</p>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Date, city, venue and headcount on the brief itself</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> The budget range for your category, not for the whole event</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Whether a planner or the client directly is running it</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Your availability checked before the brief is ever sent</li>
+        </ul>
+      </div>
+      <div class="feature-media">
+        <div class="ui-card chartbox">
+          <div class="ui-head"><div class="ui-title">Brief &middot; Catering</div><div class="ui-sub">Sent 2 hours ago</div></div>
+          <div class="prow"><span class="nm">Date</span><span class="track"><i style="--w:100%"></i></span><span class="val">12 Dec</span></div>
+          <div class="prow"><span class="nm">Guests</span><span class="track"><i style="--w:80%"></i></span><span class="val">400</span></div>
+          <div class="prow"><span class="nm">Allocated</span><span class="track"><i style="--w:70%"></i></span><span class="val">&#8358;3.4M</span></div>
+          <div class="prow"><span class="nm">Venue</span><span class="track"><i style="--w:100%"></i></span><span class="val">Ikeja</span></div>
+          <div class="rail">
+            <span class="now">Pending your quote</span><span>Accepted</span><span>Confirmed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature flip reveal">
+      <div>
+        <span class="eyebrow">Getting paid</span>
+        <h3>Money that moves when the work does</h3>
+        <p>The deposit holds the date and the balance falls due before the event, both paid in-app against the booking. Every booking shows the gross fee and what reaches you, so there is nothing to reconcile afterwards and no invoice to chase.</p>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Deposit on confirmation, balance before the event</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Released to you once delivery is confirmed</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Gross, fee and net shown on the booking itself</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Every state change timestamped and on the record</li>
+        </ul>
+      </div>
+      <div class="feature-media">
+        <div class="ui-card chartbox">
+          <div class="ui-head"><div class="ui-title">Payouts</div><div class="ui-sub">Last 90 days</div></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-label">Released</div><div class="kpi-value" data-count="&#8358;6.4M">&#8358;0</div><div class="delta up">11 events</div></div>
+            <div class="kpi"><div class="kpi-label">Held for delivery</div><div class="kpi-value" data-count="&#8358;1.9M">&#8358;0</div><div class="delta info">3 upcoming</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="prow"><span class="nm">Deposits in</span><span class="track"><i style="--w:100%"></i></span><span class="val">14</span></div>
+            <div class="prow"><span class="nm">Balances in</span><span class="track"><i style="--w:79%"></i></span><span class="val">11</span></div>
+            <div class="prow"><span class="nm">Disputed</span><span class="track"><i style="--w:0%"></i></span><span class="val">0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="dark" style="padding-block:clamp(40px,6vw,76px)">
+      <div class="shead reveal">
+        <span class="eyebrow">Verification</span>
+        <h2>Three checks, and <span class="mark">all three are required</span></h2>
+        <p>A badge that some vendors have and some do not is a badge nobody reads. Every listed vendor has cleared all three, with no partial state in between.</p>
+      </div>
+      <div class="tiers stagger">
+        <div class="tier t-agg"><h4>Identity</h4><p>Government-issued ID matched to the person who controls the account. A business cannot be transferred to a different operator without re-verifying.</p></div>
+        <div class="tier t-agg"><h4>Business</h4><p>CAC registration checked against the trading name on the listing, so the business a client books is the business that exists on paper.</p></div>
+        <div class="tier t-agg"><h4>Address</h4><p>Proof of the operating address, which is also what lets the platform filter briefs by the areas you genuinely cover rather than the ones you would like to.</p></div>
+      </div>
+      <div class="note reveal">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 9.1 8 10 4.6-.9 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+        Ratings come only from clients who booked and paid through the platform, so a review cannot be bought or left by someone who never hired you.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shead reveal"><span class="eyebrow">The network</span><h2>Where you would sit</h2><p>2,460 verified vendors across seven categories and 12 cities. Category counts are current listings, not registrations.</p></div>
+    <div class="cards dim-grid dim-7 stagger">
+      <div class="card"><h3>Catering</h3><p>548 listings. Full service, small plates and bar, priced per guest or per package.</p></div>
+      <div class="card"><h3>Photography &amp; video</h3><p>462 listings. Stills, video, drone and same-day edits, judged on portfolio.</p></div>
+      <div class="card"><h3>Decor &amp; styling</h3><p>391 listings. Florals, draping, installations and full builds.</p></div>
+      <div class="card"><h3>Venues &amp; marquees</h3><p>344 listings. Capacity, parking and availability shown on the listing.</p></div>
+      <div class="card"><h3>Entertainment</h3><p>352 listings. DJs, bands, MCs and performers, with sound and lighting quoted alongside.</p></div>
+      <div class="card"><h3>Makeup &amp; hair</h3><p>268 listings. Bridal and guest beauty, booked against the run of show.</p></div>
+      <div class="card"><h3>Logistics &amp; transport</h3><p>95 listings. Guest movement, equipment haulage and day-of logistics.</p></div>
+    </div>
+    <div class="stats stagger">
+      <div class="stat"><em>Paid to vendors</em><b data-count="&#8358;2.3B+">&#8358;0</b><span>Through bookings confirmed and delivered on the platform</span></div>
+      <div class="stat"><em>Verified vendors</em><b data-count="2,400+">0</b><span>Every one cleared ID, registration and address</span></div>
+      <div class="stat"><em>Events delivered</em><b data-count="18,000+">0</b><span>Weddings, corporate, birthdays and conferences</span></div>
+      <div class="stat"><em>Average rating</em><b data-count="4.8">0</b><span>Only from clients who booked and paid in-app</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="quote q-flat reveal">
+      <div class="quote-body">
+        <span class="eyebrow">Vendor</span>
+        <blockquote>&ldquo;We went from four bookings a month to fourteen. The verified badge made the difference &mdash; people stopped asking us to prove we were real, and the briefs already had a budget on them, so I stopped quoting into the dark.&rdquo;</blockquote>
+        <p class="quote-by">Photography &middot; Lagos &mdash; illustrative quote, composed from user interviews</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="cta">
+    <div class="cta reveal">
+      <h2>Listing is free. Verification takes a few days.</h2>
+      <p>Build the listing, clear the three checks, and start receiving briefs that already match what you do.</p>
+      <div class="cta-actions">
+        <a class="btn btn-green" href="faq.html">Questions vendors ask <span class="cap">&#8599;</span></a>
+        <a class="btn btn-light" href="planners.html">Planners who source here <span class="cap">&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+</div></div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
+        <p>The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.</p>
+      </div>
+      <div><h4>Marketplace</h4><a href="clients.html">Planning an event</a><a href="planners.html">For planners</a><a href="vendors.html">For vendors</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Company</h4><a href="index.html">Home</a><a href="faq.html">FAQ</a></div>
+    </div>
+    <div class="foot-bot">
+      <div>
+        <div>EventPlanna &middot; Victoria Island, Lagos, Nigeria &middot; serving 12 cities across Nigeria.</div>
+        <div style="margin-top:6px">&copy; 2026 EventPlanna. All rights reserved.</div>
+      </div>
     </div>
   </div>
+  <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="assets/js/site.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>
