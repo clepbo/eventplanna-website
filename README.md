@@ -18,7 +18,8 @@ faq.html          questions, grouped by who is asking
 assets/styles.css home-page sections, the token block, the width system
 assets/components.css inner-page components, loaded after styles.css
 assets/app.js     the motion engine — read its comments before changing it
-docs/             image PROMPTS, design system, decisions, page inventory
+tools/            image generator + the prompt manifest it sends
+docs/             generated image prompts, design system, decisions, page inventory
 assets/img/       photographs go here (optional — see docs/image-prompts.md)
 ```
 
@@ -53,9 +54,24 @@ page before measuring it.
 
 ## Photographs
 
-**→ `docs/image-prompts.md` has ready-to-paste generation prompts for every
-image slot**, with the exact crop, a shared style block, a shared negative
-prompt and the conversion commands. That is the file to use.
+**You do not have to paste prompts one at a time.** There is a generator:
+
+```bash
+pip install pillow
+set GEMINI_API_KEY=your-key        # export GEMINI_API_KEY=... on mac/linux
+python tools/generate-images.py
+```
+
+A key is free at <https://aistudio.google.com/apikey>. It discovers whichever
+image model your key can reach (names change often, so nothing is hardcoded),
+generates every slot that is still missing, crops each result to its exact size
+and writes WebP straight into `assets/img/`. Re-run it any time — it skips
+files that already exist unless you pass `--force`. `--only hero` does just the
+six hero cards; `--dry-run` prints the prompts and sends nothing.
+
+Prompts live in `tools/image-prompts.json`, and `docs/image-prompts.md` is
+**generated from it** (`--write-docs`), so what you read and what gets sent
+cannot drift apart. Paste them by hand from the docs page if you prefer.
 
 The site has ten photo slots and **ships working with none of them filled**.
 A slot is a tinted tile with the photograph layered over it as a CSS background
@@ -79,8 +95,8 @@ why the markup holds three cards per column rather than six.
 Everything else is still DOM — the category mosaic, the testimonial portraits,
 the orbit and all the product mock-ups (`.catile`, `.tavatar`, `.ui-card`).
 Those read better as components than as stock imagery, stay sharp at any width,
-and restyle with the tokens. `docs/image-brief.md` is the art direction behind
-the prompts, for briefing a real photographer.
+and restyle with the tokens. The same prompts work as a brief for a real
+photographer — the style, casting and negative blocks are the art direction.
 
 ## What on this site is real, and what is invented
 

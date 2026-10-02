@@ -54,8 +54,8 @@ vendor cards, the mosaic is category tiles, the split card is the verification
 promise, and the testimonial portraits are initials on a category tint. They
 stay sharp at any width, restyle with the tokens, and nothing can 404.
 
-`docs/image-brief.md` covers what to shoot if photography is added later, and
-which slots it would go into.
+`docs/image-prompts.md` covers what to shoot and which slots it goes into.
+(That earlier decision was later revised — see "Photography, after all".)
 
 ## Visual
 
@@ -212,3 +212,49 @@ really translating and that each column's two halves match.
 `display: block` that stacks them, and the whole footer column ran together on
 one line. `footer a` is already `display:block; width:fit-content` — the sweep
 needed `position:relative` and nothing else.
+
+## Photography direction, second pass
+
+**The first set of prompts read warm, rustic and local.** "Documentary",
+"warm practical light" and "aso-ebi" without any counterweight produced exactly
+the register the brand should not have — the same mistake the template's own
+notes warn about, repeated. Nigerian event clients are not uniformly
+traditional, and the premium end of the market is where this product lives.
+
+The direction is now **contemporary editorial for a luxury events brand**:
+cool-neutral grade with no golden cast, architectural daylight, glass and
+concrete venues in Eko Atlantic and Victoria Island, restrained palettes of
+bone, charcoal and deep green, sculptural florals rather than draped arches,
+fine-dining plating rather than catering trays. The negative prompt now
+explicitly excludes warm grades, rustic settings, ceiling swags,
+gold-and-cream over-decoration and charity framing.
+
+**Casting says what it means.** The cast is affluent, cosmopolitan Lagos and
+Abuja — predominantly Black Nigerian, styled as the professionals and guests
+they are, with modern tailoring and architectural gele treated as equals rather
+than one as "traditional". Mixed-race couples and international guests are
+named explicitly, because Lagos is a destination-wedding city and leaving that
+out of the brief is what produced a narrower set the first time.
+
+## Generating the images
+
+**The prompts are a manifest, not a document.** `tools/image-prompts.json`
+holds them, `tools/generate-images.py` sends them, and `--write-docs`
+regenerates `docs/image-prompts.md` from the same file. Nobody has to keep two
+copies in step, and what the docs show is provably what the model is asked for.
+`docs/image-brief.md` was deleted — it had become a second, drifting account of
+the same thing.
+
+**The model is discovered at run time.** Image model names change every few
+months, so the script asks the API what the key can actually reach, matches it
+against a preference list and takes the best hit. It speaks both request
+shapes — `:generateContent` with `responseModalities` for the Gemini image
+models, `:predict` for Imagen — and falls back through the older
+`generationConfig` shapes on a 400, so an API change degrades to a retry rather
+than a dead script.
+
+**It crops rather than trusting the model's aspect ratio.** The ratio is passed
+as a hint, but every result is cover-cropped to the slot's exact pixel size and
+re-encoded as WebP at quality 82. That half is testable without a key, and it
+is: feeding a square source through all nineteen slots returns nineteen exactly
+correct sizes.

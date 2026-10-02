@@ -1,0 +1,112 @@
+{
+  "_comment": "Single source of truth for the site's photography. tools/generate-images.py reads this to call an image model, and `--write-docs` regenerates docs/image-prompts.md from it, so the prompts in the docs and the prompts that actually get sent can never drift apart.",
+
+  "style": "STYLE: contemporary editorial photography for a luxury events brand. Modern Lagos and Abuja. Architectural daylight with clean practical fill, cool-neutral colour grade with no warm or golden cast, restrained palette of ivory, bone, charcoal and deep green with occasional indigo. Shot on a full-frame camera at 35mm or 50mm, f/2.8. Crisp, high contrast, generous negative space, magazine-standard styling. Candid and working, not posed for the camera. Photorealistic, high detail.",
+
+  "casting": "CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly Black Nigerian, styled as the professionals and guests they are: sharp modern tailoring, architectural gele and aso-ebi alongside contemporary eveningwear. Mixed-race couples and international guests belong in these frames, because Lagos is a destination-wedding city and the imagery should read that way. At ease, in command, well dressed. Never folkloric, never aid-brochure, never styled as 'traditional' for its own sake.",
+
+  "negative": "NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.",
+
+  "images": [
+    {
+      "file": "hero-venue", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, left column - captioned \"Venue · Victoria Island\"",
+      "prompt": "A rooftop event space in Eko Atlantic, Lagos, dressed for a wedding reception and photographed before guests arrive. Floor-to-ceiling glass on two sides with the city skyline beyond. One long communal table in bone linen running the depth of the frame, low sculptural floral runners in white orchid and deep green, bone china, smoked-glass stemware, matte black cutlery, slim transparent chairs. Linear pendant lighting overhead. No swags, no gold, no clutter. Cool late-afternoon daylight. Minimal, architectural, expensive. Nobody in frame. Vertical composition, skyline in the upper third and the nearest table edge sitting above the bottom eighth."
+    },
+    {
+      "file": "hero-catering", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, left column - captioned \"Catering · Lagos\"",
+      "prompt": "A Nigerian chef in a tailored black chef's jacket plating a modern course at a stainless pass in an event venue's back of house. A precise composition on bone china: jollof pressed into a clean quenelle, suya-spiced beef, herb oil, microgreens, placed with tweezers. A second chef works further down the pass, softly out of focus. Cool practical lighting, stainless and concrete surfaces, nothing cluttered. Fine dining, not catering trays. Vertical composition, hands and plate in the upper two thirds."
+    },
+    {
+      "file": "hero-decor", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, left column - captioned \"Decor · Lekki\"",
+      "prompt": "A Nigerian floral designer finishing a sculptural installation in a concrete-and-glass event space. The piece is an architectural suspended form in white orchid, anthurium and deep green foliage, more structure than bouquet. She stands on a low platform in tailored workwear, adjusting a single stem. The room is otherwise bare and bright, daylight flooding in from a wall of windows. Vertical composition, the installation filling the frame with the designer in the upper two thirds."
+    },
+    {
+      "file": "hero-photography", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, right column - captioned \"Photography · Lagos\"",
+      "prompt": "A Nigerian wedding photographer in sharp modern tailoring raising a professional camera to frame a shot inside a minimal concrete-and-glass venue, the dressed reception glowing softly out of focus behind him. Caught mid-work, not posed. Cool daylight, high contrast, clean lines. Vertical composition, photographer and camera in the upper two thirds."
+    },
+    {
+      "file": "hero-entertainment", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, right column - captioned \"Entertainment · Ikeja\"",
+      "prompt": "A DJ behind a lit controller at a contemporary Lagos reception, hands on the mixer, head slightly down. Cool blue and indigo wash from linear uplights, deep shadow, a crowd in cocktail attire and modern eveningwear glowing softly out of focus beyond. Club-standard production, not a hotel function band. Vertical composition, DJ and deck in the upper two thirds."
+    },
+    {
+      "file": "hero-beauty", "w": 1200, "h": 1600, "ratio": "3:4", "tier": 1,
+      "slot": "Hero, right column - captioned \"Makeup & hair · Abuja\"",
+      "prompt": "A Nigerian makeup artist completing editorial bridal makeup. The bride wears a sculptural architectural gele in bone and ivory, skin luminous, the look clean and modern rather than heavy glamour. Soft north-facing window light, a minimal dressing area out of focus behind. Calm, precise, pre-ceremony. Vertical composition, both faces in the upper two thirds."
+    },
+
+    {
+      "file": "door-client", "w": 1600, "h": 1000, "ratio": "16:10", "tier": 2,
+      "slot": "\"Planning an event\" card",
+      "prompt": "A couple in their early thirties at a marble island in a contemporary high-rise apartment in Lagos, planning their wedding on a tablet between them. A Black Nigerian bride-to-be and her white fiance, both in smart-casual weekend clothes, one pointing at the screen and the other leaning in, genuinely absorbed rather than posed. Floor-to-ceiling glass behind them with the city beyond, cool daylight, minimal styling, a single sculptural vase on the counter. Horizontal composition, the pair in the left two thirds with clean space to the right."
+    },
+    {
+      "file": "door-planner", "w": 1600, "h": 1000, "ratio": "16:10", "tier": 2,
+      "slot": "\"Event planners\" card",
+      "prompt": "A Nigerian woman in her thirties, an event planner, standing in a glass-walled venue mid-setup and directing her team. A tablet in one hand, the other gesturing toward a table, in sharp modern tailoring with a slim earpiece. Behind her the room is half-dressed: transparent chairs still stacked, bone linen going onto long tables, a sculptural floral form part-built, a lighting tech on a ladder. Cool daylight through full-height windows. She is unmistakably running the room. Horizontal composition, subject in the left two thirds."
+    },
+    {
+      "file": "door-vendor", "w": 1600, "h": 1000, "ratio": "16:10", "tier": 2,
+      "slot": "\"Vendors\" card",
+      "prompt": "Two Nigerian vendors in clean modern workwear rigging linear lighting and a sound system in a bare concrete-and-glass event space before an evening reception. One is on a ladder adjusting a fixture, the other checks a tablet against the plan. Flight cases and crates staged neatly on the floor. Cool daylight, technical and precise, visibly competent. Horizontal composition, the pair in the left two thirds."
+    },
+
+    {
+      "file": "verified-vendor", "w": 1200, "h": 1500, "ratio": "4:5", "tier": 3,
+      "slot": "The \"Verified / Before listed\" card that slides open on scroll",
+      "prompt": "A Nigerian floral designer in her forties standing in her own studio beside a finished architectural installation, arms relaxed, a composed half-smile, looking just past the camera. Behind her a clean workbench, shears, wire, stems in steel buckets, mood boards pinned to a white wall. A working studio that is clearly a real, established business. Cool daylight from a side window, tailored workwear. Vertical composition, subject centred with the installation filling the upper right."
+    }
+  ],
+
+  "optional": [
+    {
+      "file": "t-client", "w": 1600, "h": 1200, "ratio": "4:3", "tier": 4,
+      "slot": "Testimonial portrait (slot currently shows initials)",
+      "prompt": "Head-and-shoulders portrait of a Nigerian man in his early thirties, photographed outdoors in soft daylight against a softly blurred contemporary Lagos backdrop of glass and concrete. Open collar, no tie, warm genuine expression, looking slightly off camera. Approachable and well dressed."
+    },
+    {
+      "file": "t-planner", "w": 1600, "h": 1200, "ratio": "4:3", "tier": 4,
+      "slot": "Testimonial portrait (slot currently shows initials)",
+      "prompt": "Head-and-shoulders portrait of a Nigerian woman in her late thirties, an event planner, photographed in a glass-walled venue she is working in, the dressed room softly blurred behind her. Sharp modern tailoring, slim earpiece, confident and warm, looking just off camera. Cool daylight."
+    },
+    {
+      "file": "t-vendor", "w": 1600, "h": 1200, "ratio": "4:3", "tier": 4,
+      "slot": "Testimonial portrait (slot currently shows initials)",
+      "prompt": "Head-and-shoulders portrait of a Nigerian man in his thirties, a wedding photographer, standing in a minimal modern venue with a professional camera on a strap, one hand resting on it. Softly blurred event space behind. Modern workwear, quietly confident, looking just off camera."
+    },
+    {
+      "file": "cat-catering", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "Overhead close-up of a modern Nigerian canape course being finished on a dark slate board - suya-spiced skewers, miniature puff puff, herb oil - a hand entering frame with tweezers. Cool practical light, tight square crop, fine dining register."
+    },
+    {
+      "file": "cat-photography", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "A photographer's hands holding a professional camera up to frame a shot, a minimal glass-walled reception soft and bright behind the lens. Tight square crop on the camera and hands, cool grade."
+    },
+    {
+      "file": "cat-decor", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "Close-up of a low sculptural floral runner in white orchid and deep green on a bone linen table, smoked-glass stemware and matte black cutlery softly out of focus behind. Tight square crop, architectural and restrained."
+    },
+    {
+      "file": "cat-venues", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "A modern empty event hall photographed head-on - full-height glass, polished concrete, linear pendant lighting, transparent chairs in neat rows, Lagos skyline beyond. Square crop, symmetrical, cool daylight."
+    },
+    {
+      "file": "cat-entertainment", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "A DJ's hands on a lit controller at a contemporary reception, indigo and blue wash, a crowd glowing out of focus behind. Tight square crop on the hands and the deck."
+    },
+    {
+      "file": "cat-beauty", "w": 1200, "h": 1200, "ratio": "1:1", "tier": 4,
+      "slot": "Category tile (optional - needs a CSS scrim, see the doc)",
+      "prompt": "A makeup artist's hands applying a finishing touch to a bride's face, a sculptural bone-coloured gele just in frame, soft window light, clean modern beauty. Tight square crop."
+    }
+  ]
+}
