@@ -18,7 +18,8 @@ faq.html          questions, grouped by who is asking
 assets/styles.css home-page sections, the token block, the width system
 assets/components.css inner-page components, loaded after styles.css
 assets/app.js     the motion engine — read its comments before changing it
-docs/             design system, decisions, page inventory, image brief
+docs/             image PROMPTS, design system, decisions, page inventory
+assets/img/       photographs go here (optional — see docs/image-prompts.md)
 ```
 
 ## Running it
@@ -50,12 +51,32 @@ that keeps the page height honest. All of it is disabled under
 `prefers-reduced-motion`, which is also how the verification scripts settle the
 page before measuring it.
 
-There are **no photographs**. The hero columns, the category mosaic, the split
-card and the testimonial portraits are built from DOM (`.vtile`, `.catile`,
-`.tavatar`, `.ui-card`). For a marketplace, real listings and real product
-surfaces read better than stock imagery, they stay sharp at any width, they
-restyle with the tokens, and there is nothing to 404. `docs/image-brief.md`
-covers what to shoot if photography is ever added.
+## Photographs
+
+**→ `docs/image-prompts.md` has ready-to-paste generation prompts for every
+image slot**, with the exact crop, a shared style block, a shared negative
+prompt and the conversion commands. That is the file to use.
+
+The site has five photo slots and **ships working with none of them filled**.
+A slot is a tinted tile with the photograph layered over it as a CSS background
+image, never an `<img>`: a missing file leaves the tint showing rather than a
+broken-image icon and a collapsed layout. Drop a correctly-named file into
+`assets/img/` and it appears; delete it and the tint comes back. So the images
+can arrive one at a time and the page is never half-finished.
+
+| Slot | File | Size |
+|---|---|---|
+| Home hero | `hero-venue.webp` | 1600 × 2000 (4:5) |
+| "Planning an event" card | `door-client.webp` | 1600 × 1000 (16:10) |
+| "Event planners" card | `door-planner.webp` | 1600 × 1000 (16:10) |
+| "Vendors" card | `door-vendor.webp` | 1600 × 1000 (16:10) |
+| "Verified / Before listed" | `verified-vendor.webp` | 1200 × 1500 (4:5) |
+
+Everything else is still DOM — the category mosaic, the testimonial portraits,
+the orbit and all the product mock-ups (`.catile`, `.tavatar`, `.ui-card`).
+Those read better as components than as stock imagery, stay sharp at any width,
+and restyle with the tokens. `docs/image-brief.md` is the art direction behind
+the prompts, for briefing a real photographer.
 
 ## What on this site is real, and what is invented
 

@@ -101,3 +101,51 @@ false overflow positives and no injected stylesheet to maintain.
 window-size flag.** Headless lays out roughly 70px wider than the flag asks
 for, so a 420px window produces a 500px layout written into a 420px PNG and the
 right edge looks clipped when it is fine.
+
+## The declutter pass
+
+**The first home page was too crowded — 15 sections and 20 cards.** It read as
+a specification rather than a landing page, and most of the detail already had
+a better home on the audience pages. It is now 10 sections and 6 cards, and the
+page is 7,354px tall at 1400 instead of 11,371px.
+
+The rule used for what stays: **a section earns its place if it moves on its
+own or answers a question someone has in the first thirty seconds.** The
+statement, the ticker, the counters, the split card, the orbit and the carousel
+all animate; the three steps and the three doors answer the two questions
+everyone arrives with ("how does this work" and "which one am I"). Everything
+else was a card grid restating what an inner page says better.
+
+**Cutting the booking funnel was the easy call.** It was the largest invented
+figure on the site, it needed a disclaimer under it, and nothing depended on it.
+
+**The hero became one photograph instead of twelve listing cards.** Two
+scrolling columns of vendor cards is a lot of reading above the fold, and a
+dressed venue says "event" faster than any amount of copy. The two floating
+chips — a verified vendor and a live budget — carry the product idea without a
+paragraph, and they bob gently so the frame is alive without anything moving
+under the cursor.
+
+## Photographs, after all
+
+**The no-photography decision above was reversed for five slots**, on the
+grounds that a marketplace for *events* should show an event. The rest of the
+site is still DOM.
+
+**They are background images, not `<img>` tags.** The deciding factor was the
+missing-file case: an `<img>` with no file shows a broken-image icon and
+collapses its box, while a background image that 404s simply leaves the tint
+showing. That means the site is finished now, with zero images, and finishes
+better as each one arrives — which is what makes "generate them one at a time"
+a workable plan rather than a half-shipped page.
+
+**The path in the markup is `img/NAME.webp`, not `assets/img/NAME.webp`.** A
+`url()` inside a CSS custom property resolves against the stylesheet that
+substitutes it, not the HTML document, and `components.css` lives in `assets/`.
+The first attempt used the document-relative path, silently resolved to
+`assets/assets/img/`, and every slot kept showing its tint with no error
+anywhere on the page. It was caught by reading the computed
+`background-image` in the browser, not by looking at a screenshot — a
+screenshot of this bug is indistinguishable from "the images have not arrived
+yet". The gotcha is now commented at `.ph` in `components.css` and in
+`docs/image-prompts.md`.

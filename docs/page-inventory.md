@@ -5,23 +5,31 @@ so a number can be changed everywhere it appears rather than in one place.
 
 ## index.html — home
 
+Cut back from 15 sections and 20 cards to 10 sections and 6 cards. What
+remains either moves on its own or earns its height.
+
 | # | Section | Built from | Carries |
 |---|---|---|---|
-| 1 | Hero | `.hero-grid`, two `.col` marquees of `.vtile` cards | 2,400+ vendors · 200 free credits · no subscription |
-| 2 | Mission statement | `.statement` + `data-words` | — |
+| 1 | Hero | `.hero-shot` photo slot + two `.hfloat` chips, both animated | ₦1,600,000 · 53% · 2,400+ · 200 free credits |
+| 2 | Mission statement | `.statement` + `data-words` scroll highlight | — |
 | 3 | Category ticker | `.ticker-track` marquee | six categories |
-| 4 | What you can book | `.cards.dim-grid.dim-7`, 7 cards | 548 / 462 / 391 / 352 listing counts |
-| 5 | How credits work | `.cards.pay-grid`, 4 cards + `.cost` | 5 · 5 · 2 · 1 · 200 free |
-| 6 | What sits behind a booking | `.cards.cap-grid`, 6 cards | — |
-| 7 | Three ways in | `.cards`, 3 linked cards | — |
-| 8 | Verified / Before listed | `.big` + `.split` with a `.vtile` | ID · CAC · address |
-| 9 | Our Benefits | four `.brow` rows | — |
-| 10 | One view of the event | `.duo` + `.cluster` of `.cl` cards | ₦1,600,000 · 53% · 24 of 45 · 23 days |
-| 11 | Every vendor, one workspace | `.duo` + `.orbit` with `.sat` icons | — |
-| 12 | Booking funnel | `.duo-wide` + `figure.funnel` | 1,000 → 880 → 740 → 620 → 580 · 62% |
-| 13 | Trusted By People | `.tcar` carousel, 3 `.tslide` + `.tavatar` | — |
-| 14 | Pricing Plans | `.plans`, 2 of the 4 packs | ₦10,000/500 · ₦45,000/3,000 |
-| 15 | Final CTA + mosaic | `.duo-36` + `.mosaic` of `.catile` | the six category counts again |
+| 4 | Stat strip | `.stats`, 4 `.stat` with `data-count` | 2,400+ · 18,000+ · ₦2.3B+ · 12 |
+| 5 | How it works | `.steps`, 3 `.step` | — |
+| 6 | Three ways in | `.cards`, 3 linked cards with photo slots | — |
+| 7 | Verified / Before listed | `.big` + `.split` photo slot, slides open on scroll | ID · CAC · address |
+| 8 | Every vendor, one workspace | `.duo` + `.orbit` with counter-rotating `.sat` rings | — |
+| 9 | Trusted By People | `.tcar` carousel, 3 `.tslide` + `.tavatar` | — |
+| 10 | CTA + mosaic | `.duo-36` + `.mosaic` of `.catile` | 548 / 462 / 391 / 344 / 352 / 268 |
+
+**Cut in the declutter pass**, and where the content went: the 7-card category
+grid (the ticker, the orbit and the mosaic all still name the categories); the
+4-card credits grid (pricing.html, and the CTA still says 200 free credits);
+the 6-card workspace grid (planners.html carries it); the four `.brow` benefit
+rows (folded into the three door cards and the verified split); the booking
+funnel (it was the site's largest invented figure, so cutting it was free); and
+the 2-card pricing teaser (the orbit section now links straight to pricing).
+
+Page height at 1400px went from 11,371px to 7,354px.
 
 ## clients.html — planning an event
 

@@ -232,12 +232,15 @@ td.yes { color: var(--green); font-weight: 600; } td.no { color: var(--grey); }
 .vtile .vt-star{font-size:11px;color:var(--grey)}
 
 /* tinted grounds for the tiles, mirroring the product's category tints */
-.t-lilac{background:linear-gradient(140deg,#eeedfb,#d7d3f5)}
-.t-blush{background:linear-gradient(140deg,#fceef5,#f5d4e6)}
-.t-mint {background:linear-gradient(140deg,#eaf7f1,#cbeadc)}
-.t-blue {background:linear-gradient(140deg,#eaf2fe,#cadff9)}
-.t-cream{background:linear-gradient(140deg,#fdf6e7,#f6e4bc)}
-.t-grey {background:linear-gradient(140deg,#f1f2f7,#dcdfea)}
+/* Category tints are declared as a custom property so a photo slot can stack a
+   photograph ON TOP of the tint rather than replacing it. See .ph below. */
+.t-lilac{--tint:linear-gradient(140deg,#eeedfb,#d7d3f5)}
+.t-blush{--tint:linear-gradient(140deg,#fceef5,#f5d4e6)}
+.t-mint {--tint:linear-gradient(140deg,#eaf7f1,#cbeadc)}
+.t-blue {--tint:linear-gradient(140deg,#eaf2fe,#cadff9)}
+.t-cream{--tint:linear-gradient(140deg,#fdf6e7,#f6e4bc)}
+.t-grey {--tint:linear-gradient(140deg,#f1f2f7,#dcdfea)}
+.t-lilac,.t-blush,.t-mint,.t-blue,.t-cream,.t-grey{background-image:var(--tint)}
 
 /* category tile - replaces the photo mosaic */
 .catile{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
@@ -282,3 +285,75 @@ td.yes { color: var(--green); font-weight: 600; } td.no { color: var(--grey); }
    the taller crop read as composition. These tiles are flat colour, so the same
    stagger just reads as a misaligned card. Keep them square. */
 .mosaic .pcard:nth-child(3) { aspect-ratio: 1; }
+
+/* ============================================================
+   PHOTO SLOTS
+   A slot is a tinted tile with the photograph layered over it as a background
+   image, never an <img>. The reason is the missing-file case: an <img> whose
+   src has not arrived yet shows a broken-image icon and collapses the layout,
+   while a background-image that 404s simply leaves the tint showing. So the
+   page is finished before the photography exists, and finishes better after.
+
+   Point a slot at a file with --img and nothing else changes:
+     <div class="card-photo"><i class="ph t-lilac"
+          style="--img:url(img/door-client.webp)"></i></div>
+
+   MIND THE PATH. A url() inside a custom property is resolved against the
+   STYLESHEET that substitutes it, not against the HTML document - so from
+   index.html you still write img/NAME.webp, because this file lives in
+   assets/. Writing assets/img/NAME.webp silently resolves to
+   assets/assets/img/NAME.webp and the slot just keeps showing its tint.
+
+   docs/image-prompts.md lists every slot, its crop and its prompt.
+   ============================================================ */
+.ph { background-image: var(--img, none), var(--tint, linear-gradient(140deg,#eeedfb,#d7d3f5));
+      background-size: cover; background-position: center; background-repeat: no-repeat; }
+
+/* The card photo band on the three audience cards. The inner .ph scales on
+   hover exactly as the template's <img> did, and .card-photo does the clipping. */
+.card-photo .ph { display: block; width: 100%; height: 100%;
+                  transition: transform .8s var(--ease); }
+a.card:hover .card-photo .ph { transform: scale(1.05); }
+
+/* ---------- hero: one photograph, two floating chips ----------
+   The template's hero was two scrolling columns of cards, which is a lot of
+   reading above the fold. One venue shot says "event" faster than twelve
+   listings do, and the chips carry the product idea without a paragraph. */
+.hero-shot { display: block; position: relative; overflow: visible;
+             -webkit-mask-image: none; mask-image: none; }
+.hero-shot .shot { position: absolute; inset: 0; border-radius: var(--r-xl);
+                   overflow: hidden; box-shadow: var(--shadow-lg); }
+/* A slow drift, so the frame is alive without anything moving under the cursor. */
+.hero-shot .shot::before { content: ""; position: absolute; inset: -4%;
+  background-image: inherit; background-size: cover; background-position: center;
+  animation: drift 26s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: scale(1) translate3d(0,0,0); }
+                   to   { transform: scale(1.07) translate3d(-1.5%,-1%,0); } }
+
+.hfloat { position: absolute; z-index: 2; background: rgba(255,255,255,.95);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.7); border-radius: 15px; padding: 11px 14px;
+  box-shadow: 0 20px 44px rgba(20,22,58,.2); animation: bob 7s ease-in-out infinite; }
+.hfloat b { display: block; font-size: 13.5px; font-weight: 600; letter-spacing: -.01em; }
+.hfloat small { display: block; font-size: 11px; color: var(--grey); margin-top: 2px; }
+.hfloat.a { left: -20px; top: 14%; display: flex; gap: 10px; align-items: center; }
+.hfloat.a i { flex: none; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--green-100); display: grid; place-items: center; }
+.hfloat.b { right: -16px; bottom: 12%; min-width: 162px; animation-delay: -3.5s; }
+.hfloat.b b { font-size: 21px; margin-top: 3px; }
+.hfloat .bar { display: block; height: 6px; border-radius: 99px;
+  background: var(--border); margin-top: 9px; overflow: hidden; }
+.hfloat .bar i { display: block; width: 53%; height: 100%; border-radius: 99px;
+  background: var(--green); }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+
+@media (max-width:1000px) {
+  .hero-shot { height: min(58vh, 460px); }
+  .hfloat.a { left: 12px; }
+  .hfloat.b { right: 12px; }
+}
+@media (max-width:620px) {
+  .hfloat { padding: 9px 12px; border-radius: 13px; }
+  .hfloat.b { min-width: 140px; }
+  .hfloat.b b { font-size: 18px; }
+}
