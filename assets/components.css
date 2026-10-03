@@ -304,6 +304,12 @@ td.yes { color: var(--green); font-weight: 600; } td.no { color: var(--grey); }
    assets/. Writing assets/img/NAME.webp silently resolves to
    assets/assets/img/NAME.webp and the slot just keeps showing its tint.
 
+   The ?v=2 on each URL is a one-time repair, not a convention. Vercel attached
+   a 7-day Cache-Control to these paths while they were still 404ing, so every
+   browser that visited first cached "not found" for a week. Only a different
+   URL clears that. The header now revalidates, so new images do not need a
+   bump - but do not strip the existing ?v=2 or those caches come back.
+
    docs/image-prompts.md lists every slot, its crop and its prompt.
    ============================================================ */
 .ph { background-image: var(--img, none), var(--tint, linear-gradient(140deg,#eeedfb,#d7d3f5));

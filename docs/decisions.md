@@ -342,3 +342,52 @@ orphaned `</div>` behind, which is trap 10 in this repo's own notes, written by
 me. The div-balance check caught it immediately — 103 open against 106 closed.
 The check exists precisely because the mistake is so easy to repeat, and it has
 now earned its place twice.
+
+## The images were cached as 404s
+
+The user reported most images missing. Every headless check said the page was
+fine, which it was — in a *fresh* browser. The difference was their cache.
+
+**Vercel applies a headers rule by path, regardless of status.** The
+`public, max-age=604800` I put on `/assets/img/` yesterday — while fixing the
+*previous* caching bug — was therefore attached to the 404s those URLs returned
+all day, before any image existed. Every visit told the browser to remember
+"not found" for seven days. Deploying the real files cannot undo that; the
+response is already in the cache, keyed by URL.
+
+So yesterday's fix created today's bug, in the same place, for the mirror-image
+reason. The lesson generalises: **a long cache on a path that does not exist yet
+is a landmine**, because the 404 is as cacheable as the eventual 200.
+
+The repair is the same shape as last time, and both halves are required:
+
+1. **Every `/assets/*` response now revalidates.** No asset in this project
+   carries a content hash, so no long cache is a promise we can keep. A
+   conditional request returning a bodyless 304 is the honest cost.
+2. **The nineteen image URLs carry `?v=2`.** Changing a header does nothing for
+   a cache already holding a 404. Only a different URL does. This is a one-time
+   repair, not a convention — with `must-revalidate` in place, future images do
+   not need a bump. The reason is commented at `.ph` so nobody tidies the
+   suffix away and reintroduces it.
+
+## Three measurement mistakes, worth recording together
+
+Chasing this produced a string of wrong readings, all of the same family:
+**believing a tool over the thing it measures.**
+
+1. **A plain `captureScreenshot` can drop compositor-promoted layers.** `.col`
+   carries `will-change: transform`, and full-viewport captures intermittently
+   rasterised only its gradient, not the decoded bitmap. That produced a
+   screenshot of a "broken" hero that was never broken.
+2. **Every visual check ran under emulated `prefers-reduced-motion`**, which
+   makes `app.js` skip the fixed, transformed smooth-scroll wrapper. That is
+   *not* the path a real browser takes, so the rendering mode real users get had
+   never once been screenshotted. It is now a mode the audit script can run.
+3. **`scrollIntoView` does nothing in smooth mode** — the content is in a
+   `position: fixed` wrapper, so there is no document offset to scroll to. An
+   audit built on it silently measured the same viewport twenty-five times and
+   reported fourteen "missing" images that were simply never scrolled to.
+
+The through-line: when a tool and the evidence disagree, suspect the tool, but
+*prove* which one is wrong rather than picking the comfortable answer. The
+proof here was mundane — `curl -I` on a URL that did not exist.
