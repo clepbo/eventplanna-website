@@ -352,6 +352,9 @@ def main():
     ap.add_argument("--force", action="store_true", help="regenerate files that already exist")
     ap.add_argument("--quality", type=int, default=82)
     ap.add_argument("--delay", type=float, default=3.0, help="seconds between calls")
+    ap.add_argument("--import", dest="import_dir", metavar="DIR",
+                    help="skip the API: crop and encode images already on disk in DIR, "
+                         "matched to slots by filename")
     ap.add_argument("--list-models", action="store_true")
     ap.add_argument("--write-docs", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
@@ -362,6 +365,46 @@ def main():
 
     if args.write_docs:
         write_docs(cfg)
+        return
+
+    if args.import_dir:
+        try:
+            from PIL import Image  # noqa: F401
+        except ImportError:
+            raise SystemExit("Pillow is needed for the crop and the WebP encode:\n  pip install pillow")
+        if not os.path.isdir(OUTDIR):
+            os.makedirs(OUTDIR)
+        items = list(cfg["images"]) + list(cfg["optional"])
+        if args.only:
+            items = [i for i in items if args.only in i["file"]]
+        exts = (".jpeg", ".jpg", ".png", ".webp", ".JPEG", ".JPG", ".PNG", ".WEBP")
+        done = missing = 0
+        total = 0
+        print("importing from %s\n" % args.import_dir)
+        for im in items:
+            src = None
+            for e in exts:
+                cand = os.path.join(args.import_dir, im["file"] + e)
+                if os.path.exists(cand):
+                    src = cand
+                    break
+            if not src:
+                print("  %-20s no source file found" % im["file"])
+                missing += 1
+                continue
+            out = os.path.join(OUTDIR, im["file"] + ".webp")
+            if os.path.exists(out) and not args.force:
+                print("  %-20s exists, skipping" % im["file"])
+                continue
+            with open(src, "rb") as f:
+                raw = f.read()
+            size = save_webp(raw, out, im["w"], im["h"], args.quality)
+            total += size
+            print("  %-20s %-22s %5d KB -> %4dx%-5d %4d KB"
+                  % (im["file"], os.path.basename(src), len(raw) // 1024,
+                     im["w"], im["h"], size // 1024))
+            done += 1
+        print("\n%d imported, %d without a source   %d KB total" % (done, missing, total // 1024))
         return
 
     if args.list_models:

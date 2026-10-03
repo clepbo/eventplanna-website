@@ -48,7 +48,7 @@ other and have to look like one set. A caption pill covers the
 bottom ~12% of each card, so keep the subject in the upper two
 thirds.
 
-## `assets/img/hero-venue.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-venue.webp` — 700 × 933 px (3:4)
 
 *Hero, left column - captioned "Venue · Victoria Island"*
 
@@ -62,7 +62,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/hero-catering.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-catering.webp` — 700 × 933 px (3:4)
 
 *Hero, left column - captioned "Catering · Lagos"*
 
@@ -76,7 +76,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/hero-decor.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-decor.webp` — 700 × 933 px (3:4)
 
 *Hero, left column - captioned "Decor · Lekki"*
 
@@ -90,7 +90,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/hero-photography.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-photography.webp` — 700 × 933 px (3:4)
 
 *Hero, right column - captioned "Photography · Lagos"*
 
@@ -104,7 +104,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/hero-entertainment.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-entertainment.webp` — 700 × 933 px (3:4)
 
 *Hero, right column - captioned "Entertainment · Ikeja"*
 
@@ -118,7 +118,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/hero-beauty.webp` — 1200 × 1600 px (3:4)
+## `assets/img/hero-beauty.webp` — 700 × 933 px (3:4)
 
 *Hero, right column - captioned "Makeup & hair · Abuja"*
 
@@ -134,7 +134,7 @@ NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village
 
 # Tier 2 — the three audience cards
 
-## `assets/img/door-client.webp` — 1600 × 1000 px (16:10)
+## `assets/img/door-client.webp` — 960 × 600 px (16:10)
 
 *"Planning an event" card*
 
@@ -148,7 +148,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/door-planner.webp` — 1600 × 1000 px (16:10)
+## `assets/img/door-planner.webp` — 960 × 600 px (16:10)
 
 *"Event planners" card*
 
@@ -162,7 +162,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/door-vendor.webp` — 1600 × 1000 px (16:10)
+## `assets/img/door-vendor.webp` — 960 × 600 px (16:10)
 
 *"Vendors" card*
 
@@ -178,7 +178,7 @@ NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village
 
 # Tier 3 — the verification card
 
-## `assets/img/verified-vendor.webp` — 1200 × 1500 px (4:5)
+## `assets/img/verified-vendor.webp` — 680 × 850 px (4:5)
 
 *The "Verified / Before listed" card that slides open on scroll*
 
@@ -198,7 +198,7 @@ The testimonial slots show initials on a tint today, which looks
 deliberate. The category tiles show an icon and a count. Both
 work as they are; these are here if you want photographs later.
 
-## `assets/img/t-client.webp` — 1600 × 1200 px (4:3)
+## `assets/img/t-client.webp` — 1400 × 1050 px (4:3)
 
 *Testimonial portrait (slot currently shows initials)*
 
@@ -212,7 +212,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/t-planner.webp` — 1600 × 1200 px (4:3)
+## `assets/img/t-planner.webp` — 1400 × 1050 px (4:3)
 
 *Testimonial portrait (slot currently shows initials)*
 
@@ -226,7 +226,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/t-vendor.webp` — 1600 × 1200 px (4:3)
+## `assets/img/t-vendor.webp` — 1400 × 1050 px (4:3)
 
 *Testimonial portrait (slot currently shows initials)*
 
@@ -240,7 +240,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-catering.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-catering.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 
@@ -254,7 +254,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-photography.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-photography.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 
@@ -268,7 +268,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-decor.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-decor.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 
@@ -282,7 +282,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-venues.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-venues.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 
@@ -296,7 +296,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-entertainment.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-entertainment.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 
@@ -310,7 +310,7 @@ CASTING: contemporary Lagos and Abuja, affluent and cosmopolitan. Predominantly 
 NEGATIVE: warm or golden colour grade, orange-and-teal, sepia, rustic or village setting, thatched or palm-frond decor, plastic chairs, dated hotel ballroom, gold-and-cream over-decoration, ceiling swags, balloon arch, confetti explosion, champagne tower, tribal-print cliche, poverty or charity framing, stock-photo handshake, generic open-plan office, seamless studio background, heavy bokeh, lens flare, visible brand logos, text, signage, watermark, AI-smooth plastic skin, extra fingers, deformed hands, duplicated faces, low resolution, oversaturated.
 ```
 
-## `assets/img/cat-beauty.webp` — 1200 × 1200 px (1:1)
+## `assets/img/cat-beauty.webp` — 540 × 540 px (1:1)
 
 *Category tile (optional - needs a CSS scrim, see the doc)*
 

@@ -306,3 +306,39 @@ that no control characters exist anywhere in the file.
 Both the quota handling and the model fallback were found by running the thing
 against a real key. The failure path is now thoroughly exercised; the success
 path still has not run once.
+
+## The photographs arrived
+
+Nineteen images, uploaded to `assets/website images/` in the repo, matching the
+rewritten direction: cool grade, glass and concrete, sculptural florals, Eko
+Atlantic skyline, and the mixed-race couple the brief asked for on the client
+card. No generation needed in the end.
+
+**The tool grew an `--import` mode rather than a second script.** The crop and
+encode half was already written and tested; only the source changed. One
+manifest, one set of sizes, one place that knows what each slot needs.
+
+**The delivery sizes were measured, not guessed.** The first spec said 1200 ×
+1600 for a hero card because that felt safe. The card actually renders at
+337 × 450 CSS px at *any* viewport — `--max` caps the layout at 1720px, so
+1920 is the worst case — which makes 700 × 933 a genuine 2× for retina and
+everything beyond that waste. Across nineteen slots that is the difference
+between about 2.5 MB and 1,032 KB. `renders_at` in the manifest records the box
+each size came from, so the next person can tell a measurement from a guess.
+
+**The nine tier-4 slots got wired.** Testimonial portraits replaced the initials
+tiles, and the six category tiles took photographs, which needed a scrim and
+white type — dark-on-tint is unreadable over a picture. `.catile` needed
+`z-index: 1` to sit above the scrim, because `::after` generates as the last
+child and would otherwise paint over it.
+
+**The originals stay in the repo but out of the deploy.** 55 MB of source JPEG
+is worth keeping — re-cropping later needs them — but there is no reason to
+serve it, so `.vercelignore` excludes the folder.
+
+**And the regex trap caught me a third time.** Replacing the `.tavatar` blocks
+with a non-greedy `.*?</div></div>` stopped one closer short and left three
+orphaned `</div>` behind, which is trap 10 in this repo's own notes, written by
+me. The div-balance check caught it immediately — 103 open against 106 closed.
+The check exists precisely because the mistake is so easy to repeat, and it has
+now earned its place twice.

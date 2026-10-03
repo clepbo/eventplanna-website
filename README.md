@@ -77,29 +77,37 @@ Prompts live in `tools/image-prompts.json`, and `docs/image-prompts.md` is
 **generated from it** (`--write-docs`), so what you read and what gets sent
 cannot drift apart. Paste them by hand from the docs page if you prefer.
 
-The site has ten photo slots and **ships working with none of them filled**.
-A slot is a tinted tile with the photograph layered over it as a CSS background
-image, never an `<img>`: a missing file leaves the tint showing rather than a
-broken-image icon and a collapsed layout. Drop a correctly-named file into
-`assets/img/` and it appears; delete it and the tint comes back. So the images
-can arrive one at a time and the page is never half-finished.
+The site has **nineteen photo slots, all filled**. Originals live in
+`assets/website images/` (excluded from the deploy by `.vercelignore`); the
+derivatives the site actually serves are in `assets/img/`.
 
-| Slot | File | Size |
+```bash
+python tools/generate-images.py --import "assets/website images"
+```
+
+That crops each source to its slot's exact size and writes WebP. **55 MB of
+JPEG became 1,032 KB of WebP** across all nineteen.
+
+Sizes are the measured CSS render box × 2 for retina, taken at a 1920 viewport —
+the worst case, because `--max` caps the layout at 1720px so nothing renders
+larger however wide the screen. `renders_at` in the manifest records the box
+each one came from; re-measure if a slot's layout changes.
+
+| Slot | Files | Delivered |
 |---|---|---|
-| Hero, six scrolling cards | `hero-venue` `hero-catering` `hero-decor` `hero-photography` `hero-entertainment` `hero-beauty` `.webp` | 1200 × 1600 (3:4) |
-| "Planning an event" card | `door-client.webp` | 1600 × 1000 (16:10) |
-| "Event planners" card | `door-planner.webp` | 1600 × 1000 (16:10) |
-| "Vendors" card | `door-vendor.webp` | 1600 × 1000 (16:10) |
-| "Verified / Before listed" | `verified-vendor.webp` | 1200 × 1500 (4:5) |
+| Hero, six scrolling cards | `hero-venue` `hero-catering` `hero-decor` `hero-photography` `hero-entertainment` `hero-beauty` | 700 × 933 |
+| Three audience cards | `door-client` `door-planner` `door-vendor` | 960 × 600 |
+| "Verified / Before listed" | `verified-vendor` | 680 × 850 |
+| Testimonial portraits | `t-client` `t-planner` `t-vendor` | 1400 × 1050 |
+| Category mosaic | `cat-catering` `cat-photography` `cat-decor` `cat-venues` `cat-entertainment` `cat-beauty` | 540 × 540 |
 
-The hero is two columns scrolling in opposite directions; `app.js` duplicates
-each column's contents at runtime so the loop joins without a jump, which is
-why the markup holds three cards per column rather than six.
+A slot is still a tinted tile with the photograph layered over it as a CSS
+background image rather than an `<img>`, so deleting a file falls back to the
+tint instead of breaking the layout.
 
-Everything else is still DOM — the category mosaic, the testimonial portraits,
-the orbit and all the product mock-ups (`.catile`, `.tavatar`, `.ui-card`).
-Those read better as components than as stock imagery, stay sharp at any width,
-and restyle with the tokens. The same prompts work as a brief for a real
+Still DOM, deliberately: the orbit and every product mock-up (`.ui-card`,
+`.kpi`, `.prow`). A screenshot of a dashboard goes stale and blurs; these stay
+sharp, restyle with the tokens and can be edited later. The same prompts work as a brief for a real
 photographer — the style, casting and negative blocks are the art direction.
 
 ## What on this site is real, and what is invented

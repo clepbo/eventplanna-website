@@ -470,3 +470,15 @@ footer .foot-grid a:not(.logo):hover::after { transform: scaleX(1); }
   .cta::before { animation: none !important; }
   .col.up, .col.down { animation: none !important; }
 }
+
+/* ---------- category tiles carrying a photograph ----------
+   The flat-tint version puts dark text straight on the tint. Over a photograph
+   that is unreadable, so a slot with --img set gets a scrim and white type.
+   .catile is already position:absolute; the z-index lifts it above ::after,
+   which as a generated last child would otherwise paint over it. */
+.mosaic .pcard.ph::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(0deg, rgba(20,22,58,.84) 0%, rgba(20,22,58,.3) 46%, rgba(20,22,58,0) 72%); }
+.mosaic .pcard.ph .catile { z-index: 1; }
+.mosaic .pcard.ph .catile b { color: #fff; }
+.mosaic .pcard.ph .catile span { color: rgba(255,255,255,.82); }
+.mosaic .pcard.ph .ci { background: rgba(255,255,255,.9); }
