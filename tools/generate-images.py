@@ -159,17 +159,29 @@ def generate(key, model, methods, prompt, ratio):
 
 
 class QuotaExhausted(Exception):
-    """A per-DAY free-tier quota. No amount of retrying inside a run fixes it,
-    so the run stops instead of burning the remaining images on backoff."""
-    def __init__(self, msg, retry_after=None, per_model=False):
+    """A free-tier quota that retrying inside a run cannot fix.
+
+    Two different situations arrive as the same 429, and the difference
+    decides what to tell the user:
+
+      limit > 0  the day's allowance is spent and resets at midnight Pacific
+      limit = 0  the project has NO free image quota. Image output on the
+                 Gemini API is a paid feature on most projects, so this is the
+                 common case, and "wait for the reset" is useless advice -
+                 0 resets to 0. Only billing fixes it.
+
+    The limit only appears in the prose message, not in the structured
+    violations, so it has to be read out of the text."""
+    def __init__(self, msg, retry_after=None, per_model=False, zero_limit=False):
         Exception.__init__(self, msg)
         self.retry_after = retry_after
         self.per_model = per_model
+        self.zero_limit = zero_limit
 
 
 def _read_error(e):
     """Pull quotaIds and the server's own retryDelay out of a 429 body."""
-    raw, quota_ids, retry_after = "", set(), None
+    raw, quota_ids, retry_after, zero = "", set(), None, False
     try:
         raw = e.read().decode("utf-8", "replace")
         j = json.loads(raw)
@@ -183,9 +195,11 @@ def _read_error(e):
                 if m:
                     retry_after = float(m.group(1))
         raw = err.get("message", raw)
+        # "... limit: 0, model: gemini-2.5-flash-preview-image"
+        zero = bool(re.search('limit:[ ]*0(?![0-9])', raw))
     except Exception:
         pass
-    return raw[:200], quota_ids, retry_after
+    return raw[:300], quota_ids, retry_after, zero
 
 
 def with_retry(fn, tries=4, label=""):
@@ -193,16 +207,17 @@ def with_retry(fn, tries=4, label=""):
         try:
             return fn()
         except urllib.error.HTTPError as e:
-            body, quota_ids, retry_after = _read_error(e)
+            body, quota_ids, retry_after, zero = _read_error(e)
             if e.code == 429:
                 per_day = any("PerDay" in q for q in quota_ids)
                 # A per-minute burst clears on its own; a per-day allowance does
                 # not, and the server tells us which by how long it wants us to
                 # wait. Anything over two minutes is a day quota in practice.
-                if per_day or (retry_after or 0) > 120:
+                if zero or per_day or (retry_after or 0) > 120:
                     raise QuotaExhausted(
                         body, retry_after,
-                        per_model=any("PerModel" in q for q in quota_ids))
+                        per_model=any("PerModel" in q for q in quota_ids),
+                        zero_limit=zero)
                 wait = retry_after if retry_after else (2 ** i) * 5 + random.random() * 3
                 if i < tries - 1:
                     print("      rate limited, waiting %.0fs" % wait)
@@ -456,23 +471,39 @@ def main():
     if stopped:
         secs = stopped.retry_after or 0
         print("")
-        print("-" * 68)
-        print("STOPPED: the daily free-tier image quota is spent on every model")
-        print("this key can reach. Retrying will not help today.")
-        if secs:
-            hrs, mins = int(secs // 3600), int((secs % 3600) // 60)
-            when = time.strftime("%H:%M on %a %d %b", time.localtime(time.time() + secs))
+        print("-" * 70)
+        if stopped.zero_limit:
+            print("STOPPED: this project has NO free-tier image quota (limit: 0).")
             print("")
-            print("The server asks for %dh %dm - quota resets around %s your time." % (hrs, mins, when))
+            print("Image output on the Gemini API is a paid feature on most")
+            print("projects. The daily reset will not help - 0 resets to 0.")
+            print("")
+            print("Two ways forward:")
+            print("  1. Enable billing on the Google Cloud project behind this key,")
+            print("     then re-run. Image generation is a few cents each, so the")
+            print("     ten wired slots cost well under a dollar.")
+            print("     https://aistudio.google.com/apikey -> the project -> billing")
+            print("  2. Use a key from a project that already has billing on:")
+            print("     python tools/generate-images.py --key OTHER_KEY")
+        else:
+            print("STOPPED: the daily free-tier image allowance is spent on every")
+            print("model this key can reach. Retrying will not help today.")
+            if secs:
+                hrs, mins = int(secs // 3600), int((secs % 3600) // 60)
+                when = time.strftime("%H:%M on %a %d %b", time.localtime(time.time() + secs))
+                print("")
+                print("The server asks for %dh %dm - resets around %s your time." % (hrs, mins, when))
+            print("")
+            print("  1. Wait for the reset and re-run. Finished files are skipped,")
+            print("     so it picks up exactly where it stopped.")
+            print("  2. Enable billing to lift the cap; ten images costs cents.")
+            print("  3. Use a key from a different project:  --key OTHER_KEY")
         print("")
-        print("Three ways forward:")
-        print("  1. Wait for the reset and re-run. Finished files are skipped,")
-        print("     so it picks up exactly where it stopped.")
-        print("  2. Enable billing on the Google Cloud project behind this key.")
-        print("     That lifts the free-tier daily cap; ten images costs cents.")
-        print("  3. Use a key from a different project with unspent quota:")
-        print("     python tools/generate-images.py --key OTHER_KEY")
-        print("-" * 68)
+        print("The full server message:")
+        for line in str(stopped).split("* "):
+            if line.strip():
+                print("  " + line.strip()[:110])
+        print("-" * 70)
         sys.exit(2)
 
     if failed:

@@ -281,6 +281,27 @@ script keeps the whole discovered model list as a fallback queue and walks down
 it as each runs dry, instead of picking one model up front and giving up with
 five unused models still available.
 
-Both were found by running it, not by reading the docs. The failure path is now
-the only part of this script that has actually been exercised end to end — the
-success path still has not, because the quota has not reset.
+**Then the reset came and nothing changed**, because the quota was never
+"spent" — it is zero. The prose half of the 429 says
+`limit: 0, model: gemini-2.5-flash-preview-image`, on every image model the key
+can reach. Image output on the Gemini API is a paid feature on most projects,
+so the daily reset takes 0 back to 0 and waiting is useless advice. The
+structured `violations[]` do not carry the limit; only the message text does,
+which is why two runs went by before anyone looked at it.
+
+The script now reads that number and says which of the two situations it is in:
+an allowance that resets tonight, or a project with no image quota at all where
+only billing helps.
+
+**The fix to that fix had a bug of its own worth recording.** The detection
+regex was written as `r"limit:\s*0"` through a heredoc into a Python patch
+script into the file, and `` arrived as a literal 0x08 backspace byte. The
+pattern then never matched, so the script confidently reported the *wrong* one
+of the two diagnoses — the failure mode of a silent regex is not an error, it
+is a plausible wrong answer. Caught with `grep | cat -A`, and the pattern is now
+written with no backslash escapes at all (`limit:[ ]*0(?![0-9])`), with a check
+that no control characters exist anywhere in the file.
+
+Both the quota handling and the model fallback were found by running the thing
+against a real key. The failure path is now thoroughly exercised; the success
+path still has not run once.
