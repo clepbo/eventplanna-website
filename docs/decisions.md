@@ -294,8 +294,9 @@ an allowance that resets tonight, or a project with no image quota at all where
 only billing helps.
 
 **The fix to that fix had a bug of its own worth recording.** The detection
-regex was written as `r"limit:\s*0"` through a heredoc into a Python patch
-script into the file, and `` arrived as a literal 0x08 backspace byte. The
+regex ended in a word-boundary escape and was written through a heredoc, into a
+Python patch script, into the file. Each layer un-escaped it once, and the
+two-character escape arrived as a single literal 0x08 backspace byte. The
 pattern then never matched, so the script confidently reported the *wrong* one
 of the two diagnoses — the failure mode of a silent regex is not an error, it
 is a plausible wrong answer. Caught with `grep | cat -A`, and the pattern is now
