@@ -3,14 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FAQ &mdash; EventPlanna</title>
-<meta name="description" content="How the marketplace, the workspace and credits work &mdash; answered for clients, planners and vendors.">
+<title>FAQ | EventPlanna</title>
+<meta name="description" content="How the marketplace, the workspace and credits work, answered for clients and planners.">
 <link rel="icon" href="assets/favicon.svg">
+<script>(function(){try{var t=localStorage.getItem('ep-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.eventplanna.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=2">
-<link rel="stylesheet" href="assets/components.css?v=2">
+<link rel="stylesheet" href="assets/styles.css?v=4">
+<link rel="stylesheet" href="assets/components.css?v=4">
 </head>
 <body>
 
@@ -18,15 +20,20 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>
+    <a class="logo" href="index.html"><img class="l-light" src="assets/logo-dark.svg" alt="EventPlanna"><img class="l-dark" src="assets/logo-light.svg" alt="EventPlanna"></a>
     <a class="chip" href="#cta">Start free &#8599;</a>
     <div class="nav-links">
-      <a href="clients.html">Planning an event</a>
-      <a href="planners.html">Planners</a>
-      <a href="vendors.html">Vendors</a>
+      <a href="marketplace.html">Find a planner</a>
+      <a href="planners.html">For planners</a>
       <a href="pricing.html">Pricing</a>
+      <a href="blog.html">Blog</a>
+      <a href="events.html">Events</a>
       <a href="faq.html" aria-current="page">FAQ</a>
     </div>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="t-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="t-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
+    </button>
     <a class="btn btn-dark btn-sm" href="#cta">Start free <span class="cap">&#8599;</span></a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
@@ -47,7 +54,7 @@
     <div class="faq reveal">
       <div class="faq-item">
         <button class="faq-q" type="button">Do I need to hire a planner to use EventPlanna?<i></i></button>
-        <div class="faq-a"><p>No. Plenty of people run their own event here and book vendors directly. The workspace is the same either way &mdash; budget, phases, tasks and bookings. If you do hire a planner, you both work from the same event rather than emailing versions of a spreadsheet.</p></div>
+        <div class="faq-a"><p>No. Plenty of people run their own event here and book vendors directly. The workspace is the same either way: budget, phases, tasks and bookings. If you do hire a planner, you both work from the same event rather than emailing versions of a spreadsheet.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">What does it cost me?<i></i></button>
@@ -58,20 +65,20 @@
         <div class="faq-a"><p>Yes. Searching, reading portfolios and price ranges, checking ratings and messaging a vendor before you commit all cost nothing. A credit is only spent when you create an event or send a formal booking request.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" type="button">How do I know a vendor is real?<i></i></button>
-        <div class="faq-a"><p>Every listed vendor has cleared government ID, business registration and proof of address before they can take a single booking. All three are required &mdash; there is no partially verified state. Ratings come only from clients who booked and paid through the platform.</p></div>
+        <button class="faq-q" type="button">How do I know a planner is real?<i></i></button>
+        <div class="faq-a"><p>Every listed planner was reviewed by a person before going live, with their portfolio, price range and the cities they cover all checked. All three are required. There is no partially approved state. Ratings come only from clients who booked and paid through the platform.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">When is my money actually committed?<i></i></button>
         <div class="faq-a"><p>A quote becomes Accepted when you agree the price, and Confirmed when the deposit clears. Until the deposit clears, the date is not held. The balance falls due before the event, and funds reach the vendor once delivery is confirmed.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" type="button">What happens if a vendor cancels?<i></i></button>
-        <div class="faq-a"><p>The booking moves to Cancelled, the date is released, and anything you have paid against it is reversed through the same route it came in. Because the brief is already on the platform, you can send it to the next available vendor in that category without rewriting it.</p></div>
+        <button class="faq-q" type="button">What happens if a planner cancels?<i></i></button>
+        <div class="faq-a"><p>The booking moves to Cancelled, the date is released, and anything you have paid against it is reversed through the same route it came in. Because the brief is already on the platform, you can send it to the next available planner without rewriting it.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Which cities do you cover?<i></i></button>
-        <div class="faq-a"><p>Twelve across Nigeria, including Lagos, Abuja, Port Harcourt, Ibadan, Kano and Enugu. Vendor search is filtered by the areas a vendor has genuinely verified they cover, not the ones they would like to.</p></div>
+        <div class="faq-a"><p>Twelve across Nigeria, including Lagos, Abuja, Port Harcourt, Ibadan, Kano and Enugu. Search is filtered by the areas a planner has confirmed they cover, not the ones they would like to.</p></div>
       </div>
     </div>
   </section>
@@ -81,7 +88,7 @@
     <div class="faq reveal">
       <div class="faq-item">
         <button class="faq-q" type="button">Can I keep using my own vendors?<i></i></button>
-        <div class="faq-a"><p>Yes, and most planners do. Save your trusted vendors as a panel and book from it first. The marketplace is there for the night a caterer you always use is already booked &mdash; filtered by category, city, price band and availability on your actual date.</p></div>
+        <div class="faq-a"><p>Yes, and most planners do. Save your trusted vendors as a panel and book from it first. The marketplace is there for the night a caterer you always use is already booked. Briefs are filtered by city, price band and availability on your actual date.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Will the client see what I pay my vendors?<i></i></button>
@@ -93,11 +100,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">How many credits does a real event use?<i></i></button>
-        <div class="faq-a"><p>A 400-guest wedding with four vendors booked, two coordinators invited and two client exports comes to 31 credits &mdash; 5 to create, 20 for the requests, 4 for the invites, 2 for the exports. At the Starter rate that is &#8358;620 for the whole event.</p></div>
+        <div class="faq-a"><p>A 400-guest wedding with four vendors booked, two coordinators invited and two client exports comes to 31 credits: 5 to create, 20 for the requests, 4 for the invites and 2 for the exports. At the Starter rate that is &#8358;620 for the whole event.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">What can my coordinators and assistants see?<i></i></button>
-        <div class="faq-a"><p>Managers see everything on the events they own, including money. Coordinators run delivery on their assigned events &mdash; tasks, timeline, vendor contact &mdash; without budget figures or vendor pricing. Assistants work a single event's task list and see nothing about money or other clients.</p></div>
+        <div class="faq-a"><p>Managers see everything on the events they own, including money. Coordinators run delivery on their assigned events, covering tasks, timeline and supplier contact, without budget figures or supplier pricing. Assistants work a single event's task list and see nothing about money or other clients.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Do I pay for each team member every month?<i></i></button>
@@ -112,38 +119,38 @@
 
   <section class="section" style="padding-top:20px">
     <div class="dark" style="padding-block:clamp(40px,6vw,72px)">
-      <div class="shead reveal"><span class="eyebrow">If you are a vendor</span><h2>Listing, verification and getting paid</h2></div>
+      <div class="shead reveal"><span class="eyebrow">If you want to be listed</span><h2>Applying, approval and getting found</h2></div>
     <div class="faq reveal">
       <div class="faq-item">
-        <button class="faq-q" type="button">What does it cost a vendor to be listed?<i></i></button>
-        <div class="faq-a"><p>Nothing. Building a listing, clearing verification, appearing in search, receiving matched briefs and replying with a quote are all free. The credit was spent by whoever created the event and sent the request.</p></div>
+        <button class="faq-q" type="button">What does it cost a planner to be listed?<i></i></button>
+        <div class="faq-a"><p>Nothing. Applying, being reviewed, appearing in the directory and receiving briefs are all free. Replying to a brief costs nothing either, because the credit was spent by whoever sent it.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" type="button">What does verification involve?<i></i></button>
-        <div class="faq-a"><p>Three checks, all required: a government-issued ID matched to the person controlling the account, CAC registration checked against the trading name on the listing, and proof of your operating address. Nothing goes live until all three clear.</p></div>
+        <button class="faq-q" type="button">How does approval work?<i></i></button>
+        <div class="faq-a"><p>You apply with a portfolio, a price range and the cities you cover. A person reviews it in the admin portal. Nothing is listed automatically and there is no way to pay for a place, which is the only reason the badge means anything to the client reading it.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" type="button">Why does the address matter?<i></i></button>
-        <div class="faq-a"><p>It is what lets the platform filter briefs by the areas you genuinely cover. Without it you would receive briefs for events you cannot reach, and clients would receive quotes from vendors who cannot actually get there.</p></div>
+        <button class="faq-q" type="button">Why do you ask which areas I cover?<i></i></button>
+        <div class="faq-a"><p>So briefs reach the right people. Without it you would get enquiries for events you cannot reach, and clients would get quotes from planners who cannot get there.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">How do briefs reach me?<i></i></button>
-        <div class="faq-a"><p>Only if they match your category, your covered areas and your availability on that date. A brief arrives already carrying the date, the city, the venue, the headcount and the budget allocated to your category, so you can price it without a discovery call.</p></div>
+        <div class="faq-a"><p>Only if they match your event types, your areas and your availability on that date. A brief arrives already carrying the date, the city, the headcount and the budget, so you can price it without a discovery call.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Does declining a brief count against me?<i></i></button>
-        <div class="faq-a"><p>No. Declining is recorded on the booking as Declined and nothing else happens. There is no visible accept rate and no ranking penalty for turning down work that is not right for you.</p></div>
+        <div class="faq-a"><p>No. It is recorded on the booking as Declined and nothing else happens. There is no visible accept rate and no ranking penalty for turning down work that is not right for you.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">When do I get paid?<i></i></button>
-        <div class="faq-a"><p>The client pays a deposit in-app to hold the date and the balance before the event. Funds are released to your verified business account once delivery is confirmed, rather than whenever an invoice eventually surfaces. Gross, fee and net are all shown on the booking itself.</p></div>
+        <div class="faq-a"><p>The client pays a deposit in the app to hold the date and the balance before the event. Funds are released to your verified business account once delivery is confirmed, rather than whenever an invoice eventually surfaces. Gross, fee and net are all shown on the booking.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Can a review be left by someone who never hired me?<i></i></button>
         <div class="faq-a"><p>No. Ratings come only from clients who booked and paid through the platform, tied to a completed booking. A review cannot be bought and cannot be left by a browser.</p></div>
       </div>
     </div>
-    </div>
+</div>
   </section>
 
   <section class="section">
@@ -167,11 +174,11 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Who can see my event?<i></i></button>
-        <div class="faq-a"><p>The people you invited and nobody else. A client sees only what the portal shows. Vendors see the brief for their own category, their own booking and the messages on it &mdash; never your full budget, your other vendors' prices or your other events.</p></div>
+        <div class="faq-a"><p>The people you invited and nobody else. A client sees only what the portal shows. A planner sees the brief for their own booking and the messages on it, never your full budget, your other vendors' prices or your other events.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">Is there an app?<i></i></button>
-        <div class="faq-a"><p>EventPlanna runs in the browser on desktop and on mobile, and the mobile experience is built for the parts of the job that happen standing up &mdash; checking a task, approving a quote, messaging a vendor on site.</p></div>
+        <div class="faq-a"><p>EventPlanna runs in the browser on desktop and on mobile, and the mobile experience is built for the parts of the job that happen standing up: checking a task, approving a quote, messaging someone on site.</p></div>
       </div>
     </div>
   </section>
@@ -179,7 +186,7 @@
   <section class="section" id="cta">
     <div class="cta reveal">
       <h2>Still have a question?</h2>
-      <p>Start with 200 free credits and see how it fits the way you already work &mdash; there is nothing to cancel.</p>
+      <p>Start with 200 free credits and see how it fits the way you already work. There is nothing to cancel.</p>
       <div class="cta-actions">
         <a class="btn btn-green" href="pricing.html">See pricing <span class="cap">&#8599;</span></a>
         <a class="btn btn-light" href="index.html">Back to the overview <span class="cap">&#8599;</span></a>
@@ -193,10 +200,10 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
-        <p>The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.</p>
+        <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
       </div>
-      <div><h4>Marketplace</h4><a href="clients.html">Planning an event</a><a href="planners.html">For planners</a><a href="vendors.html">For vendors</a><a href="pricing.html">Pricing</a></div>
-      <div><h4>Company</h4><a href="index.html">Home</a><a href="faq.html">FAQ</a></div>
+      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Company</h4><a href="index.html">Home</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
     </div>
     <div class="foot-bot">
       <div>
@@ -208,6 +215,7 @@
   <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="assets/app.js?v=2"></script>
+<script src="assets/app.js?v=4"></script>
+<script src="assets/data.js?v=4"></script>
 </body>
 </html>

@@ -1,0 +1,181 @@
+# -*- coding: utf-8 -*-
+"""Bring pricing.html and faq.html in line with the review.
+
+These two were not regenerated, so the vendor language and the em dashes are
+edited out explicitly. Every replacement is asserted: a miss is reported rather
+than silently skipped, because a silent miss leaves the old copy in place and
+looks like success.
+
+The dashes inside the comparison table are left alone. A dash in a table cell
+is a typographic "not included" marker, not prose.
+"""
+import io, os, re, glob, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(ROOT)
+
+EDITS = {
+ 'pricing.html': [
+  ("Pricing &mdash; EventPlanna", "Pricing | EventPlanna"),
+  ("Create the event: 5. Four booking requests &mdash; venue, catering, photography, decor: 20.",
+   "Create the event: 5. Four booking requests, covering venue, catering, photography and decor: 20."),
+  ("<h2>Vendors do not buy credits</h2>", "<h2>Planners do not pay to be listed</h2>"),
+  ('<span class="eyebrow">Vendors</span>', '<span class="eyebrow">Planners</span>'),
+  ("Building a listing, clearing the three verification checks, appearing in search and receiving matched briefs all cost nothing. Replying to a brief with a quote costs nothing either &mdash; the credit was spent by whoever sent it.",
+   "Applying, being reviewed, appearing in the directory and receiving briefs all cost nothing. Replying to a brief with a quote costs nothing either, because the credit was spent by whoever sent it."),
+  ("<h3>Payment processing &mdash; at cost</h3>", "<h3>Payment processing, at cost</h3>"),
+  ("Funds are released to the vendor once delivery is confirmed.",
+   "Funds are released once delivery is confirmed."),
+  ("Vendors are paid in naira to a verified business account.",
+   "Planners are paid in naira to a verified business account."),
+  ("Verified vendors in all 7 categories", "Access to every approved planner"),
+  ("Marketplace search &amp; verified vendors", "Marketplace search and approved planners"),
+  ("Saved vendor panel", "Saved planner shortlist"),
+  ('href="clients.html"', 'href="marketplace.html"'),
+ ],
+ 'faq.html': [
+  ("FAQ &mdash; EventPlanna", "FAQ | EventPlanna"),
+  ("How the marketplace, the workspace and credits work &mdash; answered for clients, planners and vendors.",
+   "How the marketplace, the workspace and credits work, answered for clients and planners."),
+  ("The workspace is the same either way &mdash; budget, phases, tasks and bookings.",
+   "The workspace is the same either way: budget, phases, tasks and bookings."),
+  ("All three are required &mdash; there is no partially verified state.",
+   "All three are required. There is no partially approved state."),
+  ("comes to 31 credits &mdash; 5 to create, 20 for the requests, 4 for the invites, 2 for the exports.",
+   "comes to 31 credits: 5 to create, 20 for the requests, 4 for the invites and 2 for the exports."),
+  ("a caterer you always use is already booked &mdash; filtered by category, city, price band and availability on your actual date.",
+   "a caterer you always use is already booked. Briefs are filtered by city, price band and availability on your actual date."),
+  ("Coordinators run delivery on their assigned events &mdash; tasks, timeline, vendor contact &mdash; without budget figures or vendor pricing.",
+   "Coordinators run delivery on their assigned events, covering tasks, timeline and supplier contact, without budget figures or supplier pricing."),
+  ("their own category, their own booking and the messages on it &mdash; never your full budget",
+   "their own booking and the messages on it, never your full budget"),
+  ("built for the parts of the job that happen standing up &mdash; checking a task, approving a quote, messaging a vendor on site.",
+   "built for the parts of the job that happen standing up: checking a task, approving a quote, messaging someone on site."),
+  ("see how it fits the way you already work &mdash; there is nothing to cancel.",
+   "see how it fits the way you already work. There is nothing to cancel."),
+  ("How do I know a vendor is real?", "How do I know a planner is real?"),
+  ("Every listed vendor has cleared government ID, business registration and proof of address before they can take a single booking.",
+   "Every listed planner was reviewed by a person before going live, with their portfolio, price range and the cities they cover all checked."),
+  ("What happens if a vendor cancels?", "What happens if a planner cancels?"),
+  ("you can send it to the next available vendor in that category without rewriting it.",
+   "you can send it to the next available planner without rewriting it."),
+  ("Vendor search is filtered by the areas a vendor has genuinely verified they cover, not the ones they would like to.",
+   "Search is filtered by the areas a planner has confirmed they cover, not the ones they would like to."),
+  ("Vendors see the brief for their own booking and the messages on it,",
+   "A planner sees the brief for their own booking and the messages on it,"),
+ ],
+}
+
+# the vendor-facing FAQ group, replaced with one addressed to planners
+OLD_GROUP_START = '      <div class="shead reveal"><span class="eyebrow">If you are a vendor</span>'
+NEW_GROUP = '''      <div class="shead reveal"><span class="eyebrow">If you want to be listed</span><h2>Applying, approval and getting found</h2></div>
+    <div class="faq reveal">
+      <div class="faq-item">
+        <button class="faq-q" type="button">What does it cost a planner to be listed?<i></i></button>
+        <div class="faq-a"><p>Nothing. Applying, being reviewed, appearing in the directory and receiving briefs are all free. Replying to a brief costs nothing either, because the credit was spent by whoever sent it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How does approval work?<i></i></button>
+        <div class="faq-a"><p>You apply with a portfolio, a price range and the cities you cover. A person reviews it in the admin portal. Nothing is listed automatically and there is no way to pay for a place, which is the only reason the badge means anything to the client reading it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Why do you ask which areas I cover?<i></i></button>
+        <div class="faq-a"><p>So briefs reach the right people. Without it you would get enquiries for events you cannot reach, and clients would get quotes from planners who cannot get there.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How do briefs reach me?<i></i></button>
+        <div class="faq-a"><p>Only if they match your event types, your areas and your availability on that date. A brief arrives already carrying the date, the city, the headcount and the budget, so you can price it without a discovery call.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does declining a brief count against me?<i></i></button>
+        <div class="faq-a"><p>No. It is recorded on the booking as Declined and nothing else happens. There is no visible accept rate and no ranking penalty for turning down work that is not right for you.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">When do I get paid?<i></i></button>
+        <div class="faq-a"><p>The client pays a deposit in the app to hold the date and the balance before the event. Funds are released to your verified business account once delivery is confirmed, rather than whenever an invoice eventually surfaces. Gross, fee and net are all shown on the booking.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Can a review be left by someone who never hired me?<i></i></button>
+        <div class="faq-a"><p>No. Ratings come only from clients who booked and paid through the platform, tied to a completed booking. A review cannot be bought and cannot be left by a browser.</p></div>
+      </div>
+    </div>
+'''
+
+misses = 0
+for f, pairs in EDITS.items():
+    s = io.open(f, encoding='utf-8').read()
+    hit = 0
+    for a, b in pairs:
+        if a in s:
+            s = s.replace(a, b); hit += 1
+        else:
+            misses += 1
+            print("  MISS in %s: %s" % (f, a[:70]))
+    io.open(f, 'w', encoding='utf-8').write(s)
+    print("%-14s %d of %d replacements applied" % (f, hit, len(pairs)))
+
+s = io.open('faq.html', encoding='utf-8').read()
+if OLD_GROUP_START in s:
+    i = s.index(OLD_GROUP_START)
+    j = s.index('</div>\n  </section>', i)
+    io.open('faq.html', 'w', encoding='utf-8').write(s[:i] + NEW_GROUP + s[j:])
+    print("faq.html      vendor group replaced with a planner listing group")
+else:
+    misses += 1
+    print("  MISS: faq vendor group")
+
+# shared chrome on the two pages that were not regenerated
+for f in ('pricing.html', 'faq.html'):
+    s = io.open(f, encoding='utf-8').read()
+    o = s
+    s = s.replace("The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.",
+                  "Find a planner who has been checked and approved, then run the whole event with them in one place.")
+    s = s.replace('<link rel="icon" href="assets/favicon.svg">\n',
+                  '<link rel="icon" href="assets/favicon.svg">\n'
+                  "<script>(function(){try{var t=localStorage.getItem('ep-theme');"
+                  "if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}"
+                  "catch(e){}})();</script>\n", 1)
+    s = s.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+                  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+                  '<link rel="preconnect" href="https://api.eventplanna.com">', 1)
+    s = s.replace('<a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>',
+                  '<a class="logo" href="index.html"><img class="l-light" src="assets/logo-dark.svg" alt="EventPlanna">'
+                  '<img class="l-dark" src="assets/logo-light.svg" alt="EventPlanna"></a>')
+    s = re.sub(r'(    <a class="btn btn-dark btn-sm")',
+      '''    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="t-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="t-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
+    </button>
+\\1''', s, count=1)
+    # nav + footer links, and the asset version
+    s = re.sub(r'(<div class="nav-links">\n).*?(    </div>)',
+               lambda m: m.group(1) + "".join(
+                   '      <a href="%s"%s>%s</a>\n' % (h, ' aria-current="page"' if h == f else '', t)
+                   for h, t in [("marketplace.html", "Find a planner"), ("planners.html", "For planners"),
+                                ("pricing.html", "Pricing"), ("blog.html", "Blog"),
+                                ("events.html", "Events"), ("faq.html", "FAQ")]) + m.group(2),
+               s, flags=re.S)
+    s = re.sub(r'      <div><h4>Marketplace</h4>.*?<h4>Company</h4>(?:<a[^>]*>[^<]*</a>)*</div>',
+      '      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>\n'
+      '      <div><h4>Company</h4><a href="index.html">Home</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>',
+      s, flags=re.S)
+    s = re.sub(r'(styles|components)\.css\?v=\d+', r'\1.css?v=4', s)
+    s = re.sub(r'app\.js\?v=\d+', 'app.js?v=4', s)
+    s = s.replace('styles.css"', 'styles.css?v=4"').replace('components.css"', 'components.css?v=4"')
+    s = s.replace('app.js"', 'app.js?v=4"')
+    if 'data.js' not in s:
+        s = re.sub(r'(<script src="assets/app\.js\?v=4"></script>)',
+                   r'\1\n<script src="assets/data.js?v=4"></script>', s, count=1)
+    if s != o:
+        io.open(f, 'w', encoding='utf-8').write(s)
+        print("%-14s chrome updated" % f)
+
+# page titles anywhere that still use an em dash separator
+for f in sorted(glob.glob('*.html')):
+    s = io.open(f, encoding='utf-8').read()
+    n = re.sub(r'(<title>[^<]*?) &mdash; (EventPlanna</title>)', r'\1 | \2', s)
+    if n != s:
+        io.open(f, 'w', encoding='utf-8').write(n)
+        print("%-14s title separator" % f)
+
+sys.exit(1 if misses else 0)

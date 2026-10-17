@@ -3,14 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricing &mdash; EventPlanna</title>
+<title>Pricing | EventPlanna</title>
 <meta name="description" content="No subscription. Buy credits once and spend them on four actions. Packs from &#8358;10,000 for 500 credits, 200 free on signup, and credits never expire.">
 <link rel="icon" href="assets/favicon.svg">
+<script>(function(){try{var t=localStorage.getItem('ep-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.eventplanna.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=2">
-<link rel="stylesheet" href="assets/components.css?v=2">
+<link rel="stylesheet" href="assets/styles.css?v=4">
+<link rel="stylesheet" href="assets/components.css?v=4">
 </head>
 <body>
 
@@ -18,15 +20,20 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>
+    <a class="logo" href="index.html"><img class="l-light" src="assets/logo-dark.svg" alt="EventPlanna"><img class="l-dark" src="assets/logo-light.svg" alt="EventPlanna"></a>
     <a class="chip" href="#cta">Start free &#8599;</a>
     <div class="nav-links">
-      <a href="clients.html">Planning an event</a>
-      <a href="planners.html">Planners</a>
-      <a href="vendors.html">Vendors</a>
+      <a href="marketplace.html">Find a planner</a>
+      <a href="planners.html">For planners</a>
       <a href="pricing.html" aria-current="page">Pricing</a>
+      <a href="blog.html">Blog</a>
+      <a href="events.html">Events</a>
       <a href="faq.html">FAQ</a>
     </div>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="t-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="t-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M4.2 4.2l1.9 1.9M17.9 17.9l1.9 1.9M2 12h2.6M19.4 12H22M4.2 19.8l1.9-1.9M17.9 6.1l1.9-1.9"/></svg>
+    </button>
     <a class="btn btn-dark btn-sm" href="#cta">Start free <span class="cap">&#8599;</span></a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
@@ -48,7 +55,7 @@
         <a class="btn btn-light" href="#how-credits">What a credit buys <span class="cap">&#8599;</span></a>
         <ul class="ticks">
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Full marketplace access and search</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Verified vendors in all 7 categories</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Access to every approved planner</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Budgets, phases, tasks and bookings</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Up to 3 team members</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Client portal and exports</li>
@@ -64,7 +71,7 @@
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Unlimited team members</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Priority placement in matched briefs</li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Custom branding on client shares</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Saved vendor panel</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Saved planner shortlist</li>
         </ul>
       </div>
       <div class="plan">
@@ -102,7 +109,7 @@
     <div class="split-2 stagger">
       <div class="card">
         <h3>31 credits, end to end</h3>
-        <p>Create the event: 5. Four booking requests &mdash; venue, catering, photography, decor: 20. Two team invites: 4. Two client exports: 2. That is 31 credits for the whole event.</p>
+        <p>Create the event: 5. Four booking requests, covering venue, catering, photography and decor: 20. Two team invites: 4. Two client exports: 2. That is 31 credits for the whole event.</p>
         <div class="rail">
           <span class="done">5 create</span><span class="done">20 requests</span><span class="done">4 invites</span><span class="done">2 exports</span><span class="now">31 total</span>
         </div>
@@ -123,12 +130,12 @@
   </section>
 
   <section class="section">
-    <div class="shead reveal"><span class="eyebrow">Vendors</span><h2>Vendors do not buy credits</h2></div>
+    <div class="shead reveal"><span class="eyebrow">Planners</span><h2>Planners do not pay to be listed</h2></div>
     <div class="split-2 stagger">
-      <div class="card"><h3>Listing is free</h3><p>Building a listing, clearing the three verification checks, appearing in search and receiving matched briefs all cost nothing. Replying to a brief with a quote costs nothing either &mdash; the credit was spent by whoever sent it.</p></div>
-      <div class="card"><h3>Payment processing &mdash; at cost</h3><p>Deposits and balances are paid in-app. Card payments carry the gateway fee plus VAT on that fee, itemised before anyone confirms; bank transfer is free. Funds are released to the vendor once delivery is confirmed.</p></div>
+      <div class="card"><h3>Listing is free</h3><p>Applying, being reviewed, appearing in the directory and receiving briefs all cost nothing. Replying to a brief with a quote costs nothing either, because the credit was spent by whoever sent it.</p></div>
+      <div class="card"><h3>Payment processing, at cost</h3><p>Deposits and balances are paid in-app. Card payments carry the gateway fee plus VAT on that fee, itemised before anyone confirms; bank transfer is free. Funds are released once delivery is confirmed.</p></div>
     </div>
-    <p class="muted" style="margin-top:22px;font-size:14px">Prices are in Nigerian naira and include VAT where it applies. Vendors are paid in naira to a verified business account.</p>
+    <p class="muted" style="margin-top:22px;font-size:14px">Prices are in Nigerian naira and include VAT where it applies. Planners are paid in naira to a verified business account.</p>
   </section>
 
   <section class="section">
@@ -149,11 +156,11 @@
       <table>
         <thead><tr><th>Capability</th><th>Starter</th><th>Professional</th><th>Business</th></tr></thead>
         <tbody>
-          <tr><td>Marketplace search &amp; verified vendors</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Marketplace search and approved planners</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Budgets, phases, tasks, bookings</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Client portal &amp; exports</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Team members</td><td>Up to 3</td><td>Unlimited</td><td>Unlimited</td></tr>
-          <tr><td>Saved vendor panel</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
+          <tr><td>Saved planner shortlist</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Priority placement in matched briefs</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Custom branding on client shares</td><td class="no">&mdash;</td><td class="yes">&#10003;</td><td class="yes">&#10003;</td></tr>
           <tr><td>Shared balance across several planners</td><td class="no">&mdash;</td><td class="no">&mdash;</td><td class="yes">&#10003;</td></tr>
@@ -169,7 +176,7 @@
       <h2>Try it on 200 free credits first</h2>
       <p>That is about 40 events, or one real wedding six times over. No card, nothing to cancel, and the balance does not expire while you decide.</p>
       <div class="cta-actions">
-        <a class="btn btn-green" href="clients.html">Planning an event <span class="cap">&#8599;</span></a>
+        <a class="btn btn-green" href="marketplace.html">Planning an event <span class="cap">&#8599;</span></a>
         <a class="btn btn-light" href="planners.html">I am a planner <span class="cap">&#8599;</span></a>
       </div>
     </div>
@@ -181,10 +188,10 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
-        <p>The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.</p>
+        <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
       </div>
-      <div><h4>Marketplace</h4><a href="clients.html">Planning an event</a><a href="planners.html">For planners</a><a href="vendors.html">For vendors</a><a href="pricing.html">Pricing</a></div>
-      <div><h4>Company</h4><a href="index.html">Home</a><a href="faq.html">FAQ</a></div>
+      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Company</h4><a href="index.html">Home</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
     </div>
     <div class="foot-bot">
       <div>
@@ -196,6 +203,7 @@
   <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="assets/app.js?v=2"></script>
+<script src="assets/app.js?v=4"></script>
+<script src="assets/data.js?v=4"></script>
 </body>
 </html>
