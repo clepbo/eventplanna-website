@@ -63,7 +63,26 @@ for p in pages:
 
 print()
 print("=" * 72)
-print("3. ORPHANED CLASSES")
+print("3. STYLESHEET BALANCE")
+print("=" * 72)
+# An edit that lands inside a comment leaves prose sitting in the rule stream,
+# which the browser silently swallows along with whatever follows it.
+for f in ("assets/styles.css", "assets/components.css"):
+    s = io.open(f, encoding="utf-8").read()
+    o, c = s.count("/*"), s.count("*/")
+    ob, cb = s.count("{"), s.count("}")
+    stray = re.findall(r"\*/\s*\n\s*[a-z][^{};\n]*\n", s)   # prose after a closed comment
+    ok = o == c and ob == cb and not stray
+    print("  %-24s comments %d/%d  braces %d/%d  %s"
+          % (os.path.basename(f), o, c, ob, cb, "OK" if ok else "BROKEN"))
+    for t in stray[:3]:
+        print("      STRAY %s" % t.strip()[:60])
+    if not ok:
+        fail += 1
+
+print()
+print("=" * 72)
+print("4. ORPHANED CLASSES")
 print("=" * 72)
 for p in pages:
     s = io.open(p, encoding="utf-8").read()
@@ -76,7 +95,7 @@ for p in pages:
 
 print()
 print("=" * 72)
-print("4. REVIEW ITEMS")
+print("5. REVIEW ITEMS")
 print("=" * 72)
 
 # vendor-FACING language. Incidental mentions (a planner booking a caterer) are

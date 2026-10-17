@@ -534,9 +534,16 @@ footer .foot-grid a:not(.logo):hover::after { transform: scaleX(1); }
 /* The two rules below use background longhands on purpose. The `background:`
    shorthand with a var() substitution computes to none in Chrome and the photo
    never paints, which is why .ph uses longhands too. */
-.ec-media { aspect-ratio: 16/10; background-color: var(--tile);
+/* Event covers are designed banner artwork with the title set into them, and
+   they arrive at whatever ratio the designer used (the current one is 2.34:1).
+   cover crops to fill, which sliced the first letter off "THE FUTURE OF", so
+   these contain instead and letterbox onto the tile. Small listing thumbnails
+   below keep cover, where a crop reads better than a sliver of empty tile.
+   The band colour is the card's own, so the letterboxing reads as padding
+   rather than as two grey rectangles bolted to the artwork. */
+.ec-media { aspect-ratio: 16/10; background-color: var(--white);
   background-image: var(--img, none); background-position: center;
-  background-size: cover; background-repeat: no-repeat; }
+  background-size: contain; background-repeat: no-repeat; }
 .bc-img { aspect-ratio: 16/10; background-color: var(--tile);
   background-image: var(--img, none); background-position: center;
   background-size: cover; background-repeat: no-repeat; }
@@ -623,4 +630,7 @@ a.bcard-wide p { font-size: 15.5px; }
 @media (max-width:1000px) { .theme-toggle { order: 2; margin-left: auto; } }
 
 /* wide cover image used by the blog and event detail pages */
-.bc-img[data-wide] { aspect-ratio: 16/8; border-radius: var(--r-xl); margin: 34px 0; }
+/* Same reasoning as .ec-media: this is the full-width cover on a detail page,
+   where the artwork carries its own title and must not lose an edge. */
+.bc-img[data-wide] { aspect-ratio: 16/8; border-radius: var(--r-xl); margin: 34px 0;
+  background-size: contain; }
