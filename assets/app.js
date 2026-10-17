@@ -40,7 +40,7 @@ const DECAY = 5;                       // per second, measured off the reference
 let wrapper = null, smoothY = 0;
 
 function buildWrapper() {
-  const parts = [$('.wrap'), $('footer')].filter(Boolean);
+  const parts = [$('.hero-stage'), $('.wrap'), $('footer')].filter(Boolean);
   if (!parts.length) return;
   wrapper = document.createElement('div');
   wrapper.className = 'smooth';
@@ -308,21 +308,34 @@ if (!REDUCED && matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ---------- hero handoff ----------
-   The hero photo band hands over to the first section instead of just
-   scrolling away: the frame shrinks and rounds, the headline leaves faster
-   than the picture behind it, and the veil deepens so the type stays legible
-   on the way out. One custom property drives all of it from CSS, which keeps
-   the easing in the stylesheet next to the rest of the look.
+/* ---------- hero: the band grows into the window ----------
+   The hero starts as an inset band with the same corner radius as the white
+   card below it, and opens out to the full window as you scroll. When it has
+   filled the screen it carries on up and the first section comes out from
+   under it.
 
-   Progress is measured against 90% of the band's own height, so the handoff
-   finishes just before the band clears the top of the window rather than
-   running on into the next section. */
+   The band is held against the top of the screen by translating its wrapper,
+   not by position:sticky. Sticky needs a real scrolling ancestor and this
+   document does not have one: everything below the nav sits inside .smooth,
+   which is fixed and translated. Holding it by hand is also what makes the
+   two agree frame for frame, since both read the same smoothed position.
+
+   The distance the band is held for is however much taller the track is than
+   the window, so --p is that same distance expressed 0 to 1, and every part
+   of the growth is written against it in the stylesheet. .has-pin is what
+   turns the tall track on, so with no JS, or under reduced motion, the hero
+   stays a plain inset band instead of a screen of empty space. */
 const stage = $('[data-stage]');
-if (stage && !REDUCED) {
+const track = stage && stage.closest('.hero-stage');
+if (stage && track && !REDUCED) {
+  const pin = stage.parentElement;
+  document.documentElement.classList.add('has-pin');
   jobs.push(() => {
-    const r = stage.getBoundingClientRect();
-    stage.style.setProperty('--p', clamp(-r.top / Math.max(1, r.height * 0.9), 0, 1).toFixed(3));
+    const r = track.getBoundingClientRect();
+    const travel = Math.max(1, r.height - innerHeight);
+    const d = clamp(-r.top, 0, travel);
+    pin.style.transform = 'translate3d(0,' + d.toFixed(1) + 'px,0)';
+    stage.style.setProperty('--p', (d / travel).toFixed(4));
   });
 }
 

@@ -3,15 +3,18 @@
 
 The old site had an About page at /about/ and the new one had dropped it. The
 substance here is carried over from that page rather than invented: the mission
-and vision, the problem statement, the market figures, the corporate
-registration and the founding team are all theirs.
+and vision, the problem statement, the corporate registration and the founding
+team are all theirs.
 
-Two deliberate departures from the old copy:
+Three deliberate departures from the old copy:
   * every reference to the vendor directory is rewritten to the planner
     marketplace, because vendors are no longer part of the product;
   * the "2,400+ Vendors Onboard" figure is dropped rather than restated about
     planners, since no such number exists for planners and inventing one is
-    not an option. The cities figure replaces it and is true of the old copy.
+    not an option;
+  * the counting stat strip is gone at the client's request. The same figures
+    still appear once, as prose, in the problem statement where they are
+    making an argument rather than being decoration.
 
 Nothing on this page is invented. Where a claim is the company's own ("80%",
 "$20B+", "55+"), it is reproduced as the company states it.
@@ -123,20 +126,6 @@ p += """
 """ + cards(PROBLEMS) + """    </div>
   </section>
 
-  <section class="section" id="market">
-    <div class="shead reveal">
-      <span class="eyebrow">The opportunity</span>
-      <h2>Numbers that tell the story</h2>
-      <p>The market figures below are EventPlanna&rsquo;s own, as published on the company&rsquo;s About page.</p>
-    </div>
-    <div class="stats stagger">
-      <div class="stat"><em>Industry</em><b data-count="$20B+">$0</b><span>Nigerian events, annual market size</span></div>
-      <div class="stat"><em>Competitors</em><b data-count="55+">0</b><span>None of them solve agency operations</span></div>
-      <div class="stat"><em>Focus markets</em><b data-count="9">0</b><span>Cities, from Lagos and Abuja to Uyo</span></div>
-      <div class="stat"><em>Status</em><b>Live</b><span>Available now, start planning today</span></div>
-    </div>
-  </section>
-
   <section class="section" id="where">
     <div class="duo reveal">
       <div>
@@ -197,7 +186,7 @@ p += """
       <p>200 free credits on signup. No card, no subscription, and nothing to cancel if it turns out not to be for you.</p>
       <div class="cta-actions">
         <a class="btn btn-green" href="marketplace.html">Find a planner <span class="cap">&#8599;</span></a>
-        <a class="btn btn-light" href="planners.html">I&rsquo;m a planner <span class="cap">&#8599;</span></a>
+        <a class="btn btn-light" href="marketplace.html#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a>
       </div>
     </div>
   </section>

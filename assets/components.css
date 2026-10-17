@@ -641,18 +641,46 @@ a.bcard-wide p { font-size: 15.5px; }
    event rather than a product screenshot. It reuses the existing
    [data-carousel] machinery (.ttrack/.tslide/.tdots), with the testimonial
    layout rules switched off inside .stage.
+
+   The band grows. At rest it is inset inside the page gutters, carrying the
+   same corner radius as the white card below it; as the page scrolls it opens
+   out to the full window and the corners square off, and once it has filled
+   the screen the first section comes out from under it. assets/app.js holds
+   the band against the top of the window for exactly that distance and
+   reports it as --p, 0 to 1. Every line below is written against --p, so the
+   whole look of the move stays in the stylesheet.
+
+   The hero sits outside .shell. .shell is a rounded white card narrower than
+   the window with overflow hidden, so nothing inside it can ever reach the
+   edges of the screen.
+
+   Written twice on purpose: without .has-pin (no JS, or reduced motion) the
+   track has no extra height and the band is simply the inset version, rather
+   than a screen and a half of nothing.
    ============================================================ */
-.hero-stage { width: var(--page); margin: 0 auto; padding-top: clamp(84px,11vw,132px); }
-/* The band is kept close to the photographs' own 1.9:1 so the room is seen
-   whole. Taller than this and cover crops the sides away, which on these
-   pictures means losing the chairs, i.e. losing the event. */
-.stage { --p: 0; position: relative; overflow: hidden;
-  height: min(66vh, calc((100vw - 2 * clamp(24px,3.4vw,96px)) / 1.9));
-  min-height: 420px; max-height: 700px;
-  border-radius: calc(var(--r-xl) + 22px * var(--p));
-  transform: scale(calc(1 - .07 * var(--p)));
-  transform-origin: 50% 0;
-  will-change: transform, border-radius; }
+.hero-stage { position: relative; }
+.stage-pin { position: relative; height: min(82vh, 860px); min-height: 460px; }
+.has-pin .hero-stage { height: 168vh; height: 168svh; }
+.has-pin .stage-pin { position: absolute; inset: 0 0 auto; height: 100vh; height: 100svh;
+  will-change: transform; }
+
+/* The white card is pulled up by its own corner radius so it finishes the
+   photograph rather than sitting below it on a strip of page background. */
+.hero-stage + .wrap { position: relative; z-index: 2; margin-top: calc(-1 * var(--r-xl)); }
+
+.stage { --p: 0;
+  /* Half the page gutter, and half of whatever is left over once the window
+     is wider than --max, which is what .wrap is inset by. */
+  --s0: calc(max(clamp(24px,3.4vw,96px), 100% - var(--max)) / 2);
+  --t0: clamp(74px,8.4vw,116px);          /* clears the floating nav */
+  --b0: clamp(16px,3.2vh,52px);
+  position: absolute; overflow: hidden;
+  top:    calc(var(--t0) * (1 - var(--p)));
+  bottom: calc(var(--b0) * (1 - var(--p)));
+  left:   calc(var(--s0) * (1 - var(--p)));
+  right:  calc(var(--s0) * (1 - var(--p)));
+  border-radius: calc(var(--r-xl) * (1 - var(--p)));
+  background: var(--green-900); }
 
 /* The testimonial slide is a two-column grid with padding. Inside the stage a
    slide is just the photograph, so both are switched off here. */
@@ -661,29 +689,38 @@ a.bcard-wide p { font-size: 15.5px; }
   padding: 0; height: 100%; background-color: var(--green-900);
   background-image: var(--img, none); background-position: center;
   background-size: cover; background-repeat: no-repeat; }
-/* The picture drifts slower than its frame, so the band reads as a window
-   rather than a flat panel sliding off. */
-.stage .ttrack { transform: translate3d(0, calc(var(--p) * -5%), 0); }
+/* The picture starts fractionally oversized and settles as the frame reaches
+   it, so the room opens up rather than simply being uncovered. Scaling the
+   track and not the frame also means no edge can ever slide into view. */
+.stage .ttrack { transform: scale(calc(1 + .055 * (1 - var(--p)))); transform-origin: 50% 50%;
+  will-change: transform; }
 
 /* Two gradients, not one. The vertical pass keeps the band from going flat,
    and the horizontal pass darkens the side the copy sits on, because these
-   photographs all have bright sky roughly where the headline lands. */
+   photographs are all bright roughly where the headline lands. It lifts a
+   little as the band fills the screen, where there is more picture to see. */
 .stage-veil { position: absolute; inset: 0; pointer-events: none;
   background:
-    linear-gradient(100deg, rgba(10,11,22,.66) 0%, rgba(10,11,22,.32) 48%, rgba(10,11,22,.04) 80%),
-    linear-gradient(180deg, rgba(10,11,22,.30) 0%, rgba(10,11,22,.08) 38%, rgba(10,11,22,.60) 100%);
-  opacity: calc(.9 + .1 * var(--p)); }
+    linear-gradient(100deg, rgba(10,11,22,.58) 0%, rgba(10,11,22,.26) 48%, rgba(10,11,22,.03) 80%),
+    linear-gradient(180deg, rgba(10,11,22,.20) 0%, rgba(10,11,22,.04) 34%, rgba(10,11,22,.74) 100%);
+  opacity: calc(1 - .1 * var(--p)); }
 
-.stage-copy { position: absolute; inset: auto 0 0 0; padding: 0 clamp(22px,5vw,78px) clamp(34px,5vw,62px);
-  color: #fff; opacity: calc(1 - 1.35 * var(--p));
-  transform: translate3d(0, calc(var(--p) * -42px), 0); }
-.stage-copy h1 { font-size: clamp(38px,6.6vw,96px); line-height: .97; letter-spacing: -.035em;
-  font-weight: 600; margin: 0; max-width: 16ch; text-wrap: balance; }
+.stage-copy { position: absolute; inset: auto 0 0 0; color: #fff;
+  padding: 0 calc(clamp(22px,4.6vw,72px) + 24px * var(--p))
+             calc(clamp(28px,4.2vw,56px) + 18px * var(--p)); }
+/* Capped against the window's height as well as its width. Sized on width
+   alone, the headline, the lead and the buttons together came to more than a
+   short laptop window could show, and the top of the first line was cut off
+   by the band it sits in. */
+.stage-copy h1 { font-size: max(32px, min(6.2vw, 9.2vh, 88px));
+  line-height: .98; letter-spacing: -.035em; font-weight: 600; margin: 0;
+  max-width: 15ch; text-wrap: balance; }
 .stage-copy h1 em { font-style: normal; color: #cfc8ff; }
-.stage-copy p { margin: 18px 0 0; max-width: 56ch; font-size: clamp(15px,1.25vw,19px);
-  color: rgba(255,255,255,.88); }
-.stage-copy .hero-actions { margin-top: 26px; }
-.stage-eyebrow { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 18px;
+.stage-copy p { margin: 16px 0 0; max-width: 54ch;
+  font-size: max(14.5px, min(1.2vw, 2.05vh, 19px)); color: rgba(255,255,255,.9); }
+.stage-copy .hero-actions { margin-top: clamp(16px,2.6vh,26px); }
+.stage-eyebrow { display: inline-flex; align-items: center; gap: 9px;
+  margin-bottom: clamp(10px,2vh,18px);
   padding: 7px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
   letter-spacing: .09em; text-transform: uppercase;
   background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.26);
@@ -692,32 +729,38 @@ a.bcard-wide p { font-size: 15.5px; }
 /* Paired in the bottom corner rather than centred on each edge. The headline
    here is far bigger than the reference's, and edge-centred arrows landed on
    top of the first word. */
-.stage-arrow { position: absolute; bottom: clamp(34px,5vw,62px); z-index: 3;
+.stage-arrow { position: absolute; bottom: calc(clamp(28px,4.2vw,56px) + 18px * var(--p)); z-index: 3;
   width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
   background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.34);
   backdrop-filter: blur(10px); color: #fff;
-  opacity: calc(1 - 1.6 * var(--p));
   transition: background .3s var(--ease), transform .3s var(--ease); }
 .stage-arrow:hover { background: rgba(255,255,255,.32); }
-.stage-arrow.next { right: clamp(22px,5vw,78px); }
-.stage-arrow.prev { right: calc(clamp(22px,5vw,78px) + 56px); }
+.stage-arrow.next { right: calc(clamp(22px,4.6vw,72px) + 24px * var(--p)); }
+.stage-arrow.prev { right: calc(clamp(22px,4.6vw,72px) + 24px * var(--p) + 56px); }
 .stage-arrow.prev:hover { transform: translateX(-3px); }
 .stage-arrow.next:hover { transform: translateX(3px); }
 
 /* The dots sit inside the copy block rather than floating in a corner of the
    band, which keeps them clear of the headline at every width. */
-.stage .tdots { margin-top: clamp(22px,3vw,30px); justify-content: flex-start; }
+.stage .tdots { margin-top: clamp(14px,2.4vh,26px); justify-content: flex-start; }
 .stage .tdots button { background: rgba(255,255,255,.42); }
 .stage .tdots button.on { background: #fff; }
 
 @media (max-width: 760px) {
-  .stage { height: clamp(430px, 76vh, 620px); }
+  .has-pin .hero-stage { height: 152vh; height: 152svh; }
+  .stage-pin { height: clamp(460px, 78vh, 640px); }
   .stage-arrow { display: none; }
+  .stage-copy p { display: none; }
+  /* cover on a landscape photograph in a portrait frame scales to the frame's
+     height, so the whole of the picture top to bottom is on screen and
+     background-position has nothing left to move. These rooms are shot with a
+     lot of ceiling, so the size is set from the height instead and held low,
+     which trades a little more of the width for the part with the tables in
+     it. */
+  .stage .ttrack.fade-mode > .tslide { background-size: auto 124%; background-position: 50% 92%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .stage, .stage .ttrack, .stage-copy, .stage-arrow, .stage .tdots {
-    transform: none; opacity: 1; border-radius: var(--r-xl); }
-  .stage-copy { opacity: 1; }
+  .stage .ttrack { transform: none; }
 }
 
 /* ---- the card collage, now a section of its own ---- */
@@ -732,5 +775,23 @@ a.bcard-wide p { font-size: 15.5px; }
   backdrop-filter: blur(10px); }
 .btn-ghost .cap { background: rgba(255,255,255,.2); color: #fff; }
 .btn-ghost:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.5); }
-.stage-copy .btn-light { background: #fff; color: #14163a; border-color: transparent; }
-.stage-copy .btn-light .cap { background: #14163a; color: #fff; }
+/* Named twice. In dark mode :root[data-theme="dark"] .btn-light turns the
+   button transparent, which is right against a dark page and wrong against a
+   photograph: the hero is the same picture in both themes, so its primary
+   button stays a solid white pill. That selector outranks a plain
+   .stage-copy .btn-light, so the dark case is spelled out rather than left to
+   the cascade. */
+.stage-copy .btn-light,
+:root[data-theme="dark"] .stage-copy .btn-light {
+  background: #fff; color: #14163a; border-color: transparent; }
+.stage-copy .btn-light .cap,
+:root[data-theme="dark"] .stage-copy .btn-light .cap { background: #14163a; color: #fff; }
+.stage-copy .btn-light:hover,
+:root[data-theme="dark"] .stage-copy .btn-light:hover { background: #f1f0fb; }
+
+/* ---- the planner half of the marketplace page ---- */
+/* The page carries both audiences now, so the seam between them has to read
+   as a change of address rather than as one more section heading. */
+.half-break { margin-top: clamp(44px,6vw,86px); padding-top: clamp(40px,5.4vw,74px);
+  border-top: 1px solid var(--border); }
+.half-break .eyebrow { color: var(--green); }

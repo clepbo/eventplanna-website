@@ -25,7 +25,6 @@ const PORT = 9501;
 const PAGES = [
   ['index',       'index.html'],
   ['marketplace', 'marketplace.html'],
-  ['planners',    'planners.html'],
   ['about',       'about.html'],
   ['blog',        'blog.html'],
   ['events',      'events.html'],

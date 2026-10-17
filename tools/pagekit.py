@@ -11,10 +11,13 @@ Information architecture, after the October stakeholder review:
 import io, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = "5"                       # asset cache-busting version
+V = "6"                       # asset cache-busting version
 
+# One marketplace entry, not two. "Find a planner" and "For planners" sat next
+# to each other reading as near-duplicates, so both audiences now live on
+# marketplace.html: the directory at the top, the planner half under
+# #for-planners.
 NAV = [("marketplace.html", "Find a planner"),
-       ("planners.html",    "For planners"),
        ("pricing.html",     "Pricing"),
        ("blog.html",        "Blog"),
        ("events.html",      "Events"),
@@ -41,7 +44,13 @@ def ticks(items):
     return "".join('          <li>%s %s</li>\n' % (TICK, i) for i in items)
 
 
-def head(title, desc, current, home=False):
+def head(title, desc, current, home=False, pre=""):
+    """`pre` is markup placed between the nav and the rounded white shell.
+
+    Everything on these pages lives inside .shell, which is a card: narrower
+    than the window, with rounded corners and overflow hidden. The home hero
+    has to grow to the full width of the window, which is impossible from
+    inside that card, so it is emitted here instead of in the page body."""
     links = "".join('      <a href="%s"%s>%s</a>\n'
                     % (h, ' aria-current="page"' if h == current else '', t)
                     for h, t in NAV)
@@ -76,8 +85,8 @@ def head(title, desc, current, home=False):
   </div>
 </nav>
 
-<div class="wrap"><div class="shell">
-""" % (title, desc, THEME_BOOT, V, V, cta, links, TOGGLE, cta)
+%s<div class="wrap"><div class="shell">
+""" % (title, desc, THEME_BOOT, V, V, cta, links, TOGGLE, cta, pre)
 
 
 FOOTER = """</div></div>
@@ -89,7 +98,7 @@ FOOTER = """</div></div>
         <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
         <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
       </div>
-      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="marketplace.html#for-planners">For planners</a><a href="pricing.html">Pricing</a></div>
       <div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
     </div>
     <div class="foot-bot">

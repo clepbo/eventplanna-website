@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Find a planner | EventPlanna</title>
-<meta name="description" content="Browse event planners who were checked and approved before being listed, then book and run the whole event in one place.">
+<meta name="description" content="Browse event planners who were checked and approved before being listed, then book and run the whole event in one place. Planners: apply to be listed and run the work from one workspace.">
 <link rel="icon" href="assets/favicon.svg">
 <script>(function(){try{var t=localStorage.getItem('ep-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.eventplanna.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=5">
-<link rel="stylesheet" href="assets/components.css?v=5">
+<link rel="stylesheet" href="assets/styles.css?v=6">
+<link rel="stylesheet" href="assets/components.css?v=6">
 </head>
 <body>
 
@@ -24,7 +24,6 @@
     <a class="chip" href="index.html#start">Get started &#8599;</a>
     <div class="nav-links">
       <a href="marketplace.html" aria-current="page">Find a planner</a>
-      <a href="planners.html">For planners</a>
       <a href="pricing.html">Pricing</a>
       <a href="blog.html">Blog</a>
       <a href="events.html">Events</a>
@@ -48,7 +47,7 @@
         <span class="eyebrow fade-up">Find a planner</span>
         <h1 class="fade-up d1">Every planner here <span class="hl">was checked first</span>.</h1>
         <p class="lead fade-up d2">Planners apply with a portfolio, a price range and the cities they cover. We review it before anything goes live, so the list you are browsing is <b>people who have already cleared that</b>, not whoever signed up most recently.</p>
-        <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#directory">Browse the directory <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#how">How booking works <span class="cap">&#8599;</span></a></div>
+        <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#directory">Browse the directory <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a></div>
       </div>
       <div class="fade-up d2"><div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">Traditional wedding, Ikeja</div><div class="ui-sub">12 Dec 2026, 400 guests</div></div><span class="delta info">Shortlisting</span></div>
@@ -157,13 +156,123 @@
     </div>
   </section>
 
+  <section class="section half-break" id="for-planners">
+    <div class="shead reveal">
+      <span class="eyebrow">Turn the page over</span>
+      <h2>Not planning an event. <span class="mark">Running them.</span></h2>
+      <p>Everything above is what a client sees. The rest of this page is the other side of the same marketplace: how you get listed on it, and what you run the work with once you are.</p>
+    </div>
+    <div class="duo reveal">
+      <div>
+        <h3 style="font-size:clamp(20px,2.4vw,27px)">Get found. Then run the work.</h3>
+        <p class="lead" style="margin-top:18px">Apply once to be listed. Once you are approved, clients can find you, brief you and book you, and <b>budgets, tasks, your team and the client portal</b> all live in the same place. You pay for actions, not for access, so a quiet quarter costs you nothing.</p>
+        <div class="hero-actions" style="margin-top:26px">
+          <a class="btn btn-dark" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
+          <a class="btn btn-light" href="#workspace">Tour the workspace <span class="cap">&#8599;</span></a>
+        </div>
+      </div>
+      <div><div class="ui-card chartbox">
+        <div class="ui-head"><div><div class="ui-title">Your events</div><div class="ui-sub">October 2026, 6 active</div></div><span class="delta up">2 new briefs</span></div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Under management</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;24.6M">&#8358;0</div><div class="delta up">Across 6 events</div></div>
+          <div class="kpi"><div class="kpi-label">Credits left</div><div class="kpi-value" data-count="1,840">0</div><div class="delta info">No renewal date</div></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="prow"><span class="nm">Adeyemi wed.</span><span class="track"><i style="--w:86%"></i></span><span class="val">86%</span></div>
+          <div class="prow"><span class="nm">Zenith AGM</span><span class="track"><i style="--w:62%"></i></span><span class="val">62%</span></div>
+          <div class="prow"><span class="nm">Okafor 50th</span><span class="track"><i style="--w:34%;background:var(--c6)"></i></span><span class="val">34%</span></div>
+          <div class="prow"><span class="nm">Ire launch</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
+        </div>
+        <div class="ui-sub" style="margin-top:12px">Progress is a count of completed tasks, not an estimate. This panel is an illustration of the workspace, not a real account.</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="section" id="apply">
+    <div class="shead reveal">
+      <span class="eyebrow">Getting listed</span>
+      <h2>Apply once. A person reviews it.</h2>
+      <p>Listing is free. There is no automatic approval and no paying to rank, which is the only reason the badge is worth anything to the client reading it.</p>
+    </div>
+    <div class="duo reveal">
+      <div class="flow">
+        <div class="fstep"><span class="fn">1</span><div><b>You apply</b><small>Portfolio, price range, the cities you cover, the event types you take</small></div></div>
+        <div class="fline"></div>
+        <div class="fstep"><span class="fn">2</span><div><b>We review it</b><small>Checked by a person in the admin portal. Nothing goes live on its own</small></div></div>
+        <div class="fline"></div>
+        <div class="fstep on"><span class="fn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>You are listed</b><small>Clients browse, compare and send you briefs with a real budget attached</small></div></div>
+      </div>
+      <div>
+        <h3 style="font-size:clamp(20px,2.4vw,27px)">What we ask for</h3>
+        <ul class="ticks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> A portfolio of events you actually delivered</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> The cities and areas you genuinely cover</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> A price range, so briefs reach you in the right band</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> The event types you want, and the ones you do not</li>
+        </ul>
+        <p class="muted" style="margin-top:18px;font-size:14.5px">Applications are reviewed in the order they arrive. You will hear back either way.</p>
+        <div class="live-note" style="margin-top:20px">The application form is not wired up yet. Planner submission needs its endpoint on the backend first, so this points at account signup for now.</div>
+        <div class="hero-actions" style="margin-top:20px">
+          <a class="btn btn-dark" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="workspace">
+    <div class="shead reveal">
+      <span class="eyebrow">The workspace</span>
+      <h2>Six things that stop falling through <span class="mark">the cracks</span></h2>
+      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong, and where a shared workspace earns its place.</p>
+    </div>
+    <div class="cards cap-grid stagger">
+      <div class="card"><h3>Budgets that reconcile</h3><p>Allocate by category, land every quote, deposit and balance against a line, and watch allocated, spent and remaining stay in agreement. An alert fires at 85%, not after the fact.</p></div>
+      <div class="card"><h3>Phases and tasks</h3><p>Each event breaks into phases with their own checklists. Tasks carry an owner, a due date and a status, so the progress bar counts finished work instead of guessing.</p></div>
+      <div class="card"><h3>Bookings end to end</h3><p>Request, quote, accept, contract, deposit, balance, completion. Six states, each timestamped, so nothing important was agreed in a chat you cannot find in December.</p></div>
+      <div class="card"><h3>A team with real roles</h3><p>Managers, coordinators and assistants each get the access their job needs and see only the events they are assigned to. Adding someone costs 2 credits, once.</p></div>
+      <div class="card"><h3>A client portal</h3><p>Share progress, the budget and decisions that need a yes through a link, without handing the client the keys to your workspace or your cost base.</p></div>
+      <div class="card"><h3>Messaging in context</h3><p>Every thread sits against the booking it belongs to, so the quote, the revision and what was finally agreed stay together and survive a change of coordinator.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shead reveal">
+      <span class="eyebrow">Your team</span>
+      <h2>Three roles, and nobody sees more than they should</h2>
+      <p>A coordinator running the day does not need your margins, and an assistant chasing a florist does not need the whole client list.</p>
+    </div>
+    <div class="cards stagger">
+      <div class="card"><h3>Manager</h3><p>Full access to the events they own: budget, costs, bookings, team and the client portal. The only role that can change an allocation or accept a quote.</p></div>
+      <div class="card"><h3>Coordinator</h3><p>Runs delivery on the events they are assigned to, covering tasks, timeline and supplier contact, without budget figures or supplier pricing.</p></div>
+      <div class="card"><h3>Assistant</h3><p>Works the task list on a single event. Can complete, comment and upload, and sees nothing about money, other events or other clients.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="dark" style="padding-block:clamp(40px,6vw,76px)">
+      <div class="shead reveal">
+        <span class="eyebrow">The client portal</span>
+        <h2>What the client sees, and <span class="mark">what stays yours</span></h2>
+        <p>Being transparent with a client should not mean handing over your cost base. The portal is a deliberate slice of the workspace, not a login to it.</p>
+      </div>
+      <div class="split-2 stagger">
+        <div class="tier t-agg"><h4>They see</h4><p>Progress against phases, the budget as you have chosen to present it, confirmed bookings, decisions waiting on them, and the documents you shared. Enough that they stop calling for updates.</p></div>
+        <div class="tier t-private"><h4>They never see</h4><p>Your supplier rates, your margin, internal notes, other clients, your team&rsquo;s task chatter, or any event you have not shared with them. There is no permission that opens it.</p></div>
+      </div>
+      <div class="note reveal">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 9.1 8 10 4.6-.9 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+        Exporting a client-ready budget or progress pack costs 1 credit, and records the figures exactly as they stood at that moment.
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="cta">
     <div class="cta reveal">
       <h2>Start with 200 free credits</h2>
-      <p>No card, no subscription and no sales call. Create the event and you can be comparing real quotes the same afternoon.</p>
+      <p>No card, no subscription and no sales call. Whichever side of the marketplace you are on, the first 200 credits are on us and nothing renews.</p>
       <div class="cta-actions">
-        <a class="btn btn-green" href="pricing.html">See what credits cost <span class="cap">&#8599;</span></a>
-        <a class="btn btn-light" href="faq.html">Read the FAQ <span class="cap">&#8599;</span></a>
+        <a class="btn btn-green" href="index.html#start">Planning an event <span class="cap">&#8599;</span></a>
+        <a class="btn btn-light" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
       </div>
     </div>
   </section>
@@ -176,7 +285,7 @@
         <a class="logo" href="index.html" style="height:28px"><img src="assets/logo-light.svg" alt="EventPlanna" style="height:28px"></a>
         <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
       </div>
-      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>
+      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="marketplace.html#for-planners">For planners</a><a href="pricing.html">Pricing</a></div>
       <div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
     </div>
     <div class="foot-bot">
@@ -189,7 +298,7 @@
   <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="assets/app.js?v=5"></script>
-<script src="assets/data.js?v=5"></script>
+<script src="assets/app.js?v=6"></script>
+<script src="assets/data.js?v=6"></script>
 </body>
 </html>

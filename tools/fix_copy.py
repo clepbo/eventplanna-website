@@ -13,7 +13,13 @@ import io, os, re, glob, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # NAV and V come from pagekit so these two hand-maintained pages cannot drift
 # away from the generated ones, which is exactly what happened before.
-from pagekit import NAV, V
+from pagekit import NAV, V, THEME_BOOT, FOOTER
+
+# The two footer link columns, lifted out of the real footer rather than
+# retyped. A copy of them here is what left planners.html in these two pages
+# after that page was folded into the marketplace.
+FOOT_LINKS = re.search(r'      <div><h4>Marketplace</h4>.*?<h4>Company</h4>(?:<a[^>]*>[^<]*</a>)*</div>',
+                       FOOTER, re.S).group(0)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -105,18 +111,25 @@ NEW_GROUP = '''      <div class="shead reveal"><span class="eyebrow">If you want
     </div>
 '''
 
+# This script is run again whenever the shared chrome changes, so every step
+# below has to be safe to repeat. It was not: the theme toggle was inserted
+# unconditionally, and five runs left pricing.html and faq.html with five
+# toggles in the nav.
 misses = 0
 for f, pairs in EDITS.items():
     s = io.open(f, encoding='utf-8').read()
-    hit = 0
+    hit = done = 0
     for a, b in pairs:
         if a in s:
             s = s.replace(a, b); hit += 1
+        elif b in s:
+            done += 1                      # applied by an earlier run
         else:
             misses += 1
             print("  MISS in %s: %s" % (f, a[:70]))
     io.open(f, 'w', encoding='utf-8').write(s)
-    print("%-14s %d of %d replacements applied" % (f, hit, len(pairs)))
+    print("%-14s %d applied, %d already in place, of %d"
+          % (f, hit, done, len(pairs)))
 
 s = io.open('faq.html', encoding='utf-8').read()
 if OLD_GROUP_START in s:
@@ -124,6 +137,8 @@ if OLD_GROUP_START in s:
     j = s.index('</div>\n  </section>', i)
     io.open('faq.html', 'w', encoding='utf-8').write(s[:i] + NEW_GROUP + s[j:])
     print("faq.html      vendor group replaced with a planner listing group")
+elif 'If you want to be listed' in s:
+    print("faq.html      planner listing group already in place")
 else:
     misses += 1
     print("  MISS: faq vendor group")
@@ -134,17 +149,22 @@ for f in ('pricing.html', 'faq.html'):
     o = s
     s = s.replace("The marketplace and workspace for events &mdash; sourcing, delivery and payment, in one place both sides can see.",
                   "Find a planner who has been checked and approved, then run the whole event with them in one place.")
+    # Strip, then insert exactly one of each. Appending unconditionally is how
+    # these two pages ended up carrying nine copies of the theme bootstrap and
+    # nine preconnects, which is the same bug as the duplicated toggle below.
+    s = re.sub(r"<script>\(function\(\)\{try\{var t=localStorage[^\n]*</script>\n", "", s)
+    s = s.replace('<link rel="preconnect" href="https://api.eventplanna.com">\n', '')
     s = s.replace('<link rel="icon" href="assets/favicon.svg">\n',
-                  '<link rel="icon" href="assets/favicon.svg">\n'
-                  "<script>(function(){try{var t=localStorage.getItem('ep-theme');"
-                  "if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}"
-                  "catch(e){}})();</script>\n", 1)
-    s = s.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+                  '<link rel="icon" href="assets/favicon.svg">\n' + THEME_BOOT, 1)
+    s = s.replace('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n',
                   '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-                  '<link rel="preconnect" href="https://api.eventplanna.com">', 1)
+                  '<link rel="preconnect" href="https://api.eventplanna.com">\n', 1)
+    s = s.replace('href="planners.html"', 'href="marketplace.html#for-planners"')
     s = s.replace('<a class="logo" href="index.html"><img src="assets/logo-dark.svg" alt="EventPlanna"></a>',
                   '<a class="logo" href="index.html"><img class="l-light" src="assets/logo-dark.svg" alt="EventPlanna">'
                   '<img class="l-dark" src="assets/logo-light.svg" alt="EventPlanna"></a>')
+    # Strip any toggles a previous run left behind, then put exactly one back.
+    s = re.sub(r'    <button class="theme-toggle".*?</button>\n', '', s, flags=re.S)
     s = re.sub(r'(    <a class="btn btn-dark btn-sm")',
       '''    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
       <svg class="t-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -158,9 +178,7 @@ for f in ('pricing.html', 'faq.html'):
                    for h, t in NAV) + m.group(2),
                s, flags=re.S)
     s = re.sub(r'      <div><h4>Marketplace</h4>.*?<h4>Company</h4>(?:<a[^>]*>[^<]*</a>)*</div>',
-      '      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>\n'
-      '      <div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>',
-      s, flags=re.S)
+               FOOT_LINKS.replace('\\', '\\\\'), s, flags=re.S)
     # Give anything unversioned a version, then normalise every version to V in
     # one pass. Hardcoding the number here is what let these two pages drift a
     # release behind the generated ones.
