@@ -309,3 +309,46 @@ footer .wrap{position:relative;z-index:1}
   .split .slot{width:100%!important;order:3;margin-top:14px}
   .split.in .slot .pcard{max-width:260px;margin-inline:auto}
 }
+
+/* ============ DARK MODE ============
+   Light is the default; dark is opt in and remembered per browser, applied by
+   a tiny inline script in <head> before first paint so the page never flashes
+   the wrong theme. Only the neutrals move; the brand ramp stays put, which is
+   what keeps the two themes recognisably the same site. */
+:root[data-theme="dark"]{
+  --ink:#e8e9f0; --grey:#9ca2b3; --border:#2b2e3f;
+  --tile:#121320; --white:#1a1c2b; --green-900:#0c0d16;
+  --green-100:#272551; --green-300:#b3aef5;
+  --amber-bg:#3a2f12; --red-bg:#3a1f22; --blue-bg:#16254a; --purple-bg:#2a1f47;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.45);
+  --shadow-lg:0 26px 70px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+:root[data-theme="dark"] .nav-inner{background:rgba(26,28,43,.82);border-color:rgba(255,255,255,.08)}
+:root[data-theme="dark"] .ticker{background:var(--white)}
+:root[data-theme="dark"] .prow .track{background:#262a3c}
+:root[data-theme="dark"] .plan.pro{background:linear-gradient(150deg,#232150,#1b2b33);border-color:#343163}
+:root[data-theme="dark"] .tag.on{border-color:#3b3875}
+:root[data-theme="dark"] .pcard .plabel{background:rgba(8,9,16,.8)}
+:root[data-theme="dark"] .hfloat{background:rgba(26,28,43,.95);border-color:rgba(255,255,255,.08)}
+:root[data-theme="dark"] .orb,:root[data-theme="dark"] .sat span{background:var(--white);border-color:var(--border)}
+:root[data-theme="dark"] .hub{background:var(--white);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+:root[data-theme="dark"] .hub img{filter:brightness(0) invert(1)}
+:root[data-theme="dark"] .ring{border-color:var(--border)}
+@media(max-width:1000px){:root[data-theme="dark"] .nav-links{background:var(--white)}}
+
+/* The mark ships in two versions, so show the one that suits the surface.
+   Inverting it does not work: brightness(0) invert(1) flattens a two-colour
+   logo into a plain white rectangle. */
+.logo .l-dark{display:none}
+:root[data-theme="dark"] .logo .l-light{display:none}
+:root[data-theme="dark"] .logo .l-dark{display:block}
+
+/* .btn-dark is filled with --ink, which inverts to near-white in dark mode and
+   would leave white text on a white pill. On a dark surface the primary action
+   is the light one. */
+:root[data-theme="dark"] .btn-dark{background:#fff;color:#14163a}
+:root[data-theme="dark"] .btn-dark:hover{box-shadow:0 12px 26px rgba(0,0,0,.5)}
+:root[data-theme="dark"] .btn-light{background:transparent;border-color:var(--border);color:var(--ink)}
+:root[data-theme="dark"] .btn-light .cap{background:var(--border);color:var(--ink)}
+:root[data-theme="dark"] .chip{background:var(--white);border-color:var(--border);color:var(--grey)}

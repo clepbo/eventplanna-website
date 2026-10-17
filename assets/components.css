@@ -488,3 +488,139 @@ footer .foot-grid a:not(.logo):hover::after { transform: scaleX(1); }
 .mosaic .pcard.ph .catile b { color: #fff; }
 .mosaic .pcard.ph .catile span { color: rgba(255,255,255,.82); }
 .mosaic .pcard.ph .ci { background: rgba(255,255,255,.9); }
+
+/* ============================================================
+   POST-REVIEW COMPONENTS
+   ============================================================ */
+
+.cards-2 { grid-template-columns: repeat(2,1fr); }
+@media (max-width:920px) { .cards-2 { grid-template-columns: 1fr; } }
+
+/* ---------- approval flow rail ----------
+   The marketplace is not self-serve: a planner applies, a person approves in
+   the admin portal, and only then are they listed. Drawing the three steps
+   makes that order obvious without a paragraph explaining it. */
+.flow { display: flex; flex-direction: column; justify-content: center; }
+.fstep { display: flex; gap: 14px; align-items: flex-start; background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 20px;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+.fstep:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.fstep .fn { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid;
+  place-items: center; font-size: 13px; font-weight: 700;
+  background: var(--green-100); color: var(--green); }
+.fstep b { display: block; font-size: 15.5px; letter-spacing: -.01em; }
+.fstep small { display: block; font-size: 12.5px; color: var(--grey); margin-top: 4px; }
+.fstep.on { background: var(--green-900); border-color: var(--green-900); }
+.fstep.on b { color: #fff; }
+.fstep.on small { color: rgba(255,255,255,.72); }
+.fstep.on .fn { background: var(--green); color: #fff; }
+.fline { width: 2px; height: 26px; margin-left: 35px; background: var(--border); border-radius: 2px; }
+
+/* ---------- live data slots ----------
+   Filled by data.js AFTER app.js has built its list of animated elements, so
+   these sit outside the scroll engine and fade in on their own. Putting them
+   inside it does not work: app.js toggles .in by scroll position every frame
+   and strips whatever data.js sets. */
+.live-slot { margin-top: 30px; }
+.live-slot:empty { display: none; }
+.live-slot > * { animation: liveIn .5s var(--ease-out) both; }
+.live-slot > *:nth-child(2) { animation-delay: .07s; }
+.live-slot > *:nth-child(3) { animation-delay: .14s; }
+@keyframes liveIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .live-slot > * { animation: none; } }
+.live-note { margin-top: 24px; padding: 16px 18px; border: 1px dashed var(--border);
+  border-radius: var(--r); color: var(--grey); font-size: 14px; background: var(--tile); }
+
+/* The two rules below use background longhands on purpose. The `background:`
+   shorthand with a var() substitution computes to none in Chrome and the photo
+   never paints, which is why .ph uses longhands too. */
+.ec-media { aspect-ratio: 16/10; background-color: var(--tile);
+  background-image: var(--img, none); background-position: center;
+  background-size: cover; background-repeat: no-repeat; }
+.bc-img { aspect-ratio: 16/10; background-color: var(--tile);
+  background-image: var(--img, none); background-position: center;
+  background-size: cover; background-repeat: no-repeat; }
+
+.ecard { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(20px,3vw,40px);
+  align-items: center; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden; }
+@media (max-width:900px) { .ecard { grid-template-columns: 1fr; } }
+.ecard .ec-body { padding: clamp(22px,3vw,38px); }
+.ecard h3 { font-size: clamp(20px,2.5vw,30px); letter-spacing: -.02em; }
+.ec-sub { color: var(--grey); margin-top: 12px; font-size: 15px; max-width: 48ch; }
+/* the chips also appear on the event DETAIL page, where there is no .ecard
+   wrapper, so they must not be scoped to it or the text runs together */
+.ec-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.ec-meta span { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+  background: var(--tile); border: 1px solid var(--border); color: var(--grey); }
+.ec-meta span.live { background: var(--green-100); border-color: #d7d3f5; color: var(--green); }
+.ec-host { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+.ec-host img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.ec-host b { font-size: 13.5px; }
+.ec-host small { display: block; font-size: 12px; color: var(--grey); }
+
+a.bcard { display: flex; flex-direction: column; background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+  text-decoration: none; color: inherit;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s; }
+a.bcard:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: #d6d8e2; }
+.bcard .bc-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.bcard h3 { font-size: 18px; letter-spacing: -.015em; line-height: 1.3; }
+.bcard p { color: var(--grey); font-size: 14.5px; }
+.bcard .bc-meta { margin-top: auto; font-size: 12.5px; color: var(--grey); }
+a.bcard-wide { display: grid; grid-template-columns: 1.05fr .95fr; align-items: stretch; }
+a.bcard-wide .bc-img { aspect-ratio: auto; min-height: 280px; }
+a.bcard-wide .bc-body { padding: clamp(22px,3vw,40px); justify-content: center; }
+a.bcard-wide h3 { font-size: clamp(22px,2.6vw,32px); }
+a.bcard-wide p { font-size: 15.5px; }
+@media (max-width:900px) { a.bcard-wide { grid-template-columns: 1fr; }
+  a.bcard-wide .bc-img { aspect-ratio: 16/10; min-height: 0; } }
+
+/* long-form article body for the blog detail page */
+.article { max-width: 72ch; margin-inline: auto; }
+.article h2 { font-size: clamp(22px,2.6vw,30px); margin: 36px 0 12px; }
+.article h3 { font-size: clamp(18px,2vw,23px); margin: 28px 0 10px; }
+.article p { margin: 0 0 18px; color: var(--ink); line-height: 1.72; }
+.article ul, .article ol { margin: 0 0 18px; padding-left: 22px; color: var(--ink); line-height: 1.72; }
+.article li { margin-bottom: 8px; }
+.article img { max-width: 100%; height: auto; border-radius: var(--r); margin: 22px 0; }
+.article a { color: var(--green); }
+.article blockquote { margin: 24px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--green);
+  color: var(--grey); font-size: 17px; }
+
+/* ---------- planner directory ---------- */
+.pl-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.pl-f { font-size: 13px; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--white); color: var(--grey); }
+.pl-f.on { background: var(--green); border-color: var(--green); color: #fff; }
+.pl-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 24px; }
+@media (max-width:980px) { .pl-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width:640px) { .pl-grid { grid-template-columns: 1fr; } }
+.pl-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  overflow: hidden; display: flex; flex-direction: column;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+.pl-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+.pl-photo { aspect-ratio: 16/11; }
+.pl-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.pl-body h3 { font-size: 17.5px; letter-spacing: -.015em; }
+.pl-meta { font-size: 12.5px; color: var(--grey); }
+.pl-body p { font-size: 14px; color: var(--grey); }
+.pl-foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center;
+  justify-content: space-between; gap: 10px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--grey); }
+.pl-badge { font-weight: 600; color: var(--green); background: var(--green-100);
+  border-radius: 999px; padding: 4px 10px; }
+
+/* ---------- theme toggle ---------- */
+.theme-toggle { flex: none; width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--white); color: var(--ink);
+  display: grid; place-items: center; cursor: pointer;
+  transition: transform .3s var(--ease), border-color .25s, background .25s; }
+.theme-toggle:hover { transform: translateY(-2px); border-color: #c9c5f2; }
+.theme-toggle .t-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .t-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .t-moon { display: none; }
+@media (max-width:1000px) { .theme-toggle { order: 2; margin-left: auto; } }
+
+/* wide cover image used by the blog and event detail pages */
+.bc-img[data-wide] { aspect-ratio: 16/8; border-radius: var(--r-xl); margin: 34px 0; }
