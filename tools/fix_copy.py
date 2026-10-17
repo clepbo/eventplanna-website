@@ -10,6 +10,10 @@ The dashes inside the comparison table are left alone. A dash in a table cell
 is a typographic "not included" marker, not prose.
 """
 import io, os, re, glob, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# NAV and V come from pagekit so these two hand-maintained pages cannot drift
+# away from the generated ones, which is exactly what happened before.
+from pagekit import NAV, V
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -151,21 +155,21 @@ for f in ('pricing.html', 'faq.html'):
     s = re.sub(r'(<div class="nav-links">\n).*?(    </div>)',
                lambda m: m.group(1) + "".join(
                    '      <a href="%s"%s>%s</a>\n' % (h, ' aria-current="page"' if h == f else '', t)
-                   for h, t in [("marketplace.html", "Find a planner"), ("planners.html", "For planners"),
-                                ("pricing.html", "Pricing"), ("blog.html", "Blog"),
-                                ("events.html", "Events"), ("faq.html", "FAQ")]) + m.group(2),
+                   for h, t in NAV) + m.group(2),
                s, flags=re.S)
     s = re.sub(r'      <div><h4>Marketplace</h4>.*?<h4>Company</h4>(?:<a[^>]*>[^<]*</a>)*</div>',
       '      <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>\n'
-      '      <div><h4>Company</h4><a href="index.html">Home</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>',
+      '      <div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>',
       s, flags=re.S)
-    s = re.sub(r'(styles|components)\.css\?v=\d+', r'\1.css?v=4', s)
-    s = re.sub(r'app\.js\?v=\d+', 'app.js?v=4', s)
-    s = s.replace('styles.css"', 'styles.css?v=4"').replace('components.css"', 'components.css?v=4"')
-    s = s.replace('app.js"', 'app.js?v=4"')
+    # Give anything unversioned a version, then normalise every version to V in
+    # one pass. Hardcoding the number here is what let these two pages drift a
+    # release behind the generated ones.
+    s = s.replace('styles.css"', 'styles.css?v=0"').replace('components.css"', 'components.css?v=0"')
+    s = s.replace('app.js"', 'app.js?v=0"')
+    s = re.sub(r'\?v=\d+', '?v=' + V, s)
     if 'data.js' not in s:
-        s = re.sub(r'(<script src="assets/app\.js\?v=4"></script>)',
-                   r'\1\n<script src="assets/data.js?v=4"></script>', s, count=1)
+        s = re.sub(r'(<script src="assets/app\.js\?v=' + V + r'"></script>)',
+                   r'\1\n<script src="assets/data.js?v=' + V + '"></script>', s, count=1)
     if s != o:
         io.open(f, 'w', encoding='utf-8').write(s)
         print("%-14s chrome updated" % f)

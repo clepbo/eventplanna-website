@@ -59,28 +59,68 @@ index = head("EventPlanna | Find a planner, and run the whole event",
              "workspace: budget, bookings, tasks, team and a client portal. No subscription.",
              "", home=True)
 
+ARROW_L = ('<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+           'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+           '<path d="M15 18 9 12l6-6"/></svg>')
+ARROW_R = ('<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+           'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+           '<path d="m9 18 6-6-6-6"/></svg>')
+
+# The three photographs are a deliberate sequence: the room set, the room full,
+# then the detail. tools/make_hero_images.py cuts them from the originals.
+STAGE = [("stage-set",    "The room, before anyone arrives"),
+         ("stage-full",   "The night it was all for"),
+         ("stage-detail", "The part the guests remember")]
+
+
+def stage_slides():
+    return "".join(
+        '        <div class="tslide" style="--img:url(img/%s.webp?v=5)" '
+        'role="img" aria-label="%s"></div>\n' % (img, alt) for img, alt in STAGE)
+
+
 index += """
-  <header class="hero">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <h1>
-          <span class="line"><span>Find your planner.</span></span>
-          <span class="line"><span>Run your <em class="hl" style="font-style:normal">event</em>.</span></span>
-          <span class="line"><span>All in one place.</span></span>
-        </h1>
-        <p class="hero-sub fade-up d1">Browse planners who have been checked and approved, then run the whole thing with them: <b>one budget, every booking, the task list and a portal your client can actually see</b>.</p>
-        <div class="hero-actions fade-up d2">
-          <a class="btn btn-dark" href="marketplace.html">Find a planner <span class="cap">&#8599;</span></a>
-          <a class="btn btn-light" href="planners.html">I&rsquo;m a planner <span class="cap">&#8599;</span></a>
+  <header class="hero-stage">
+    <div class="stage" data-carousel="Slide" data-stage>
+      <div class="ttrack">
+""" + stage_slides() + """      </div>
+      <div class="stage-veil"></div>
+      <button class="stage-arrow prev" type="button" data-prev aria-label="Previous photograph">""" + ARROW_L + """</button>
+      <button class="stage-arrow next" type="button" data-next aria-label="Next photograph">""" + ARROW_R + """</button>
+      <div class="stage-copy">
+        <span class="stage-eyebrow">Event planning, Nigeria</span>
+        <h1>Every great event <em>starts here</em></h1>
+        <p>Find a planner who has been checked and approved, then run the whole thing together: one budget, every booking, the task list and a portal your client can actually see.</p>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="marketplace.html">Find a planner <span class="cap">&#8599;</span></a>
+          <a class="btn btn-ghost" href="planners.html">I&rsquo;m a planner <span class="cap">&#8599;</span></a>
         </div>
-        <div class="hero-tags fade-up d3">
-          <span class="tag">Approved before listed</span>
-          <span class="tag on">200 free credits</span>
-          <span class="tag">No subscription</span>
+        <div class="tdots"></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="statement wide">
+    <p data-words data-green="one|place|everyone|can|see">Planning an event runs on referrals, group chats and a spreadsheet nobody trusts. EventPlanna puts the people and the plan in one place everyone can see.</p>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <b>WEDDINGS</b><i>&rarr;</i><b class="out">CORPORATE</b><i>&rarr;</i><b>BIRTHDAYS</b><i>&rarr;</i><b class="out">CONFERENCES</b><i>&rarr;</i><b>LAUNCHES</b><i>&rarr;</i><b class="out">PRIVATE DINING</b><i>&rarr;</i>
+    </div>
+  </div>
+
+  <section class="section" id="work">
+    <div class="showcase-grid">
+      <div class="reveal">
+        <span class="eyebrow">The work</span>
+        <h2>Real events, run by planners <span class="mark">already on here</span></h2>
+        <p class="lead" style="margin-top:18px">Receptions in Victoria Island, service in Lagos, styling in Lekki. Every planner in the marketplace is checked before they are listed, so the shortlist you get is short for a reason.</p>
+        <div class="hero-actions" style="margin-top:26px">
+          <a class="btn btn-dark" href="marketplace.html">Browse the marketplace <span class="cap">&#8599;</span></a>
         </div>
       </div>
-
-      <div class="hero-media-wrap fade-up d2">
+      <div class="hero-media-wrap reveal">
         <div class="hero-media">
 """ + hero_cols() + """        </div>
         <div class="hfloat a">
@@ -95,17 +135,7 @@ index += """
         </div>
       </div>
     </div>
-  </header>
-
-  <section class="statement wide">
-    <p data-words data-green="one|place|everyone|can|see">Planning an event runs on referrals, group chats and a spreadsheet nobody trusts. EventPlanna puts the people and the plan in one place everyone can see.</p>
   </section>
-
-  <div class="ticker">
-    <div class="ticker-track">
-      <b>WEDDINGS</b><i>&rarr;</i><b class="out">CORPORATE</b><i>&rarr;</i><b>BIRTHDAYS</b><i>&rarr;</i><b class="out">CONFERENCES</b><i>&rarr;</i><b>LAUNCHES</b><i>&rarr;</i><b class="out">PRIVATE DINING</b><i>&rarr;</i>
-    </div>
-  </div>
 
   <section class="section" id="how">
     <div class="shead reveal">

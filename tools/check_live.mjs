@@ -26,6 +26,7 @@ const PAGES = [
   ['index',       'index.html'],
   ['marketplace', 'marketplace.html'],
   ['planners',    'planners.html'],
+  ['about',       'about.html'],
   ['blog',        'blog.html'],
   ['events',      'events.html'],
   ['pricing',     'pricing.html'],
@@ -120,7 +121,9 @@ for (const [name, path] of PAGES) {
     // anything comfortably inside the viewport must actually be painted
     const vh = innerHeight, hidden = [];
     for (const el of document.querySelectorAll('body *')) {
-      if (el.closest('.tcar,.faq-a,.nav-toggle,.progress,.live-slot:empty')) continue;
+      // .ttrack covers both fade carousels: the slides that are not showing
+      // sit at opacity 0 by design, which is not the same as a broken reveal.
+      if (el.closest('.ttrack,.tcar,.faq-a,.nav-toggle,.progress,.live-slot:empty')) continue;
       const r = el.getBoundingClientRect();
       if (r.width < 2 || r.height < 2) continue;
       if (r.top < vh * 0.12 || r.bottom > vh * 0.88) continue;

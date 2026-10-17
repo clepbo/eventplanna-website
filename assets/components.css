@@ -634,3 +634,103 @@ a.bcard-wide p { font-size: 15.5px; }
    where the artwork carries its own title and must not lose an edge. */
 .bc-img[data-wide] { aspect-ratio: 16/8; border-radius: var(--r-xl); margin: 34px 0;
   background-size: contain; background-color: var(--white); }
+
+/* ============================================================
+   HERO STAGE
+   A single photographic band, so the first thing read on the page is an
+   event rather than a product screenshot. It reuses the existing
+   [data-carousel] machinery (.ttrack/.tslide/.tdots), with the testimonial
+   layout rules switched off inside .stage.
+   ============================================================ */
+.hero-stage { width: var(--page); margin: 0 auto; padding-top: clamp(84px,11vw,132px); }
+/* The band is kept close to the photographs' own 1.9:1 so the room is seen
+   whole. Taller than this and cover crops the sides away, which on these
+   pictures means losing the chairs, i.e. losing the event. */
+.stage { --p: 0; position: relative; overflow: hidden;
+  height: min(66vh, calc((100vw - 2 * clamp(24px,3.4vw,96px)) / 1.9));
+  min-height: 420px; max-height: 700px;
+  border-radius: calc(var(--r-xl) + 22px * var(--p));
+  transform: scale(calc(1 - .07 * var(--p)));
+  transform-origin: 50% 0;
+  will-change: transform, border-radius; }
+
+/* The testimonial slide is a two-column grid with padding. Inside the stage a
+   slide is just the photograph, so both are switched off here. */
+.stage .ttrack { height: 100%; }
+.stage .ttrack.fade-mode > .tslide { grid-template-columns: none; display: block;
+  padding: 0; height: 100%; background-color: var(--green-900);
+  background-image: var(--img, none); background-position: center;
+  background-size: cover; background-repeat: no-repeat; }
+/* The picture drifts slower than its frame, so the band reads as a window
+   rather than a flat panel sliding off. */
+.stage .ttrack { transform: translate3d(0, calc(var(--p) * -5%), 0); }
+
+/* Two gradients, not one. The vertical pass keeps the band from going flat,
+   and the horizontal pass darkens the side the copy sits on, because these
+   photographs all have bright sky roughly where the headline lands. */
+.stage-veil { position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(100deg, rgba(10,11,22,.66) 0%, rgba(10,11,22,.32) 48%, rgba(10,11,22,.04) 80%),
+    linear-gradient(180deg, rgba(10,11,22,.30) 0%, rgba(10,11,22,.08) 38%, rgba(10,11,22,.60) 100%);
+  opacity: calc(.9 + .1 * var(--p)); }
+
+.stage-copy { position: absolute; inset: auto 0 0 0; padding: 0 clamp(22px,5vw,78px) clamp(34px,5vw,62px);
+  color: #fff; opacity: calc(1 - 1.35 * var(--p));
+  transform: translate3d(0, calc(var(--p) * -42px), 0); }
+.stage-copy h1 { font-size: clamp(38px,6.6vw,96px); line-height: .97; letter-spacing: -.035em;
+  font-weight: 600; margin: 0; max-width: 16ch; text-wrap: balance; }
+.stage-copy h1 em { font-style: normal; color: #cfc8ff; }
+.stage-copy p { margin: 18px 0 0; max-width: 56ch; font-size: clamp(15px,1.25vw,19px);
+  color: rgba(255,255,255,.88); }
+.stage-copy .hero-actions { margin-top: 26px; }
+.stage-eyebrow { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 18px;
+  padding: 7px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.26);
+  backdrop-filter: blur(8px); color: #fff; }
+
+/* Paired in the bottom corner rather than centred on each edge. The headline
+   here is far bigger than the reference's, and edge-centred arrows landed on
+   top of the first word. */
+.stage-arrow { position: absolute; bottom: clamp(34px,5vw,62px); z-index: 3;
+  width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.34);
+  backdrop-filter: blur(10px); color: #fff;
+  opacity: calc(1 - 1.6 * var(--p));
+  transition: background .3s var(--ease), transform .3s var(--ease); }
+.stage-arrow:hover { background: rgba(255,255,255,.32); }
+.stage-arrow.next { right: clamp(22px,5vw,78px); }
+.stage-arrow.prev { right: calc(clamp(22px,5vw,78px) + 56px); }
+.stage-arrow.prev:hover { transform: translateX(-3px); }
+.stage-arrow.next:hover { transform: translateX(3px); }
+
+/* The dots sit inside the copy block rather than floating in a corner of the
+   band, which keeps them clear of the headline at every width. */
+.stage .tdots { margin-top: clamp(22px,3vw,30px); justify-content: flex-start; }
+.stage .tdots button { background: rgba(255,255,255,.42); }
+.stage .tdots button.on { background: #fff; }
+
+@media (max-width: 760px) {
+  .stage { height: clamp(430px, 76vh, 620px); }
+  .stage-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage, .stage .ttrack, .stage-copy, .stage-arrow, .stage .tdots {
+    transform: none; opacity: 1; border-radius: var(--r-xl); }
+  .stage-copy { opacity: 1; }
+}
+
+/* ---- the card collage, now a section of its own ---- */
+.showcase-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: clamp(26px,4vw,64px);
+  align-items: center; }
+@media (max-width: 900px) { .showcase-grid { grid-template-columns: 1fr; } }
+
+/* A translucent outline button, for use on top of photography. The hero sits
+   over a dark photo in both themes, so its buttons are pinned to explicit
+   colours rather than the themed tokens, which invert in dark mode. */
+.btn-ghost { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.34);
+  backdrop-filter: blur(10px); }
+.btn-ghost .cap { background: rgba(255,255,255,.2); color: #fff; }
+.btn-ghost:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.5); }
+.stage-copy .btn-light { background: #fff; color: #14163a; border-color: transparent; }
+.stage-copy .btn-light .cap { background: #14163a; color: #fff; }

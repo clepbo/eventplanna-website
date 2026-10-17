@@ -11,13 +11,14 @@ Information architecture, after the October stakeholder review:
 import io, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = "4"                       # asset cache-busting version
+V = "5"                       # asset cache-busting version
 
 NAV = [("marketplace.html", "Find a planner"),
        ("planners.html",    "For planners"),
        ("pricing.html",     "Pricing"),
        ("blog.html",        "Blog"),
        ("events.html",      "Events"),
+       ("about.html",       "About"),
        ("faq.html",         "FAQ")]
 
 # Light is the default. Dark is opt in and remembered per browser, applied
@@ -89,7 +90,7 @@ FOOTER = """</div></div>
         <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
       </div>
       <div><h4>Marketplace</h4><a href="marketplace.html">Find a planner</a><a href="planners.html">For planners</a><a href="pricing.html">Pricing</a></div>
-      <div><h4>Company</h4><a href="index.html">Home</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
+      <div><h4>Company</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="events.html">Events</a><a href="faq.html">FAQ</a></div>
     </div>
     <div class="foot-bot">
       <div>

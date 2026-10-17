@@ -257,13 +257,21 @@ $$('[data-carousel]').forEach((car) => {
   const dots = $('.tdots', car.parentElement) || $('.tdots', car);
   let i = 0, timer;
   track.classList.add('fade-mode');
+  // data-carousel can name what a slide is ("Slide", "Story"); the testimonial
+  // carousels pass nothing and keep the original wording.
+  const noun = car.dataset.carousel || 'Story';
   if (dots) slides.forEach((_, n) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.setAttribute('aria-label', 'Story ' + (n + 1));
+    b.setAttribute('aria-label', noun + ' ' + (n + 1));
     b.addEventListener('click', () => { go(n); restart(); });
     dots.append(b);
   });
+  // Arrows are optional. Only the hero carries them; go() and restart() are
+  // function declarations, so referring to them here is fine.
+  const back = $('[data-prev]', car), fwd = $('[data-next]', car);
+  if (back) back.addEventListener('click', () => { go(i - 1); restart(); });
+  if (fwd) fwd.addEventListener('click', () => { go(i + 1); restart(); });
   function go(n) {
     i = (n + slides.length) % slides.length;
     slides.forEach((s, k) => s.classList.toggle('on', k === i));
@@ -297,6 +305,24 @@ if (!REDUCED && matchMedia('(pointer: fine)').matches) {
                                        + ((e.clientY - r.top - r.height / 2) * 0.22) + 'px)';
     });
     b.addEventListener('mouseleave', () => { b.style.transform = ''; });
+  });
+}
+
+/* ---------- hero handoff ----------
+   The hero photo band hands over to the first section instead of just
+   scrolling away: the frame shrinks and rounds, the headline leaves faster
+   than the picture behind it, and the veil deepens so the type stays legible
+   on the way out. One custom property drives all of it from CSS, which keeps
+   the easing in the stylesheet next to the rest of the look.
+
+   Progress is measured against 90% of the band's own height, so the handoff
+   finishes just before the band clears the top of the window rather than
+   running on into the next section. */
+const stage = $('[data-stage]');
+if (stage && !REDUCED) {
+  jobs.push(() => {
+    const r = stage.getBoundingClientRect();
+    stage.style.setProperty('--p', clamp(-r.top / Math.max(1, r.height * 0.9), 0, 1).toFixed(3));
   });
 }
 
