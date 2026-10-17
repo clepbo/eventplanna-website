@@ -633,4 +633,4 @@ a.bcard-wide p { font-size: 15.5px; }
 /* Same reasoning as .ec-media: this is the full-width cover on a detail page,
    where the artwork carries its own title and must not lose an edge. */
 .bc-img[data-wide] { aspect-ratio: 16/8; border-radius: var(--r-xl); margin: 34px 0;
-  background-size: contain; }
+  background-size: contain; background-color: var(--white); }
