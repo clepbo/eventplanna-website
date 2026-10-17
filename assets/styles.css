@@ -297,7 +297,7 @@ footer .wrap{position:relative;z-index:1}
   .hero-left{padding:20px 0}
   .hero-media{height:520px;margin-inline:calc(-1*var(--gut))}
   .hero-orbs{display:none}
-  .nav-links{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;margin:0;padding:12px;background:rgba(255,255,255,.97);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+  .nav-links{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;margin:0;padding:12px;background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow)}
   .nav-links.open{display:flex}
   .nav-links a::after{display:none}
   .nav-toggle{display:block;order:3}
