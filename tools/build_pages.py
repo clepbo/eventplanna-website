@@ -10,42 +10,43 @@ Written after the October stakeholder review. What changed and why:
                        admin portal, and clients browse the approved list.
   no invented numbers  The stat strip and the testimonial carousel are gone.
                        Nothing on these pages claims a figure nobody can stand
-                       behind. The planner cards are labelled as a preview.
+                       behind. The planner profiles are labelled as a preview.
   human copy           No em dashes anywhere, in titles or in prose.
   blog and events      Both have a live backend already, so both are first
                        class in the nav and read from the real endpoints.
   denser pages         The review said there was too much air and not enough on
                        the page. More sections, less space between them.
+
+And after the second review:
+
+  a real directory     marketplace.html was three sample cards under a heading.
+                       It is now twenty four profiles with a search, four
+                       filters, a sort and a pager, and clicking one opens the
+                       planner with a booking and a consultation flow behind
+                       it. The behaviour is in assets/app.js; the list is in
+                       the markup so the page works without it.
+  less prose           Sections that explained the product twice are gone, and
+                       the ones that stayed say it once. The booking states and
+                       the team roles live in the FAQ, which is where someone
+                       looking for them actually goes.
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pagekit import head, FOOTER, write, ticks, V
 
 
-def planner_card(name, place, kind, note, tint, img):
-    return ('      <article class="pl-card">\n'
-            '        <div class="pl-photo ph %s" style="--img:url(img/%s.webp?v=2)"></div>\n'
-            '        <div class="pl-body">\n'
-            '          <h3>%s</h3>\n'
-            '          <div class="pl-meta">%s</div>\n'
-            '          <p>%s</p>\n'
-            '          <div class="pl-foot"><span class="pl-badge">Approved</span><span>%s</span></div>\n'
-            '        </div>\n      </article>\n' % (tint, img, name, place, note, kind))
-
-
 # =========================================================== index.html
 #
-# The collage used to be the supplier categories: catering, photography,
-# beauty. Three of the six are now rooms and receptions instead, because the
-# strip sits under a heading about events and was reading as a vendor
-# directory. tools/make_hero_images.py cuts them from the same originals.
+# The collage is rooms and receptions, not supplier categories: it sits under a
+# heading about events and used to read as a vendor directory.
+# tools/make_hero_images.py cuts these from the same originals as the hero.
 HERO_CARDS = [
     ('up',   [('hero-venue',   't-grey',  'Reception &middot; Victoria Island'),
-              ('ev-ballroom',  't-cream', 'Ballroom, dressed &middot; Lagos'),
+              ('ev-banquet',   't-cream', 'Banquet hall &middot; Lagos'),
               ('hero-decor',   't-blush', 'Styling &middot; Lekki')]),
-    ('down', [('ev-floor',           't-lilac', 'The dance floor &middot; Ikeja'),
+    ('down', [('ev-reception',       't-lilac', 'The reception floor &middot; Ikeja'),
               ('hero-entertainment', 't-blue',  'Live band &middot; Ikeja'),
-              ('ev-ceremony',        't-mint',  'Ceremony set &middot; Abuja')]),
+              ('ev-summit',          't-mint',  'Corporate summit &middot; Abuja')]),
 ]
 
 def hero_cols():
@@ -66,13 +67,15 @@ ARROW_R = ('<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="
            'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
            '<path d="m9 18 6-6-6-6"/></svg>')
 
-# Three rooms, in the order a night happens: laid and waiting, lit and in
-# use, and the ceremony set. The first thing on the page has to read as an
-# event, so none of them is a detail shot or a product screen.
-# tools/make_hero_images.py cuts them from the originals.
-STAGE = [("stage-gold",  "A ballroom laid for dinner, before the doors open"),
-         ("stage-floor", "A reception under colour, the dance floor lit"),
-         ("stage-set",   "A ceremony set against the Lagos skyline")]
+# The four rooms supplied for the hero, in the order a season runs: a banquet
+# laid and waiting, a reception in full colour, a wedding hall dressed, and a
+# corporate floor. The first thing on the page has to read as an event, so none
+# of them is a detail shot or a product screen.
+# tools/make_hero_images.py cuts them from assets/hero-images.
+STAGE = [("stage-banquet",   "A green and gold banquet hall, laid for dinner"),
+         ("stage-reception", "A wedding reception under colour, the floor lit"),
+         ("stage-hall",      "A wedding hall in purple and gold, tables dressed"),
+         ("stage-summit",    "A conference hall set for a corporate summit")]
 
 
 def stage_slides():
@@ -95,7 +98,7 @@ HERO = """
       <div class="stage-copy">
         <span class="stage-eyebrow">Event planning, Nigeria</span>
         <h1>Every great event <em>starts here</em></h1>
-        <p>Find a planner who has been checked and approved, then run the whole thing together: one budget, every booking, the task list and a portal your client can actually see.</p>
+        <p>Find a planner who has been checked and approved, then run the whole event with them in one place.</p>
         <div class="hero-actions">
           <a class="btn btn-light" href="marketplace.html">Find a planner <span class="cap">&#8599;</span></a>
           <a class="btn btn-ghost" href="marketplace.html#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a>
@@ -129,7 +132,7 @@ index += """
       <div class="reveal">
         <span class="eyebrow">The work</span>
         <h2>Real events, run by planners <span class="mark">already on here</span></h2>
-        <p class="lead" style="margin-top:18px">Receptions in Victoria Island, service in Lagos, styling in Lekki. Every planner in the marketplace is checked before they are listed, so the shortlist you get is short for a reason.</p>
+        <p class="lead" style="margin-top:18px">Every planner in the marketplace is checked before being listed, so the shortlist you get is short for a reason.</p>
         <div class="hero-actions" style="margin-top:26px">
           <a class="btn btn-dark" href="marketplace.html">Browse the marketplace <span class="cap">&#8599;</span></a>
         </div>
@@ -157,9 +160,9 @@ index += """
       <h2>Three steps, and none of them is a phone call</h2>
     </div>
     <div class="steps">
-      <div class="step reveal"><div class="step-n">1</div><div><h3>Tell us about the event</h3><p>Type, date, city, headcount, budget. You get a workspace back with phases, a starter checklist and a budget already broken into categories, so you are editing a plan instead of staring at a blank page.</p></div></div>
-      <div class="step reveal"><div class="step-n">2</div><div><h3>Shortlist planners who are actually free</h3><p>Every planner in the directory was checked and approved before being listed. You see real portfolios, real price ranges and whether they are open on your date, so the shortlist is short for a reason.</p></div></div>
-      <div class="step reveal"><div class="step-n">3</div><div><h3>Book, pay, and follow it to the day</h3><p>A deposit paid in the app holds the date. Every naira after that lands against a budget line, and the plan is one screen you, your planner and your team all read from.</p></div></div>
+      <div class="step reveal"><div class="step-n">1</div><div><h3>Tell us about the event</h3><p>Type, date, city, headcount, budget. You get a workspace back with phases, a checklist and a budget already broken into categories.</p></div></div>
+      <div class="step reveal"><div class="step-n">2</div><div><h3>Shortlist planners who are free</h3><p>Search the directory, filter to your city, your event and your budget, and open a planner to see what they take on and whether your date is open.</p></div></div>
+      <div class="step reveal"><div class="step-n">3</div><div><h3>Book, pay, and follow it to the day</h3><p>A deposit paid in the app holds the date. Every naira after that lands against a budget line you and your planner both read from.</p></div></div>
     </div>
   </section>
 
@@ -172,7 +175,7 @@ index += """
       <a class="card" href="marketplace.html">
         <div class="card-photo"><i class="ph t-blush" style="--img:url(img/door-client.webp?v=2)"></i></div>
         <h3>Planning an event</h3>
-        <p>Compare approved planners on portfolio, price and availability. Book and pay in the app, then follow the budget without chasing anyone for an update.</p>
+        <p>Compare approved planners on what they do, what they charge and where they work. Book and pay in the app, then follow the budget without chasing anyone.</p>
         <span class="card-link">Find a planner <span>&rarr;</span></span>
       </a>
       <a class="card" href="marketplace.html#for-planners">
@@ -189,13 +192,13 @@ index += """
       <div>
         <span class="eyebrow">The marketplace</span>
         <h2 style="font-size:clamp(28px,4vw,46px);margin-top:16px">Nobody gets listed <span class="mark">without being checked</span></h2>
-        <p class="muted" style="margin-top:18px;max-width:46ch">A planner applies with their portfolio, their price range and the cities they cover. We review it before anything goes live. Clients only ever browse planners who have already cleared that.</p>
+        <p class="muted" style="margin-top:18px;max-width:46ch">A planner applies with their portfolio, their price range and the cities they cover. A person reviews it before anything goes live.</p>
         <ul class="ticks">
 """ + ticks(["Apply with a portfolio, a price range and your cities",
              "We review it. Nothing is listed automatically",
              "Once approved, clients can find you and book you"]) + """        </ul>
         <div class="hero-actions" style="margin-top:26px">
-          <a class="btn btn-dark" href="marketplace.html">Browse planners <span class="cap">&#8599;</span></a>
+          <a class="btn btn-dark" href="marketplace.html#directory">Browse planners <span class="cap">&#8599;</span></a>
           <a class="btn btn-light" href="marketplace.html#apply">Apply to be listed <span class="cap">&#8599;</span></a>
         </div>
       </div>
@@ -227,7 +230,7 @@ index += """
       <div>
         <span class="eyebrow">The workspace</span>
         <h2 style="font-size:clamp(28px,4vw,46px);margin-top:16px">Everything after the booking, <span class="mark">in one place</span></h2>
-        <p class="muted" style="margin-top:18px;max-width:46ch">Finding the planner is the visible part. What decides whether an event runs smoothly is everything after it, and that is usually where the thread goes cold.</p>
+        <p class="muted" style="margin-top:18px;max-width:46ch">Finding the planner is the visible part. What decides whether an event runs smoothly is everything after it.</p>
         <ul class="ticks">
 """ + ticks(["One budget. Allocated, spent and remaining always agree",
              "Phases and tasks with an owner and a due date",
@@ -260,9 +263,9 @@ index += """
   <section class="section" id="start">
     <div class="cta reveal">
       <h2>Start with 200 free credits</h2>
-      <p>No card, no subscription and no sales call. Create the event and you can be comparing real quotes the same afternoon.</p>
+      <p>No card, no subscription and no sales call.</p>
       <div class="cta-actions">
-        <a class="btn btn-green" href="marketplace.html">Find a planner <span class="cap">&#8599;</span></a>
+        <a class="btn btn-green" href="marketplace.html#directory">Find a planner <span class="cap">&#8599;</span></a>
         <a class="btn btn-light" href="marketplace.html#apply">Apply to be listed <span class="cap">&#8599;</span></a>
       </div>
     </div>
@@ -291,7 +294,7 @@ write("blog.html", head("Blog | EventPlanna",
   <section class="section">
     <div class="cta reveal">
       <h2>Get the next one in your inbox</h2>
-      <p>Planning tips, planner playbooks and product news. One thoughtful email a week, and nothing else.</p>
+      <p>One thoughtful email a week, and nothing else.</p>
       <div class="cta-actions">
         <a class="btn btn-green" href="index.html#start">Start free <span class="cap">&#8599;</span></a>
         <a class="btn btn-light" href="events.html">See upcoming events <span class="cap">&#8599;</span></a>
@@ -325,7 +328,7 @@ write("events.html", head("Events | EventPlanna",
     <div class="shead center reveal">
       <span class="eyebrow">Events</span>
       <h2>Sessions for planners <span class="mark">building a business</span></h2>
-      <p>Free, online, and run with people who actually do this work. Save your seat and come with questions.</p>
+      <p>Free, online, and run with people who actually do this work.</p>
     </div>
   </section>
 
@@ -354,21 +357,228 @@ write("event.html", head("Event | EventPlanna", "An upcoming EventPlanna session
 """ + FOOTER)
 
 
+# =========================================================== the directory
+#
+# Twenty four invented profiles. They exist so the search, the filters, the
+# sort, the pager and the booking flow can be seen working against a list long
+# enough to need them; every one of them is labelled as invented on the page
+# and again inside the dialog.
+#
+# The shape of a row is the shape the backend has to return. When
+# /public/planners is live, this list is replaced by that response and nothing
+# else on the page has to move.
+N = u"₦"
+BANDS = {1: "Under " + N + "2m", 2: N + "2m to " + N + "5m",
+         3: N + "5m to " + N + "15m", 4: N + "15m and above"}
+TINTS = ["t-blush", "t-lilac", "t-mint", "t-blue", "t-cream", "t-grey"]
+
+#          name                  area              city          headline spec
+#          type keys                      band rating events team  books up
+#          what they take on
+#          one line about them
+PLANNERS = [
+    ("Adaeze Mbakwe", "Lekki", "Lagos", "Weddings and private dining",
+     "weddings private", 3, 4.9, 64, 6, "4 to 6 months ahead",
+     "Full service planning, Day-of coordination, Traditional weddings, Supplier management",
+     "Full service planning on a fixed project fee, with her own supplier panel and a coordinator on the floor all day."),
+    ("Tobi Adeyinka", "Victoria Island", "Lagos", "Corporate events and launches",
+     "corporate launches conferences", 4, 4.8, 91, 12, "3 months ahead",
+     "Conferences, AGMs, Product launches, Guest movement, Production",
+     "Runs production and guest movement in house, which is why the schedule on the day tends to hold."),
+    ("Nkechi Obiora", "Wuse", "Abuja", "Weddings and private dining",
+     "weddings private", 2, 4.9, 48, 4, "2 to 3 months ahead",
+     "White weddings, Traditional weddings, Intimate dinners, Budget rescue",
+     "Known for keeping a tight budget honest and saying early when a number will not work."),
+    ("Ifeanyi Okonkwo", "GRA", "Port Harcourt", "Corporate events",
+     "corporate conferences", 3, 4.7, 57, 8, "6 to 8 weeks ahead",
+     "Corporate dinners, Award nights, Conferences, Staff events",
+     "Oil and gas corporate work mostly, so he plans around security briefings and late sign off as standard."),
+    ("Zainab Bello", "Maitama", "Abuja", "Luxury weddings",
+     "weddings", 4, 5.0, 38, 9, "8 to 12 months ahead",
+     "Destination weddings, Multi day celebrations, Guest logistics, Styling direction",
+     "Takes a small number of events a year and gives each one a dedicated team from brief to the last guest."),
+    ("Chidinma Eze", "Ikeja", "Lagos", "Birthdays and private dining",
+     "birthdays private", 1, 4.6, 72, 3, "3 to 4 weeks ahead",
+     "Milestone birthdays, Anniversaries, Supper clubs, Baby showers",
+     "High volume and quick to turn around, which suits an event somebody decided on last month."),
+    ("Emeka Nwachukwu", "Independence Layout", "Enugu", "Traditional weddings",
+     "weddings", 2, 4.8, 44, 5, "3 months ahead",
+     "Igbo traditional rites, Wine carrying, Family liaison, Multi venue days",
+     "Grew up doing this work with family and handles the parts of a traditional day that a checklist does not cover."),
+    ("Funmilayo Adeleke", "Bodija", "Ibadan", "Weddings and birthdays",
+     "weddings birthdays", 2, 4.7, 61, 4, "6 to 8 weeks ahead",
+     "White weddings, Engagements, Milestone birthdays, Aso ebi coordination",
+     "Works the Ibadan and Oyo circuit, with suppliers she has used for years and prices she can hold."),
+    ("Hauwa Suleiman", "Nassarawa", "Kano", "Weddings",
+     "weddings", 2, 4.6, 33, 4, "2 months ahead",
+     "Northern weddings, Fatiha, Walima, Family hosting",
+     "Plans around the rhythm of a northern wedding week rather than squeezing it into a single day."),
+    ("Olumide Fashola", "Ikoyi", "Lagos", "Conferences and summits",
+     "conferences corporate", 4, 4.9, 83, 14, "4 months ahead",
+     "Conferences, Summits, Hybrid events, Sponsor management, Registration",
+     "Built his team around registration and sponsor delivery, the two things that sink a conference quietly."),
+    ("Blessing Udo", "Uyo", "Uyo", "Weddings and private dining",
+     "weddings private", 1, 4.8, 29, 3, "4 to 6 weeks ahead",
+     "White weddings, Traditional weddings, Family dinners, Church coordination",
+     "Akwa Ibom and Cross River, with a supplier list that keeps a small budget looking like a larger one."),
+    ("Segun Bakare", "Yaba", "Lagos", "Launches and brand events",
+     "launches corporate", 3, 4.7, 55, 7, "6 weeks ahead",
+     "Product launches, Pop ups, Press days, Brand activations",
+     "Comes from brand side rather than events, so the room is built around what the photographs need to show."),
+    ("Amara Chukwu", "Owerri", "Owerri", "Traditional weddings",
+     "weddings", 1, 4.9, 41, 3, "6 weeks ahead",
+     "Igba nkwu, Traditional rites, Family liaison, Village logistics",
+     "Runs village ceremonies where the venue is a compound and nothing can be hired on the day."),
+    ("Kelechi Agu", "Asokoro", "Abuja", "Corporate and conferences",
+     "corporate conferences", 3, 4.6, 66, 9, "2 months ahead",
+     "Government events, Conferences, Retreats, Protocol",
+     "Handles protocol and the waiting that comes with public sector work without letting it derail the run sheet."),
+    ("Temitope Oladele", "Lekki", "Lagos", "Weddings",
+     "weddings", 3, 4.8, 52, 6, "5 months ahead",
+     "White weddings, Traditional weddings, Destination, Styling direction",
+     "Design led, and will turn down a brief where the budget and the look cannot be reconciled."),
+    ("Grace Ekanem", "Trans Amadi", "Port Harcourt", "Birthdays and anniversaries",
+     "birthdays private", 1, 4.5, 47, 2, "3 weeks ahead",
+     "Milestone birthdays, Anniversaries, Surprise parties, Home events",
+     "Small team, quick decisions, and comfortable running an event in somebody's house rather than a hall."),
+    ("Yusuf Danladi", "Garki", "Abuja", "Conferences and summits",
+     "conferences corporate", 4, 4.7, 74, 11, "4 months ahead",
+     "Summits, Policy events, Delegations, Interpretation, Accreditation",
+     "Does the kind of event where half the guests arrive by delegation and accreditation decides the morning."),
+    ("Ngozi Anyanwu", "GRA", "Benin City", "Weddings and private dining",
+     "weddings private", 2, 4.8, 36, 4, "2 months ahead",
+     "White weddings, Traditional rites, Private dinners, Supplier sourcing",
+     "Edo and Delta work, and keeps a short, tested supplier list rather than a long one."),
+    ("Damilola Sanni", "Surulere", "Lagos", "Birthdays and launches",
+     "birthdays launches", 1, 4.6, 58, 3, "3 weeks ahead",
+     "Milestone birthdays, Pop ups, Listening parties, Brand activations",
+     "Young crowd events, late finishes, and a crew used to turning a bare space around in an afternoon."),
+    ("Chiamaka Nnadi", "Jabi", "Abuja", "Luxury weddings",
+     "weddings", 4, 4.9, 45, 8, "9 months ahead",
+     "Destination weddings, Multi day celebrations, Guest travel, Styling direction",
+     "Takes a handful of weddings a year, usually across two or three days and more than one city."),
+    ("Bukola Ogunleye", "Oluyole", "Ibadan", "Corporate events",
+     "corporate", 2, 4.5, 39, 5, "6 weeks ahead",
+     "Corporate dinners, Staff events, AGMs, Training days",
+     "Corporate work in Oyo and the south west, costed line by line before anything is booked."),
+    ("Uche Ibe", "New Haven", "Enugu", "Weddings and corporate",
+     "weddings corporate", 2, 4.7, 50, 6, "2 months ahead",
+     "White weddings, Traditional rites, Corporate dinners, Award nights",
+     "Splits the year between wedding season and corporate season, so there is usually room in one of them."),
+    ("Rukayat Lawal", "Ikoyi", "Lagos", "Private dining",
+     "private", 3, 4.8, 43, 4, "4 weeks ahead",
+     "Private dinners, Supper clubs, Chef collaborations, Wine evenings",
+     "Builds the evening around the menu first, and works with chefs rather than catering companies."),
+    ("Peter Etim", "Uyo", "Uyo", "Conferences",
+     "conferences corporate", 2, 4.6, 31, 5, "6 weeks ahead",
+     "Conferences, Church conventions, Training days, Registration",
+     "Large room, long programme, many speakers. The kind of event that lives or dies on the run sheet."),
+]
+
+STAR = ('<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">'
+        '<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg>')
+CHECK = ('<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+         'stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg>')
+
+
+def planner_cards():
+    out = ""
+    for n, p in enumerate(PLANNERS):
+        (name, area, city, spec, types, band, rating, events, team, lead, does, bio) = p
+        initials = "".join(w[0] for w in name.split()[:2])
+        tint = TINTS[n % len(TINTS)]
+        out += (
+            '      <article class="dir-card" data-name="%s" data-initials="%s" data-area="%s"\n'
+            '        data-city="%s" data-spec="%s" data-types="%s" data-band="%d" data-rate="%s"\n'
+            '        data-rating="%s" data-events="%d" data-team="%d people" data-lead="%s"\n'
+            '        data-tint="%s" data-does="%s"\n'
+            '        data-bio="%s">\n'
+            '        <div class="dir-cover %s"><span class="dir-mono">%s</span>'
+            '<span class="dir-tag">%s Approved</span></div>\n'
+            '        <div class="dir-body">\n'
+            '          <h3>%s</h3>\n'
+            '          <div class="dir-where">%s, %s</div>\n'
+            '          <div class="dir-spec">%s</div>\n'
+            '          <div class="dir-foot"><b>%s</b>'
+            '<span class="dir-star">%s %s</span></div>\n'
+            '          <button class="dir-open" type="button">View profile <span>&rarr;</span></button>\n'
+            '        </div>\n'
+            '      </article>\n'
+            % (name, initials, area, city, spec, types, band, BANDS[band],
+               rating, events, team, lead, tint, does, bio,
+               tint, initials, CHECK, name, area, city, spec, BANDS[band], STAR, rating))
+    return out
+
+
+def options(name, items):
+    return ('<option value="">%s</option>' % name
+            + "".join('<option value="%s">%s</option>' % (v, t) for v, t in items))
+
+
+CITIES = sorted(set(p[2] for p in PLANNERS))
+TYPE_OPTS = [("weddings", "Weddings"), ("corporate", "Corporate"), ("conferences", "Conferences"),
+             ("private", "Private dining"), ("launches", "Launches"), ("birthdays", "Birthdays")]
+
+DIRECTORY = """
+  <section class="section" id="directory">
+    <div class="shead reveal">
+      <span class="eyebrow">The directory</span>
+      <h2>Browse planners, filtered to your event</h2>
+      <p>Search by name or by what someone does, then narrow it to your city, your event type and the budget you are working to.</p>
+    </div>
+    <div data-dir="12">
+      <div class="dir-bar">
+        <div class="dir-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+          <input type="search" data-dir-q placeholder="Search a name, a city or what they do" aria-label="Search planners">
+        </div>
+        <select class="fld" data-dir-pick="city" aria-label="City">""" \
+    + options("Every city", [(c, c) for c in CITIES]) + """</select>
+        <select class="fld" data-dir-pick="type" aria-label="Event type">""" \
+    + options("Every event type", TYPE_OPTS) + """</select>
+        <select class="fld" data-dir-pick="band" aria-label="Budget band">""" \
+    + options("Any budget", [(str(k), v) for k, v in sorted(BANDS.items())]) + """</select>
+        <select class="fld" data-dir-pick="sort" aria-label="Sort by">
+          <option value="best">Recommended</option>
+          <option value="rating">Highest rated</option>
+          <option value="budget">Lowest budget first</option>
+          <option value="experience">Most events delivered</option>
+        </select>
+      </div>
+      <div class="dir-head">
+        <div class="dir-count" data-dir-count><b>%d</b> planners</div>
+        <button class="dir-reset" type="button" data-dir-reset>Clear everything</button>
+      </div>
+      <div class="dir-grid" data-dir-grid>
+""" % len(PLANNERS) + planner_cards() + """      </div>
+      <div class="dir-empty" data-dir-empty hidden>Nothing matches that combination yet. Try a wider budget band, or clear the filters and start again.</div>
+      <div class="dir-pager" data-dir-pager hidden></div>
+    </div>
+    <p class="live-note reveal">Every profile above is invented, and so is every rating and count on it. They are here so the search, the filters and the booking flow can be used before launch. Real planners appear in their place once the directory endpoints are live on the backend.</p>
+  </section>
+"""
+
+
 # =========================================================== marketplace
 # One page, both audiences. "Find a planner" and "For planners" sat side by
 # side in the nav reading as the same thing twice, so the planner half moved
 # here under #for-planners and planners.html is gone.
+#
+# The second review cut this page back to what the two audiences actually need:
+# the directory, how you get listed, and what you run the work with. The
+# booking states and the team roles went to the FAQ, and what a credit costs
+# went to the pricing page, where both were already said once.
 mk = head("Find a planner | EventPlanna",
-          "Browse event planners who were checked and approved before being listed, then book and run "
-          "the whole event in one place. Planners: apply to be listed and run the work from one "
-          "workspace.", "marketplace.html")
+          "Search event planners who were checked and approved before being listed, filter by city, "
+          "event type and budget, and book or consult with them in one place. Planners: apply to be "
+          "listed and run the work from one workspace.", "marketplace.html")
 mk += """
   <header class="phero">
     <div class="phero-grid">
       <div>
         <span class="eyebrow fade-up">Find a planner</span>
         <h1 class="fade-up d1">Every planner here <span class="hl">was checked first</span>.</h1>
-        <p class="lead fade-up d2">Planners apply with a portfolio, a price range and the cities they cover. We review it before anything goes live, so the list you are browsing is <b>people who have already cleared that</b>, not whoever signed up most recently.</p>
+        <p class="lead fade-up d2">Planners apply with a portfolio, a price range and the cities they cover, and <b>a person reviews it before anything goes live</b>.</p>
         <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#directory">Browse the directory <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a></div>
       </div>
       <div class="fade-up d2"><div class="ui-card chartbox">
@@ -383,94 +593,21 @@ mk += """
           <div class="prow"><span class="nm">Photography</span><span class="track"><i style="--w:50%"></i></span><span class="val">50%</span></div>
           <div class="prow"><span class="nm">Decor</span><span class="track"><i style="--w:0%"></i></span><span class="val">0%</span></div>
         </div>
-        <div class="ui-sub" style="margin-top:12px">Deposits are paid in the app. Balances fall due 7 days before the event.</div>
+        <div class="ui-sub" style="margin-top:12px">An illustration of the workspace, not a real account.</div>
       </div></div>
     </div>
   </header>
-
-  <section class="statement wide">
-    <p data-words data-green="one|budget|everyone|is|reading|from">Nobody plans an event badly on purpose. It goes wrong because the price, the plan and the people live in different places. One budget everyone is reading from fixes most of it.</p>
-  </section>
-
-  <section class="section" id="directory">
-    <div class="shead reveal">
-      <span class="eyebrow">The directory</span>
-      <h2>Browse planners, filtered to your date</h2>
-      <p>Filter by city, event type, budget band and whether they are free on your date, so the shortlist is short for a reason.</p>
-    </div>
-    <div class="pl-filters reveal">
-      <span class="pl-f on">All</span><span class="pl-f">Lagos</span><span class="pl-f">Abuja</span><span class="pl-f">Port Harcourt</span><span class="pl-f">Weddings</span><span class="pl-f">Corporate</span><span class="pl-f">Private dining</span>
-    </div>
-    <div class="pl-grid stagger">
-"""
-mk += planner_card("Adaeze M.", "Lekki, Lagos", "Weddings, 150 to 600 guests",
-                   "Full service planning and day-of coordination. Works with her own supplier panel on a fixed project fee.",
-                   "t-blush", "door-planner")
-mk += planner_card("Tobi A.", "Victoria Island, Lagos", "Corporate and launches",
-                   "Conferences, AGMs and product launches. Runs production and guest movement in house.",
-                   "t-lilac", "door-vendor")
-mk += planner_card("Nkechi O.", "Wuse, Abuja", "Weddings and private dining",
-                   "Traditional and white weddings, intimate dinners. Known for keeping tight budgets honest.",
-                   "t-mint", "verified-vendor")
-mk += """    </div>
-    <p class="live-note reveal">This is a preview of how the directory will look. Real planner profiles appear here once the directory goes live, which needs the planner endpoints on the backend. Nothing above is a real business.</p>
-  </section>
-
-  <section class="section" id="how">
-    <div class="shead reveal"><span class="eyebrow">Booking</span><h2>Six states, and you always know which one you are in</h2></div>
-    <div class="feature reveal">
-      <div>
-        <p class="muted">A booking is not a conversation. It moves through the same six states every time, each one timestamped, so what was agreed and what is still open are never in doubt, and neither is who is waiting on whom.</p>
-        <div class="rail">
-          <span class="done">Pending</span><span class="done">Accepted</span><span class="now">Confirmed</span><span>Completed</span><span class="off">Declined</span><span class="off">Cancelled</span>
-        </div>
-        <p style="font-size:13.5px;color:var(--grey);margin-top:16px">A quote becomes <b>Accepted</b> when you agree the price, and <b>Confirmed</b> when the deposit clears. Until then the date is not held.</p>
-      </div>
-      <div class="feature-media">
-        <div class="ui-card chartbox">
-          <div class="ui-head"><div class="ui-title">Budget by category</div><div class="ui-sub">&#8358;1,600,000 allocated</div></div>
-          <div class="prow"><span class="nm">Venue</span><span class="track"><i style="--w:31%"></i></span><span class="val">31%</span></div>
-          <div class="prow"><span class="nm">Catering</span><span class="track"><i style="--w:28%"></i></span><span class="val">28%</span></div>
-          <div class="prow"><span class="nm">Decor</span><span class="track"><i style="--w:16%"></i></span><span class="val">16%</span></div>
-          <div class="prow"><span class="nm">Photography</span><span class="track"><i style="--w:14%"></i></span><span class="val">14%</span></div>
-          <div class="prow"><span class="nm">Other</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
-          <div class="note warn" style="font-size:12.5px;padding:11px 13px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
-            Catering is at 88% of its allocation with two quotes still open.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="dark" style="padding-block:clamp(40px,6vw,76px)">
-      <div class="shead reveal">
-        <span class="eyebrow">Straight answer</span>
-        <h2>What is <span class="mark">free</span>, and what a credit is for</h2>
-        <p>There is no subscription and no card kept on file. You buy credits once and spend them on four actions.</p>
-      </div>
-      <div class="split-2 stagger">
-        <div class="tier t-agg"><h4>Always free</h4><p>Browsing the directory. Reading portfolios, price ranges and past events. Messaging a planner before you commit. Viewing your budget, tasks and bookings. A dormant account costs nothing at all.</p></div>
-        <div class="tier t-private"><h4>Costs credits</h4><p>Creating an event (5). Sending a booking request (5). Inviting someone onto your team (2). Exporting a report (1). That is the whole list, and nothing else draws down your balance.</p></div>
-      </div>
-      <div class="note reveal">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        200 free credits on signup covers roughly 40 events. Credits never expire.
-      </div>
-    </div>
-  </section>
-
+""" + DIRECTORY + """
   <section class="section half-break" id="for-planners">
     <div class="shead reveal">
       <span class="eyebrow">Turn the page over</span>
       <h2>Not planning an event. <span class="mark">Running them.</span></h2>
-      <p>Everything above is what a client sees. The rest of this page is the other side of the same marketplace: how you get listed on it, and what you run the work with once you are.</p>
+      <p>Everything above is what a client sees. The rest of this page is the other side of the same marketplace.</p>
     </div>
     <div class="duo reveal">
       <div>
         <h3 style="font-size:clamp(20px,2.4vw,27px)">Get found. Then run the work.</h3>
-        <p class="lead" style="margin-top:18px">Apply once to be listed. Once you are approved, clients can find you, brief you and book you, and <b>budgets, tasks, your team and the client portal</b> all live in the same place. You pay for actions, not for access, so a quiet quarter costs you nothing.</p>
+        <p class="lead" style="margin-top:18px">Apply once to be listed. Once you are approved, clients can find you, brief you and book you, and <b>budgets, tasks, your team and the client portal</b> live in the same place. You pay for actions, not for access, so a quiet quarter costs you nothing.</p>
         <div class="hero-actions" style="margin-top:26px">
           <a class="btn btn-dark" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
           <a class="btn btn-light" href="#workspace">Tour the workspace <span class="cap">&#8599;</span></a>
@@ -488,7 +625,7 @@ mk += """    </div>
           <div class="prow"><span class="nm">Okafor 50th</span><span class="track"><i style="--w:34%;background:var(--c6)"></i></span><span class="val">34%</span></div>
           <div class="prow"><span class="nm">Ire launch</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
         </div>
-        <div class="ui-sub" style="margin-top:12px">Progress is a count of completed tasks, not an estimate. This panel is an illustration of the workspace, not a real account.</div>
+        <div class="ui-sub" style="margin-top:12px">An illustration of the workspace, not a real account.</div>
       </div></div>
     </div>
   </section>
@@ -497,7 +634,7 @@ mk += """    </div>
     <div class="shead reveal">
       <span class="eyebrow">Getting listed</span>
       <h2>Apply once. A person reviews it.</h2>
-      <p>Listing is free. There is no automatic approval and no paying to rank, which is the only reason the badge is worth anything to the client reading it.</p>
+      <p>Listing is free, approval is never automatic, and there is no paying to rank.</p>
     </div>
     <div class="duo reveal">
       <div class="flow">
@@ -514,7 +651,6 @@ mk += """    </div>
              "The cities and areas you genuinely cover",
              "A price range, so briefs reach you in the right band",
              "The event types you want, and the ones you do not"]) + """        </ul>
-        <p class="muted" style="margin-top:18px;font-size:14.5px">Applications are reviewed in the order they arrive. You will hear back either way.</p>
         <div class="live-note" style="margin-top:20px">The application form is not wired up yet. Planner submission needs its endpoint on the backend first, so this points at account signup for now.</div>
         <div class="hero-actions" style="margin-top:20px">
           <a class="btn btn-dark" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>
@@ -527,55 +663,24 @@ mk += """    </div>
     <div class="shead reveal">
       <span class="eyebrow">The workspace</span>
       <h2>Six things that stop falling through <span class="mark">the cracks</span></h2>
-      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong, and where a shared workspace earns its place.</p>
+      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong.</p>
     </div>
     <div class="cards cap-grid stagger">
-      <div class="card"><h3>Budgets that reconcile</h3><p>Allocate by category, land every quote, deposit and balance against a line, and watch allocated, spent and remaining stay in agreement. An alert fires at 85%, not after the fact.</p></div>
-      <div class="card"><h3>Phases and tasks</h3><p>Each event breaks into phases with their own checklists. Tasks carry an owner, a due date and a status, so the progress bar counts finished work instead of guessing.</p></div>
-      <div class="card"><h3>Bookings end to end</h3><p>Request, quote, accept, contract, deposit, balance, completion. Six states, each timestamped, so nothing important was agreed in a chat you cannot find in December.</p></div>
-      <div class="card"><h3>A team with real roles</h3><p>Managers, coordinators and assistants each get the access their job needs and see only the events they are assigned to. Adding someone costs 2 credits, once.</p></div>
-      <div class="card"><h3>A client portal</h3><p>Share progress, the budget and decisions that need a yes through a link, without handing the client the keys to your workspace or your cost base.</p></div>
-      <div class="card"><h3>Messaging in context</h3><p>Every thread sits against the booking it belongs to, so the quote, the revision and what was finally agreed stay together and survive a change of coordinator.</p></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="shead reveal">
-      <span class="eyebrow">Your team</span>
-      <h2>Three roles, and nobody sees more than they should</h2>
-      <p>A coordinator running the day does not need your margins, and an assistant chasing a florist does not need the whole client list.</p>
-    </div>
-    <div class="cards stagger">
-      <div class="card"><h3>Manager</h3><p>Full access to the events they own: budget, costs, bookings, team and the client portal. The only role that can change an allocation or accept a quote.</p></div>
-      <div class="card"><h3>Coordinator</h3><p>Runs delivery on the events they are assigned to, covering tasks, timeline and supplier contact, without budget figures or supplier pricing.</p></div>
-      <div class="card"><h3>Assistant</h3><p>Works the task list on a single event. Can complete, comment and upload, and sees nothing about money, other events or other clients.</p></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="dark" style="padding-block:clamp(40px,6vw,76px)">
-      <div class="shead reveal">
-        <span class="eyebrow">The client portal</span>
-        <h2>What the client sees, and <span class="mark">what stays yours</span></h2>
-        <p>Being transparent with a client should not mean handing over your cost base. The portal is a deliberate slice of the workspace, not a login to it.</p>
-      </div>
-      <div class="split-2 stagger">
-        <div class="tier t-agg"><h4>They see</h4><p>Progress against phases, the budget as you have chosen to present it, confirmed bookings, decisions waiting on them, and the documents you shared. Enough that they stop calling for updates.</p></div>
-        <div class="tier t-private"><h4>They never see</h4><p>Your supplier rates, your margin, internal notes, other clients, your team&rsquo;s task chatter, or any event you have not shared with them. There is no permission that opens it.</p></div>
-      </div>
-      <div class="note reveal">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a49ff0" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 9.1 8 10 4.6-.9 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
-        Exporting a client-ready budget or progress pack costs 1 credit, and records the figures exactly as they stood at that moment.
-      </div>
+      <div class="card"><h3>Budgets that reconcile</h3><p>Allocate by category, land every quote and payment against a line, and watch allocated, spent and remaining stay in agreement. An alert fires at 85%.</p></div>
+      <div class="card"><h3>Phases and tasks</h3><p>Each event breaks into phases with their own checklists. Tasks carry an owner, a due date and a status, so progress counts finished work instead of guessing.</p></div>
+      <div class="card"><h3>Bookings end to end</h3><p>Request, quote, accept, contract, deposit, balance, completion. Six states, each timestamped, so nothing important was agreed in a chat you cannot find.</p></div>
+      <div class="card"><h3>A team with real roles</h3><p>Managers, coordinators and assistants each get the access their job needs and see only the events they are assigned to.</p></div>
+      <div class="card"><h3>A client portal</h3><p>Share progress, the budget and decisions that need a yes, without handing the client the keys to your workspace or your cost base.</p></div>
+      <div class="card"><h3>Messaging in context</h3><p>Every thread sits against the booking it belongs to, so the quote, the revision and what was agreed stay together.</p></div>
     </div>
   </section>
 
   <section class="section" id="cta">
     <div class="cta reveal">
       <h2>Start with 200 free credits</h2>
-      <p>No card, no subscription and no sales call. Whichever side of the marketplace you are on, the first 200 credits are on us and nothing renews.</p>
+      <p>Whichever side of the marketplace you are on, the first 200 credits are on us and nothing renews.</p>
       <div class="cta-actions">
-        <a class="btn btn-green" href="index.html#start">Planning an event <span class="cap">&#8599;</span></a>
+        <a class="btn btn-green" href="#directory">Find a planner <span class="cap">&#8599;</span></a>
         <a class="btn btn-light" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
       </div>
     </div>

@@ -11,18 +11,47 @@ Information architecture, after the October stakeholder review:
 import io, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = "6"                       # asset cache-busting version
+V = "7"                       # asset cache-busting version
 
 # One marketplace entry, not two. "Find a planner" and "For planners" sat next
 # to each other reading as near-duplicates, so both audiences now live on
 # marketplace.html: the directory at the top, the planner half under
 # #for-planners.
+#
+# FAQ came out of the bar at the client's request. The page is still there and
+# still linked from the footer and from the pages that answer a question
+# halfway; it was the fifth item competing for a click it rarely won.
 NAV = [("marketplace.html", "Find a planner"),
        ("pricing.html",     "Pricing"),
        ("blog.html",        "Blog"),
        ("events.html",      "Events"),
-       ("about.html",       "About"),
-       ("faq.html",         "FAQ")]
+       ("about.html",       "About")]
+
+# The company's own accounts. Nothing here is a guess: these are the three URLs
+# the client supplied, used verbatim.
+#
+# Each mark is drawn the way its owner draws it. Instagram's is an outline, so
+# it is stroked; the other two are solid glyphs, and stroking those turns the
+# Facebook f into a hollow outline of an f, which is what the first pass did.
+SOCIALS = [
+    ("Instagram", "https://www.instagram.com/theeventplanna/",
+     'fill="none" stroke="currentColor" stroke-width="1.7"',
+     '<rect x="2.7" y="2.7" width="18.6" height="18.6" rx="5.4"/>'
+     '<circle cx="12" cy="12" r="4.1"/>'
+     '<circle cx="17.3" cy="6.8" r="1.15" fill="currentColor" stroke="none"/>'),
+    ("Facebook", "https://www.facebook.com/profile.php?id=61594179380852",
+     'fill="currentColor" stroke="none"',
+     '<path d="M13.5 21.9v-8.2h2.76l.41-3.2h-3.17V8.44c0-.93.26-1.56 1.59-1.56h1.7V4.01c-.3-.04-1.3-.13-2.48-.13-2.45 0-4.13 1.5-4.13 4.25v2.37H7.42v3.2h2.76v8.2z"/>'),
+    ("LinkedIn", "https://www.linkedin.com/company/112656623/",
+     'fill="currentColor" stroke="none"',
+     '<path d="M6.17 21.3H2.72V9.2h3.45zM4.44 7.69a2 2 0 1 1 0-4.01 2 2 0 0 1 0 4.01M21.28 21.3h-3.44v-5.89c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v5.99h-3.45V9.2h3.31v1.65h.05c.46-.87 1.58-1.79 3.26-1.79 3.49 0 4.13 2.3 4.13 5.28z"/>'),
+]
+
+SOCIAL_LINKS = "".join(
+    '<a class="soc" href="%s" target="_blank" rel="noopener" aria-label="EventPlanna on %s" title="%s">'
+    '<svg width="17" height="17" viewBox="0 0 24 24" %s stroke-linejoin="round">%s</svg></a>'
+    % (url, name, name, attrs, path)
+    for name, url, attrs, path in SOCIALS)
 
 # Light is the default. Dark is opt in and remembered per browser, applied
 # before first paint so the page never flashes the wrong theme.
@@ -77,7 +106,6 @@ def head(title, desc, current, home=False, pre=""):
 <nav class="nav">
   <div class="nav-inner">
     <a class="logo" href="index.html"><img class="l-light" src="assets/logo-dark.svg" alt="EventPlanna"><img class="l-dark" src="assets/logo-light.svg" alt="EventPlanna"></a>
-    <a class="chip" href="%s">Get started &#8599;</a>
     <div class="nav-links">
 %s    </div>
 %s    <a class="btn btn-dark btn-sm" href="%s">Start free <span class="cap">&#8599;</span></a>
@@ -86,7 +114,7 @@ def head(title, desc, current, home=False, pre=""):
 </nav>
 
 %s<div class="wrap"><div class="shell">
-""" % (title, desc, THEME_BOOT, V, V, cta, links, TOGGLE, cta, pre)
+""" % (title, desc, THEME_BOOT, V, V, links, TOGGLE, cta, pre)
 
 
 FOOTER = """</div></div>
@@ -103,19 +131,20 @@ FOOTER = """</div></div>
     </div>
     <div class="foot-bot">
       <div>
-        <div>EventPlanna &middot; Victoria Island, Lagos, Nigeria.</div>
+        <div>EventPlanna &middot; Nigeria</div>
         <div style="margin-top:6px">&copy; 2026 EventPlanna. All rights reserved.</div>
       </div>
+      <div class="socials">""" + SOCIAL_LINKS + """</div>
     </div>
   </div>
   <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="assets/app.js?v=%s"></script>
-<script src="assets/data.js?v=%s"></script>
+<script src="assets/app.js?v=@V"></script>
+<script src="assets/data.js?v=@V"></script>
 </body>
 </html>
-""" % (V, V)
+""".replace("@V", V)
 
 
 def write(name, body):

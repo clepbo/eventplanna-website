@@ -3,10 +3,9 @@
 
 The old site had an About page at /about/ and the new one had dropped it. The
 substance here is carried over from that page rather than invented: the mission
-and vision, the problem statement, the corporate registration and the founding
-team are all theirs.
+and vision, the problem statement and the founding team are all theirs.
 
-Three deliberate departures from the old copy:
+Four deliberate departures from the old copy:
   * every reference to the vendor directory is rewritten to the planner
     marketplace, because vendors are no longer part of the product;
   * the "2,400+ Vendors Onboard" figure is dropped rather than restated about
@@ -14,7 +13,12 @@ Three deliberate departures from the old copy:
     not an option;
   * the counting stat strip is gone at the client's request. The same figures
     still appear once, as prose, in the problem statement where they are
-    making an argument rather than being decoration.
+    making an argument rather than being decoration;
+  * everything about the company's registration and its address is gone at the
+    client's request: the CAC number, the date of incorporation, the registered
+    address, the headquarters and the whole "Verified and registered" section.
+    The cities that remain on the page are the markets the product serves, not
+    places the company can be found.
 
 Nothing on this page is invented. Where a claim is the company's own ("80%",
 "$20B+", "55+"), it is reproduced as the company states it.
@@ -66,8 +70,6 @@ DIFFS = [
                      "first and is fully functional on one."),
     ("AI where it earns it", "Budget suggestions, planner matching and timeline generation trained on "
                              "Nigerian market data rather than US defaults."),
-    ("Registered and verifiable", "A duly incorporated Nigerian company, operating with full legal "
-                                  "compliance and financial transparency."),
 ]
 
 
@@ -76,8 +78,8 @@ def cards(items):
 
 
 p = head("About | EventPlanna",
-         "EventPlanna Limited is building Nigeria's all in one event management platform, from Abuja. "
-         "Our mission, the problem we are solving, our registration and the founding team.",
+         "EventPlanna is building Nigeria's all in one event management platform. Our mission, the "
+         "problem we are solving, what makes it different and the founding team.",
          "about.html")
 
 p += """
@@ -86,16 +88,19 @@ p += """
       <div>
         <span class="eyebrow fade-up">Who we are</span>
         <h1 class="fade-up d1">Building the future of <span class="hl">event planning</span> in Nigeria.</h1>
-        <p class="lead fade-up d2">EventPlanna Limited is Nigeria&rsquo;s first all in one event management platform, built for the professional planners who run other people&rsquo;s biggest days for a living.</p>
+        <p class="lead fade-up d2">EventPlanna is Nigeria&rsquo;s first all in one event management platform, built for the professional planners who run other people&rsquo;s biggest days for a living.</p>
         <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="index.html#start">Get started <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#team">Meet the founders <span class="cap">&#8599;</span></a></div>
       </div>
       <div class="fade-up d2"><div class="ui-card chartbox">
-        <div class="ui-head"><div><div class="ui-title">EventPlanna Limited</div><div class="ui-sub">Abuja, Federal Capital Territory</div></div><span class="delta up">Live</span></div>
-        <div class="kpi-row">
-          <div class="kpi"><div class="kpi-label">CAC registration</div><div class="kpi-value">9430128</div><div class="delta info">Verifiable at the CAC portal</div></div>
-          <div class="kpi"><div class="kpi-label">Incorporated</div><div class="kpi-value" style="font-size:clamp(20px,2.4vw,27px)">20 Mar 2026</div><div class="delta up">Federal Republic of Nigeria</div></div>
+        <div class="ui-head"><div><div class="ui-title">One tool instead of seven</div><div class="ui-sub">What a Nigerian planner runs on today</div></div><span class="delta warn">Replaced</span></div>
+        <div style="margin-top:4px">
+          <div class="prow"><span class="nm">Spreadsheets</span><span class="track"><i style="--w:100%;background:var(--c-neutral)"></i></span><span class="val">out</span></div>
+          <div class="prow"><span class="nm">Group chats</span><span class="track"><i style="--w:100%;background:var(--c-neutral)"></i></span><span class="val">out</span></div>
+          <div class="prow"><span class="nm">Bank apps</span><span class="track"><i style="--w:100%;background:var(--c-neutral)"></i></span><span class="val">out</span></div>
+          <div class="prow"><span class="nm">Docs and email</span><span class="track"><i style="--w:100%;background:var(--c-neutral)"></i></span><span class="val">out</span></div>
+          <div class="prow"><span class="nm">EventPlanna</span><span class="track"><i style="--w:100%"></i></span><span class="val">in</span></div>
         </div>
-        <div class="ui-sub" style="margin-top:14px">Headquartered in Abuja, with a focus on Lagos, Abuja, Port Harcourt, Ibadan, Enugu, Benin City, Owerri, Kano and Uyo.</div>
+        <div class="ui-sub" style="margin-top:14px">Clients, budgets, bookings, payments, timelines and team collaboration, in one place.</div>
       </div></div>
     </div>
   </header>
@@ -129,12 +134,12 @@ p += """
   <section class="section" id="where">
     <div class="duo reveal">
       <div>
-        <span class="eyebrow">Where we are</span>
+        <span class="eyebrow">Where we work</span>
         <h2 style="margin-top:16px">Built in Nigeria, <span class="mark">for Nigeria</span></h2>
-        <p class="lead" style="margin-top:18px">Headquartered in Abuja, with a sharp focus on the commercial heartbeats of the country and, after that, the continent.</p>
+        <p class="lead" style="margin-top:18px">A sharp focus on the commercial heartbeats of the country and, after that, the continent.</p>
         <ul class="ticks" style="margin-top:22px">
-""" + ticks(["Headquarters in Abuja, Federal Capital Territory",
-             "Primary market: Nigeria, across nine cities",
+""" + ticks(["Lagos, Abuja, Port Harcourt, Ibadan and Enugu first",
+             "Then Benin City, Owerri, Kano and Uyo",
              "Expansion target: Pan-Africa",
              "Naira pricing, local bank rails, local supplier culture"]) + """        </ul>
       </div>
@@ -153,20 +158,6 @@ p += """
     </div>
     <div class="cards cap-grid stagger">
 """ + cards(DIFFS[3:]) + """    </div>
-  </section>
-
-  <section class="section" id="legal">
-    <div class="dark" style="padding-block:clamp(40px,6vw,76px)">
-      <div class="shead reveal">
-        <span class="eyebrow">Verified and registered</span>
-        <h2>A legitimate <span class="mark">Nigerian business</span></h2>
-        <p>EventPlanna Limited is a duly incorporated company in Nigeria. You can check the registration yourself rather than take our word for it.</p>
-      </div>
-      <div class="split-2 stagger">
-        <div class="tier t-agg"><h4>Corporate registration</h4><p><b>Company name</b><br>EventPlanna Limited<br><br><b>CAC registration number</b><br>9430128<br><br><b>Date of incorporation</b><br>20 March 2026</p></div>
-        <div class="tier t-private"><h4>Where we are registered</h4><p><b>Country</b><br>Federal Republic of Nigeria<br><br><b>Registered address</b><br>Abuja, Federal Capital Territory, Nigeria<br><br><b>Verify it</b><br><a href="https://search.cac.gov.ng/home" style="color:inherit;text-decoration:underline" target="_blank" rel="noopener">Corporate Affairs Commission portal</a></p></div>
-      </div>
-    </div>
   </section>
 
   <section class="section" id="team">

@@ -795,3 +795,243 @@ a.bcard-wide p { font-size: 15.5px; }
 .half-break { margin-top: clamp(44px,6vw,86px); padding-top: clamp(40px,5.4vw,74px);
   border-top: 1px solid var(--border); }
 .half-break .eyebrow { color: var(--green); }
+
+/* ============================================================
+   FOOTER SOCIALS
+   Three accounts, in the bottom bar rather than the brand column, so the
+   company's own links sit with the copyright line instead of competing with
+   the two navigation columns.
+   ============================================================ */
+.socials { display: flex; gap: 8px; align-items: center; }
+.socials .soc { display: grid; place-items: center; width: 36px; height: 36px; padding: 0;
+  border-radius: 50%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.9); transition: background .25s, border-color .25s, transform .3s var(--ease); }
+.socials .soc:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.34);
+  transform: translateY(-2px); }
+
+/* ============================================================
+   THE DIRECTORY
+   Built to be scrolled past rather than read: a search field, four filters, a
+   dense grid and a pager. The markup carries the whole list and every detail
+   as data attributes, so the page is complete with no JavaScript at all and
+   assets/app.js only ever hides, sorts and paginates what is already there.
+   That is also why the filters are real <select> elements: they work before
+   the script runs, and they are the only control that scales past the handful
+   of pill buttons that used to be here.
+   ============================================================ */
+.dir-bar { display: grid; grid-template-columns: minmax(220px, 1.6fr) repeat(4, minmax(0, 1fr));
+  gap: 10px; margin-top: 30px; }
+@media (max-width: 1100px) { .dir-bar { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px)  { .dir-bar { grid-template-columns: 1fr; } }
+
+.dir-search { position: relative; }
+.dir-search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+  color: var(--grey); pointer-events: none; }
+.fld, .dir-search input {
+  width: 100%; font: inherit; font-size: 14.5px; color: var(--ink);
+  background: var(--white); border: 1px solid var(--border); border-radius: 999px;
+  padding: 12px 16px; transition: border-color .22s, box-shadow .22s; appearance: none; }
+.dir-search input { padding-left: 42px; }
+.fld:focus, .dir-search input:focus { outline: 0; border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(80,71,225,.14); }
+/* The arrow is drawn here rather than left to the platform, which renders it
+   at a different size and colour on every operating system. */
+select.fld { padding-right: 38px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; }
+
+.dir-head { display: flex; justify-content: space-between; align-items: baseline;
+  gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+.dir-count { font-size: 13.5px; color: var(--grey); }
+.dir-count b { color: var(--ink); font-weight: 600; }
+.dir-reset { font-size: 13.5px; color: var(--green); background: none; border: 0; padding: 0;
+  font-family: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+.dir-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+@media (max-width: 1340px) { .dir-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px)  { .dir-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .dir-grid { grid-template-columns: 1fr; } }
+/* .dir-pager, .ep-modal and the cards all set a display of their own, which
+   outranks the browser's rule for [hidden] and leaves a "hidden" element on
+   screen. Say it once, for the three of them. */
+.dir-grid [hidden], .dir-pager[hidden], .dir-empty[hidden], .ep-modal[hidden] { display: none; }
+
+.dir-card { position: relative; text-align: left; font: inherit; cursor: pointer;
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .25s; }
+.dir-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #d7d3f5; }
+.dir-card:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+/* A monogram, not a photograph. These profiles are a labelled preview, and
+   putting a real reception behind an invented name would read as that
+   planner's portfolio. */
+.dir-cover { aspect-ratio: 5/2; display: grid; place-items: center; position: relative; }
+.dir-mono { font-size: clamp(21px,2.2vw,26px); font-weight: 600; letter-spacing: -.03em;
+  color: rgba(31,41,55,.5); }
+.dir-tag { position: absolute; left: 12px; top: 12px; font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--green);
+  display: inline-flex; align-items: center; gap: 5px; }
+.dir-body { padding: 15px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.dir-body h3 { font-size: 16.5px; letter-spacing: -.015em; }
+.dir-where { font-size: 12.5px; color: var(--grey); }
+.dir-spec { font-size: 13px; color: var(--grey); }
+.dir-foot { margin-top: auto; padding-top: 11px; display: flex; align-items: center;
+  justify-content: space-between; gap: 8px; border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--grey); }
+.dir-foot b { color: var(--ink); font-weight: 600; }
+/* The card is an <article>, not a button: a heading is not allowed inside one,
+   and a div carrying role="button" is a worse answer than a real control.
+   Clicking anywhere on the card opens it, and this is what the keyboard
+   reaches. */
+.dir-open { margin-top: 12px; align-self: flex-start; padding: 0; background: none; border: 0;
+  font: inherit; font-size: 13.5px; font-weight: 600; color: var(--green); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; }
+.dir-open span { transition: transform .3s var(--ease); }
+.dir-card:hover .dir-open span { transform: translateX(4px); }
+.dir-open:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+.dir-star { display: inline-flex; align-items: center; gap: 4px; }
+
+.dir-empty { margin-top: 20px; padding: 40px 24px; text-align: center; border-radius: var(--r-lg);
+  border: 1px dashed var(--border); color: var(--grey); font-size: 14.5px; }
+
+.dir-pager { display: flex; justify-content: center; align-items: center; gap: 6px;
+  margin-top: 30px; flex-wrap: wrap; }
+.dir-pager button { min-width: 38px; height: 38px; padding: 0 12px; font: inherit; font-size: 13.5px;
+  font-weight: 600; cursor: pointer; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--white); color: var(--ink); display: grid; place-items: center;
+  transition: background .2s, border-color .2s, color .2s; }
+.dir-pager button:hover:not(:disabled) { border-color: #c9c5f2; background: var(--green-100); }
+.dir-pager button[aria-current="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+.dir-pager button:disabled { opacity: .4; cursor: default; }
+.dir-pager .gap { color: var(--grey); padding: 0 2px; }
+
+/* ============================================================
+   MODAL
+   Appended to <body> by assets/app.js, never left inside .smooth: that
+   wrapper is fixed and transformed, and a transformed ancestor makes
+   position:fixed resolve against it instead of the window.
+
+   The page behind is deliberately not frozen. Locking it would mean setting
+   overflow:hidden on the document, which drops scrollY to 0, and the motion
+   engine reads scrollY every frame: the page would silently rewind to the top
+   underneath the dialog.
+   ============================================================ */
+.ep-modal { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center;
+  padding: clamp(12px,3vw,34px); opacity: 0; pointer-events: none;
+  transition: opacity .28s var(--ease); }
+.ep-modal.on { opacity: 1; pointer-events: auto; }
+.ep-modal::before { content: ""; position: absolute; inset: 0; background: rgba(12,13,30,.52);
+  backdrop-filter: blur(3px); }
+.ep-dialog { position: relative; width: min(680px, 100%); max-height: min(88vh, 860px);
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--white); color: var(--ink); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg); transform: translateY(14px) scale(.985);
+  transition: transform .34s var(--ease); }
+.ep-modal.on .ep-dialog { transform: none; }
+.ep-dialog-head { display: flex; gap: 14px; align-items: flex-start;
+  padding: 22px clamp(18px,3vw,30px) 16px; border-bottom: 1px solid var(--border); }
+.ep-dialog-head h2 { font-size: clamp(20px,2.4vw,26px); }
+.ep-dialog-head .ui-sub { margin-top: 5px; font-size: 13px; }
+.ep-body { padding: clamp(18px,3vw,26px) clamp(18px,3vw,30px); overflow-y: auto; flex: 1; }
+.ep-foot { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+  padding: 16px clamp(18px,3vw,30px); border-top: 1px solid var(--border); background: var(--tile); }
+.ep-foot .ep-back { margin-right: auto; }
+.ep-x { flex: none; width: 34px; height: 34px; margin-left: auto; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; background: var(--tile); border: 1px solid var(--border);
+  color: var(--ink); transition: background .2s, transform .3s var(--ease); }
+.ep-x:hover { background: var(--green-100); transform: rotate(90deg); }
+
+.ep-mono { flex: none; width: 54px; height: 54px; border-radius: 16px; display: grid;
+  place-items: center; font-size: 19px; font-weight: 600; color: rgba(31,41,55,.56); }
+.ep-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 18px; }
+@media (max-width: 520px) { .ep-facts { grid-template-columns: 1fr; } }
+.ep-fact { border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px;
+  background: var(--tile); }
+.ep-fact em { font-style: normal; display: block; font-size: 10px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.ep-fact b { display: block; font-size: 14.5px; font-weight: 600; margin-top: 4px; }
+.ep-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.ep-chips span { font-size: 12.5px; padding: 6px 12px; border-radius: 999px;
+  background: var(--green-100); color: var(--green); }
+
+/* ---- the booking and consultation form ---- */
+.ef-rail { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.ef-rail i { flex: 1; height: 3px; border-radius: 2px; background: var(--border); font-style: normal;
+  transition: background .35s var(--ease); }
+.ef-rail i.on { background: var(--green); }
+.ef-step { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--grey); flex: none; }
+.ef-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .ef-grid { grid-template-columns: 1fr; } }
+.ef-field { display: flex; flex-direction: column; gap: 6px; }
+.ef-field.wide { grid-column: 1 / -1; }
+.ef-field label { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+.ef-field .hint { font-size: 12px; color: var(--grey); font-weight: 400; }
+.ef-field .fld { border-radius: var(--r); padding: 11px 14px; }
+.ef-field textarea.fld { border-radius: var(--r); min-height: 96px; resize: vertical;
+  line-height: 1.55; }
+.ef-field .fld[aria-invalid="true"] { border-color: var(--red); background: var(--red-bg); }
+.ef-err { font-size: 12px; color: var(--red); min-height: 0; }
+.ef-pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.ef-pick label { position: relative; font-size: 13px; font-weight: 500; padding: 9px 15px;
+  border-radius: 999px; border: 1px solid var(--border); background: var(--white);
+  cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+.ef-pick input { position: absolute; opacity: 0; width: 0; height: 0; }
+.ef-pick label:hover { border-color: #c9c5f2; }
+.ef-pick label.on { background: var(--green); border-color: var(--green); color: #fff; }
+.ef-pick label:focus-within { outline: 2px solid var(--green); outline-offset: 2px; }
+.ef-review { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.ef-review div { display: flex; gap: 14px; justify-content: space-between; padding: 11px 15px;
+  font-size: 13.5px; border-top: 1px solid var(--border); }
+.ef-review div:first-child { border-top: 0; }
+.ef-review em { font-style: normal; color: var(--grey); flex: none; }
+.ef-review b { font-weight: 600; text-align: right; }
+.ef-done { text-align: center; padding: 10px 0 4px; }
+.ef-done .ef-tick { width: 58px; height: 58px; margin: 0 auto 18px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--green-100); color: var(--green); }
+.ef-done h3 { font-size: clamp(20px,2.4vw,25px); }
+.ef-done p { color: var(--grey); font-size: 14.5px; margin-top: 10px; max-width: 46ch;
+  margin-inline: auto; }
+.ef-ref { display: inline-block; margin-top: 16px; padding: 9px 16px; border-radius: 999px;
+  background: var(--tile); border: 1px solid var(--border); font-size: 13.5px; font-weight: 600;
+  letter-spacing: .04em; }
+
+/* ============================================================
+   CREDIT PACKS
+   Five of them, so the three-up .plans-3 grid does not fit. The popular pack
+   is the second card rather than the middle one, because at two and three
+   columns there is no middle.
+   ============================================================ */
+.packs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 40px;
+  align-items: stretch; }
+@media (max-width: 1340px) { .packs { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 860px)  { .packs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px)  { .packs { grid-template-columns: 1fr; } }
+.pack { position: relative; display: flex; flex-direction: column; gap: 4px; text-align: center;
+  padding: 26px 18px 22px; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+.pack:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+.pack.on { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+.pack-flag { position: absolute; left: 50%; top: 0; transform: translate(-50%,-50%);
+  background: var(--green); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  padding: 5px 14px; border-radius: 999px; white-space: nowrap; }
+.pack h3 { font-size: 17px; }
+.pack .pack-for { font-size: 12.5px; color: var(--grey); min-height: 2.9em; }
+.pack .pack-c { margin-top: 16px; font-size: clamp(28px,3.4vw,38px); font-weight: 600;
+  letter-spacing: -.035em; line-height: 1; }
+.pack .pack-c span { font-size: 13px; font-weight: 500; color: var(--grey); letter-spacing: 0; }
+.pack .pack-n { margin-top: 10px; font-size: 19px; font-weight: 600; color: var(--green); }
+.pack .pack-u { font-size: 12.5px; color: var(--grey); margin-top: 2px; }
+.pack .pack-v { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 7px;
+  justify-content: center; }
+.pack .btn { width: 100%; justify-content: center; margin-top: 16px; }
+
+/* ---- dark mode ----
+   Only the things that cannot be expressed as a token. The select arrow is a
+   data URI, so its colour is baked in and has to be drawn a second time. */
+:root[data-theme="dark"] select.fld {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca2b3' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] .dir-tag { background: rgba(255,255,255,.9); }
+:root[data-theme="dark"] .ep-modal::before { background: rgba(0,0,0,.66); }
