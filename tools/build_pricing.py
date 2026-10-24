@@ -17,7 +17,10 @@ about those figures:
     reprint a number the page's own arithmetic contradicts, each one is
     divided out, and the Premium discrepancy is flagged to the client.
   * "about N events" is gone. It was derived from a 5-credit event and read as
-    a claim about capacity rather than a unit price.
+    a claim about capacity rather than a unit price;
+  * the "What a credit buys" section came out at the client's request. The four
+    chargeable actions are still priced on the page, in the worked example
+    immediately below the packs, and answered at length in the FAQ.
 
 Nothing here invents a figure. The free 200 credits on signup and the four
 chargeable actions are the product's own, carried over unchanged.
@@ -92,20 +95,6 @@ p += """
     <div class="packs stagger">
 """ + packs() + """    </div>
     <p class="center muted" style="font-size:13px;margin-top:26px">Prices are in naira and include VAT where it applies. Every new account starts with <b>200 free credits</b>, and a pack is valid for one full year from the day you buy it.</p>
-  </section>
-
-  <section class="section" id="how-credits" style="padding-bottom:20px">
-    <div class="shead reveal">
-      <span class="eyebrow">What a credit buys</span>
-      <h2>Four actions draw down your balance</h2>
-      <p>Nothing else costs a credit. Browsing the directory, reading a profile, messaging a planner and viewing your own budget are free, always.</p>
-    </div>
-    <div class="cards pay-grid stagger">
-      <div class="card"><h3>Create an event <span class="cost">5</span></h3><p>Builds the workspace from the event type: phases, a starter checklist, a category budget and a client portal.</p></div>
-      <div class="card"><h3>Booking request <span class="cost">5</span></h3><p>Carries the date, headcount and budget to the planner, so what comes back is a priced quote rather than a question.</p></div>
-      <div class="card"><h3>Invite a team member <span class="cost">2</span></h3><p>Adds a coordinator or assistant with their own role and assigned events. Charged once, not monthly.</p></div>
-      <div class="card"><h3>Export a report <span class="cost">1</span></h3><p>A client-ready budget or progress pack, recording the figures as they stood at the moment you exported.</p></div>
-    </div>
   </section>
 
   <section class="section">

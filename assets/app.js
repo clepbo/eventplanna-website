@@ -339,21 +339,38 @@ if (stage && track && !REDUCED) {
   });
 }
 
+/* ---------- shared bits for the directory and the planner page ---------- */
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+const NAIRA = '₦';
+function money(n) {
+  return NAIRA + Number(n).toLocaleString('en-NG');
+}
+/* A date input hands back 2027-03-14, which is what the field needs and not
+   what anybody wants to read back on a review screen. */
+function niceDate(v) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+  return new Date(v + 'T00:00:00')
+    .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function niceTime(v) {
+  if (!/^\d{2}:\d{2}/.test(v)) return v;
+  const h = +v.slice(0, 2), m = v.slice(3, 5);
+  return ((h % 12) || 12) + ':' + m + (h < 12 ? 'am' : 'pm');
+}
+
 /* ---------- the planner directory ----------
    Search, four filters, a sort and a pager, over a list that is already in the
    HTML. Nothing here fetches anything and nothing here builds a card: every
-   profile is in the markup with its detail on data attributes, so the page is
-   complete with JavaScript off and this only decides what is on screen.
+   profile is in the markup, and this only decides what is on screen. With no
+   JavaScript at all the page still shows twenty four planners, each one a link
+   to its own page.
 
-   That is the shape to keep when the backend arrives. Replacing readCards()
+   That is the shape to keep when the backend arrives. Replacing the card scan
    with a fetch and keeping render() as it is would move the same page onto
-   live data without touching the filtering, the pager, the modal or the form.
-
-   The one thing built here is the dialog, because a dialog is not content. It
-   is appended to <body> and never to .wrap: .smooth is fixed and transformed,
-   and a transformed ancestor makes position:fixed resolve against it rather
-   than against the window, which would pin the overlay to the top of the
-   document instead of the top of the screen. */
+   live data without touching the filtering or the pager. */
 const dir = $('[data-dir]');
 if (dir) {
   const grid = $('[data-dir-grid]', dir);
@@ -367,16 +384,15 @@ if (dir) {
 
   const cards = $$('.dir-card', grid).map((el, i) => ({
     el, i,
-    hay: (el.dataset.name + ' ' + el.dataset.area + ' ' + el.dataset.city + ' '
-        + el.dataset.spec + ' ' + el.dataset.does).toLowerCase(),
+    hay: el.dataset.hay,
     city: el.dataset.city, type: el.dataset.types, band: +el.dataset.band,
     rating: +el.dataset.rating, events: +el.dataset.events
   }));
 
   const SORTS = {
-    best:    (a, b) => a.i - b.i,
-    rating:  (a, b) => b.rating - a.rating || a.i - b.i,
-    budget:  (a, b) => a.band - b.band || a.i - b.i,
+    best: (a, b) => a.i - b.i,
+    rating: (a, b) => b.rating - a.rating || a.i - b.i,
+    budget: (a, b) => a.band - b.band || a.i - b.i,
     experience: (a, b) => b.events - a.events || a.i - b.i
   };
 
@@ -438,7 +454,7 @@ if (dir) {
     pager.innerHTML = html;
   }
 
-  pager && pager.addEventListener('click', (e) => {
+  if (pager) pager.addEventListener('click', (e) => {
     const b = e.target.closest('button[data-go]');
     if (!b || b.disabled) return;
     page = +b.dataset.go;
@@ -447,359 +463,550 @@ if (dir) {
   });
 
   let qt;
-  q && q.addEventListener('input', () => { clearTimeout(qt); qt = setTimeout(render, 160); });
+  if (q) q.addEventListener('input', () => { clearTimeout(qt); qt = setTimeout(render, 160); });
   picks.forEach((s) => s.addEventListener('change', () => render()));
 
   const reset = $('[data-dir-reset]', dir);
-  reset && reset.addEventListener('click', () => {
+  if (reset) reset.addEventListener('click', () => {
     if (q) q.value = '';
     picks.forEach((s) => { s.value = s.dataset.dirPick === 'sort' ? 'best' : ''; });
     render();
   });
 
-  grid.addEventListener('click', (e) => {
-    const c = e.target.closest('.dir-card');
-    if (c) openPlanner(c);
-  });
-
   render();
+}
 
-  /* ---------- the dialog ---------- */
-  const modal = document.createElement('div');
-  modal.className = 'ep-modal';
-  modal.setAttribute('role', 'dialog');
-  modal.setAttribute('aria-modal', 'true');
-  modal.hidden = true;
-  modal.innerHTML = '<div class="ep-dialog"></div>';
-  document.body.appendChild(modal);
-  const dlg = $('.ep-dialog', modal);
-  let opener = null, card = null;
+/* ---------- a planner's page ----------
+   planner.html is one shell serving every profile. It reads ?p=<slug> out of
+   the URL and renders from window.EP_PLANNERS, which tools/build_planners.py
+   writes and which is shaped exactly like the response the backend has to
+   return for GET /public/planners/{slug}. When that endpoint exists, the
+   assignment below becomes a fetch and the rest of this is unchanged.
 
-  const X = '<button class="ep-x" type="button" data-shut aria-label="Close">'
-    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-    + 'stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
+   The consultation form at the bottom is the one the planner configures in the
+   app: their own welcome message, their own rules of engagement, their own
+   consultation fee where they charge one, and the same four sections of
+   questions with the same field types. A planner who charges gets a payment
+   step; a planner who does not never sees one. */
+const plp = $('[data-planner]');
+const who = (location.search.match(/[?&]p=([^&]+)/) || [])[1];
+const P = who && (window.EP_PLANNERS || []).filter((x) => x.slug === decodeURIComponent(who))[0];
 
-  let shutter = null;
-  function openPlanner(el) {
-    card = el;
-    // Focus goes back to the control the keyboard used to get here, which is
-    // the button inside the card rather than the card itself.
-    opener = $('.dir-open', el) || el;
-    clearTimeout(shutter);
-    modal.hidden = false;
-    profile();
-    raf(() => modal.classList.add('on'));
-    const f = $('[data-shut]', dlg);
-    if (f) f.focus();
+if (plp && P) {
+  const IMG = (n) => 'url(img/' + n + '.webp?v=' + (plp.dataset.v || '') + ')';
+  const STAR = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">'
+    + '<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg>';
+  const TICK = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+    + 'stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg>';
+  const SOC = {
+    Instagram: '<rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4"/>'
+      + '<circle cx="17.2" cy="6.9" r="1.1" fill="currentColor" stroke="none"/>',
+    Facebook: '<path d="M14 21v-7h2.4l.4-2.9H14V9.4c0-.85.24-1.42 1.45-1.42h1.55V5.4c-.27-.04-1.2-.12-2.27-.12-2.24 0-3.78 1.37-3.78 3.88v2.17H8.5V14h2.45v7z"/>',
+    LinkedIn: '<path d="M7 20H4V9h3zM5.5 7.4A1.75 1.75 0 1 1 5.5 4a1.75 1.75 0 0 1 0 3.4M20 20h-3v-5.4c0-1.3-.03-2.9-1.8-2.9s-2.05 1.38-2.05 2.81V20h-3V9h2.88v1.5h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.6z"/>',
+    TikTok: '<path d="M16.3 3c.3 2.1 1.6 3.4 3.7 3.6v2.5c-1.2.1-2.4-.2-3.6-.9v5.5c0 4.4-4.3 6.7-7.5 4.4-2.9-2-2.9-6.4.1-8.3 1-.6 2.1-.9 3.2-.7v2.6c-1.6-.4-2.9.9-2.6 2.4.2 1 1.1 1.7 2.1 1.6 1.2-.1 1.9-1 1.9-2.3V3z"/>'
+  };
+  const SOC_FILL = { Instagram: 0, Facebook: 1, LinkedIn: 1, TikTok: 1 };
+
+  document.title = P.name + ' | EventPlanna';
+  plp.style.setProperty('--brand', P.brand);
+
+  const facts = [
+    ['Typical budget', P.rate],
+    ['Events delivered', P.events],
+    ['Team', P.team],
+    ['Books up', P.lead],
+    ['Replies', P.reply]
+  ];
+
+  const gal = P.gallery.map((g, n) =>
+    '<button class="plp-tile ph ' + P.tint + '" type="button" data-shot="' + n + '" '
+    + 'style="--img:' + IMG(g.img) + '" aria-label="' + esc(g.cap) + '">'
+    + (g.kind === 'film'
+      ? '<span class="plp-play"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" '
+        + 'stroke="none"><path d="M8 5.1v13.8L19 12z"/></svg></span>' : '')
+    + '<span class="plp-cap">' + esc(g.cap) + (g.kind === 'film' ? ' &middot; Showreel' : '')
+    + '</span></button>').join('');
+
+  const past = P.past.map((e) =>
+    '<div class="plp-ev"><div><b>' + esc(e.title) + '</b><small>' + esc(e.where)
+    + '</small></div><div class="plp-ev-n"><b>' + e.guests + '</b><small>guests</small></div>'
+    + '<div class="plp-ev-w">' + esc(e.when) + '</div></div>').join('');
+
+  const says = P.says.map((s) =>
+    '<figure class="plp-say"><div class="plp-stars">' + STAR.repeat(s.stars) + '</div>'
+    + '<blockquote>' + esc(s.q) + '</blockquote>'
+    + '<figcaption>' + esc(s.who) + ' &middot; ' + esc(s['for']) + '</figcaption></figure>').join('');
+
+  const socs = P.socials.map(([net, handle]) =>
+    '<div class="plp-soc"><i>' + '<svg width="16" height="16" viewBox="0 0 24 24" '
+    + (SOC_FILL[net] ? 'fill="currentColor" stroke="none"' : 'fill="none" stroke="currentColor" stroke-width="1.7"')
+    + '>' + SOC[net] + '</svg></i><span><b>' + net + '</b><small>' + esc(handle)
+    + '</small></span></div>').join('');
+
+  plp.innerHTML =
+    '<section class="section plp">'
+    + '<a class="plp-back" href="marketplace.html#directory">&#8249; All planners</a>'
+    + '<div class="plp-cover ph ' + P.tint + '" style="--img:' + IMG(P.cover) + '">'
+    + '<span class="plp-veil"></span></div>'
+    + '<div class="plp-ident">'
+    + '<div class="plp-avatar ' + P.tint + '">' + P.initials + '</div>'
+    + '<div class="plp-who">'
+    + '<div class="plp-badges"><span class="plp-ok">' + TICK + ' Approved</span>'
+    + '<span class="plp-rate">' + STAR + ' ' + P.rating + '</span>'
+    + '<span class="plp-years">' + P.years + ' years</span></div>'
+    + '<h1>' + esc(P.name) + '</h1>'
+    + '<div class="plp-where">' + esc(P.area) + ', ' + esc(P.city) + ' &middot; '
+    + esc(P.spec) + '</div></div>'
+    + '<div class="plp-act">'
+    + '<a class="btn btn-light" href="#consult" data-go="book">Request a booking <span class="cap">&#8599;</span></a>'
+    + '<a class="btn btn-green" href="#consult" data-go="consult">'
+    + (P.fee ? 'Book a consultation' : 'Book a free consultation') + ' <span class="cap">&#8599;</span></a>'
+    + '</div></div>'
+
+    + '<div class="plp-stats">' + facts.map((f) =>
+        '<div class="plp-stat"><em>' + f[0] + '</em><b>' + f[1] + '</b></div>').join('') + '</div>'
+
+    + '<div class="plp-main">'
+    + '<div class="plp-col">'
+
+    + '<div class="plp-block reveal"><h2>About ' + esc(P.name.split(' ')[0]) + '</h2>'
+    + '<p>' + esc(P.bio) + '</p><p>' + esc(P.shape) + '</p><p>' + esc(P.method) + '</p>'
+    + '<div class="ep-chips">' + P.does.map((t) => '<span>' + esc(t) + '</span>').join('')
+    + '</div></div>'
+
+    + '<div class="plp-block reveal"><h2>The work</h2>'
+    + '<p class="muted">Photographs and film from events already delivered. A planner uploads '
+    + 'these themselves, and they are checked at approval.</p>'
+    + '<div class="plp-gal">' + gal + '</div></div>'
+
+    + '<div class="plp-block reveal"><h2>Recent events</h2>'
+    + '<div class="plp-past">' + past + '</div></div>'
+
+    + '<div class="plp-block reveal"><h2>What clients said</h2>'
+    + '<p class="muted">A rating can only be left by someone who booked and paid through the '
+    + 'platform, against a completed booking.</p>'
+    + '<div class="plp-says">' + says + '</div></div>'
+
+    + '</div>'
+
+    + '<aside class="plp-side">'
+    + '<div class="plp-card plp-fee">'
+    + '<div class="plp-fee-top"><em>Consultation</em><b>'
+    + (P.fee ? money(P.fee) : 'Free') + '</b></div>'
+    + '<div class="plp-fee-sub">' + P.minutes + ' minutes'
+    + (P.fee ? ', taken off your project fee if you book' : ', no card needed') + '</div>'
+    + '<ul class="plp-covers">' + P.covers.map((c) =>
+        '<li>' + TICK + ' ' + esc(c) + '</li>').join('') + '</ul>'
+    + '<a class="btn btn-green" href="#consult" data-go="consult">Book it <span class="cap">&#8599;</span></a>'
+    + '</div>'
+    + '<div class="plp-card"><h3>Linked accounts</h3>'
+    + '<p class="plp-note">Connected by the planner and checked when they were approved.</p>'
+    + socs + '</div>'
+    + '<div class="plp-card"><h3>Where they work</h3>'
+    + '<div class="ep-chips">' + P.areas.concat(P.near).map((a) =>
+        '<span>' + esc(a) + '</span>').join('') + '</div></div>'
+    + '</aside></div>'
+
+    + '<p class="live-note">This profile is invented, and so is the portfolio, the client list and '
+    + 'every rating on it. It is here so the page and the booking flow can be used before launch. '
+    + esc(P.name) + ' is not a real business.</p>'
+    + '</section>'
+
+    + '<section class="section" id="consult">'
+    + '<div class="shead reveal"><span class="eyebrow">Get in touch</span>'
+    + '<h2>Book ' + esc(P.name.split(' ')[0]) + '</h2>'
+    + '<p>' + esc(P.welcome[0]) + '</p><p style="margin-top:12px">' + esc(P.welcome[1]) + '</p></div>'
+    + '<div class="ef-tabs" role="tablist">'
+    + '<button class="ef-tab on" type="button" role="tab" aria-selected="true" data-mode="consult">'
+    + 'Consultation' + (P.fee ? ' &middot; ' + money(P.fee) : ' &middot; free') + '</button>'
+    + '<button class="ef-tab" type="button" role="tab" aria-selected="false" data-mode="book">Request a booking</button>'
+    + '</div>'
+    + '<div class="ef-shell" data-form></div>'
+    + '</section>'
+
+    + '<section class="section"><div class="cta reveal">'
+    + '<h2>Not sure this is the right planner?</h2>'
+    + '<p>Twenty three others are listed, and the directory filters down to your city, your event and your budget.</p>'
+    + '<div class="cta-actions">'
+    + '<a class="btn btn-green" href="marketplace.html#directory">Back to the directory <span class="cap">&#8599;</span></a>'
+    + '<a class="btn btn-light" href="pricing.html">What it costs <span class="cap">&#8599;</span></a>'
+    + '</div></div></section>';
+
+  /* ---------- the lightbox ----------
+     Appended to <body>, never left inside .wrap: .smooth is fixed and
+     transformed, and a transformed ancestor makes position:fixed resolve
+     against it instead of against the window. */
+  const lb = document.createElement('div');
+  lb.className = 'lb';
+  lb.hidden = true;
+  document.body.appendChild(lb);
+  let shot = 0, lbt = null;
+
+  function drawShot() {
+    const g = P.gallery[shot];
+    lb.innerHTML = '<button class="lb-x" type="button" data-lb-shut aria-label="Close">'
+      + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>'
+      + '<figure class="lb-fig"><div class="lb-img ph ' + P.tint + '" style="--img:' + IMG(g.img) + '"></div>'
+      + '<figcaption>' + esc(g.cap) + ' &middot; ' + esc(P.name)
+      + (g.kind === 'film'
+        ? '<span class="lb-film">The planner&rsquo;s showreel plays here. Video upload needs the '
+          + 'media endpoint on the backend, so this is the cover frame.</span>' : '')
+      + '</figcaption></figure>'
+      + '<button class="lb-nav prev" type="button" data-lb="-1" aria-label="Previous">&#8249;</button>'
+      + '<button class="lb-nav next" type="button" data-lb="1" aria-label="Next">&#8250;</button>';
   }
 
-  function shut() {
-    modal.classList.remove('on');
-    clearTimeout(shutter);
-    shutter = setTimeout(() => { modal.hidden = true; dlg.innerHTML = ''; }, 280);
-    if (opener) opener.focus();
+  function openShot(n) {
+    shot = (n + P.gallery.length) % P.gallery.length;
+    clearTimeout(lbt);
+    lb.hidden = false;
+    drawShot();
+    raf(() => lb.classList.add('on'));
+    const x = $('[data-lb-shut]', lb);
+    if (x) x.focus();
   }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal || e.target.closest('[data-shut]')) shut();
+  function shutShot() {
+    lb.classList.remove('on');
+    clearTimeout(lbt);
+    lbt = setTimeout(() => { lb.hidden = true; lb.innerHTML = ''; }, 260);
+  }
+
+  plp.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-shot]');
+    if (t) openShot(+t.dataset.shot);
+  });
+  lb.addEventListener('click', (e) => {
+    const nav = e.target.closest('[data-lb]');
+    if (nav) { openShot(shot + +nav.dataset.lb); return; }
+    if (e.target === lb || e.target.closest('[data-lb-shut]')) shutShot();
   });
   addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.hidden) shut();
-  });
-  /* A dialog with nothing behind it to tab to: keep focus inside it. */
-  modal.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const f = $$('button, [href], input, select, textarea', dlg).filter((n) => !n.disabled);
-    if (!f.length) return;
-    const first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    if (lb.hidden) return;
+    if (e.key === 'Escape') shutShot();
+    else if (e.key === 'ArrowRight') openShot(shot + 1);
+    else if (e.key === 'ArrowLeft') openShot(shot - 1);
   });
 
-  function fact(label, value) {
-    return '<div class="ep-fact"><em>' + label + '</em><b>' + value + '</b></div>';
-  }
-
-  function profile() {
-    const d = card.dataset;
-    dlg.innerHTML =
-      '<div class="ep-dialog-head">'
-      + '<div class="ep-mono ' + d.tint + '">' + d.initials + '</div>'
-      + '<div><h2>' + d.name + '</h2><div class="ui-sub">' + d.area + ', ' + d.city
-      + ' &middot; ' + d.spec + '</div></div>' + X + '</div>'
-      + '<div class="ep-body">'
-      + '<p class="muted" style="font-size:14.5px">' + d.bio + '</p>'
-      + '<div class="ep-facts">'
-      + fact('Typical budget', d.rate)
-      + fact('Events delivered', d.events)
-      + fact('Team size', d.team)
-      + fact('Books up', d.lead)
-      + '</div>'
-      + '<h3 style="font-size:15px;margin-top:22px">What they take on</h3>'
-      + '<div class="ep-chips">'
-      + d.does.split(',').map((t) => '<span>' + t.trim() + '</span>').join('')
-      + '</div>'
-      + '<div class="live-note" style="margin-top:22px">This profile is an illustration of how a '
-      + 'planner will appear once the directory is live. ' + d.name
-      + ' is not a real business, and the figures above are invented.</div>'
-      + '</div>'
-      + '<div class="ep-foot">'
-      + '<button class="btn btn-light" type="button" data-flow="consult">Book a consultation '
-      + '<span class="cap">&#8599;</span></button>'
-      + '<button class="btn btn-green" type="button" data-flow="book">Request a booking '
-      + '<span class="cap">&#8599;</span></button></div>';
-  }
-
-  dlg.addEventListener('click', (e) => {
-    const go = e.target.closest('[data-flow]');
-    if (go) startFlow(go.dataset.flow);
-  });
-
-  /* ---------- book / consult ----------
-     One engine, two field sets. Each step is a list of fields; a field knows
-     how to draw itself, how to read itself back and what makes it invalid, so
-     adding a question is a line in STEPS rather than a new branch. */
+  /* ---------- the consultation form ----------
+     The sections, the field types and the order are the ones a planner sets up
+     in the app: client information locked at the top, then the event, then the
+     vision and the budget. Both modes ask the same questions, because a
+     booking request and a consultation need the same facts; what differs is
+     the rules step, the fee and what the page says at the end. */
   const EVENT_TYPES = ['Wedding', 'Traditional wedding', 'Corporate event', 'Conference',
-    'Product launch', 'Birthday', 'Private dining', 'Other'];
-  const CITIES = ['Lagos', 'Abuja', 'Port Harcourt', 'Ibadan', 'Enugu', 'Benin City',
-    'Owerri', 'Kano', 'Uyo'];
-  // The naira sign is written as an escape, not as a character and not as an
-  // HTML entity: an entity would survive into the option's value and stop a
-  // chosen budget matching itself when the step is reopened with Back.
-  const N = '\u20A6';
-  const BUDGETS = ['Under ' + N + '2m', N + '2m to ' + N + '5m', N + '5m to ' + N + '15m',
-    N + '15m and above', 'Not decided yet'];
+    'Product launch', 'Birthday', 'Private dining', 'Anniversary', 'Other'];
 
   const F = {
-    sel: (k, label, opts, req) => ({ k, label, req, kind: 'select', opts }),
     txt: (k, label, req, type, hint) => ({ k, label, req, kind: 'input', type: type || 'text', hint }),
+    sel: (k, label, opts, req, hint) => ({ k, label, req, hint, kind: 'select', opts }),
     area: (k, label, req, hint) => ({ k, label, req, kind: 'textarea', hint }),
-    pick: (k, label, opts, req) => ({ k, label, req, kind: 'pick', opts })
+    pick: (k, label, opts, req) => ({ k, label, req, kind: 'pick', opts }),
+    tags: (k, label, req, hint) => ({ k, label, req, kind: 'tags', hint }),
+    cash: (k, label, req, hint) => ({ k, label, req, kind: 'money', hint })
   };
 
-  const FLOWS = {
-    book: {
-      title: 'Request a booking',
-      verb: 'Send the request',
-      steps: [
-        { name: 'The event', fields: [
-          F.sel('type', 'What kind of event', EVENT_TYPES, true),
-          F.txt('date', 'Date of the event', true, 'date'),
-          F.sel('city', 'City', CITIES, true),
-          F.txt('guests', 'Guests expected', true, 'number'),
-          F.sel('budget', 'Budget band', BUDGETS, true) ] },
-        { name: 'You', fields: [
-          F.txt('name', 'Your name', true),
-          F.txt('email', 'Email', true, 'email'),
-          F.txt('phone', 'Phone', true, 'tel', 'So the planner can reach you quickly'),
-          F.pick('contact', 'Best way to reach you', ['WhatsApp', 'Email', 'Phone call'], true) ] },
-        { name: 'The brief', fields: [
-          F.area('brief', 'What do you want this event to be', true,
-                 'Venue, the feel of it, anything already booked, anything you are worried about') ] }
-      ]
-    },
-    consult: {
-      title: 'Book a consultation',
-      verb: 'Book the call',
-      steps: [
-        { name: 'The call', fields: [
-          F.sel('type', 'What is the event', EVENT_TYPES, true),
-          F.txt('date', 'Rough date, if you have one', false, 'date'),
-          F.pick('length', 'How long', ['20 minutes', '45 minutes'], true),
-          F.area('topic', 'What do you want to go through', true,
-                 'Budget, venue, where to start, a second opinion') ] },
-        { name: 'You', fields: [
-          F.txt('name', 'Your name', true),
-          F.txt('email', 'Email', true, 'email'),
-          F.txt('phone', 'Phone', false, 'tel'),
-          F.pick('contact', 'Where should the call happen', ['WhatsApp', 'Phone call', 'Video call'], true) ] }
-      ]
-    }
-  };
+  const SECTIONS = [
+    { name: 'Client information', note: 'Every planner asks for these three.', fields: [
+      F.txt('name', 'Name', true),
+      F.txt('email', 'Email', true, 'email'),
+      F.txt('phone', 'Phone number', true, 'tel') ] },
+    { name: 'Event overview', fields: [
+      F.sel('etype', 'Event type', EVENT_TYPES, true),
+      F.txt('edate', 'Event date', true, 'date'),
+      F.txt('etime', 'Event time', true, 'time'),
+      F.txt('venue', 'Venue location', true, 'text', 'The venue, or the area you are looking in'),
+      F.txt('guests', 'Guest size', true, 'number') ] },
+    { name: 'Vision & budget', fields: [
+      F.txt('theme', 'Event theme', false, 'text', 'Glasshouse garden, black tie, all white'),
+      F.tags('colours', 'Event colour(s)', false, 'Type a colour and press enter'),
+      F.cash('budget', 'Estimated budget', true),
+      F.area('hopes', 'Event expectations', true,
+             'What this day has to be, and what would make it a success for you') ] }
+  ];
 
-  let flow = null, step = 0, answers = {};
+  const ALL = SECTIONS.reduce((a, s) => a.concat(s.fields), []);
+  const PAY = F.pick('pay', 'How would you like to pay', ['Card', 'Bank transfer'], true);
+  const ACCEPT = { k: 'accept', label: 'Rules of engagement', req: true, kind: 'check',
+                   text: 'I have read the rules of engagement and accept them.' };
 
-  function startFlow(which) {
-    flow = FLOWS[which];
-    step = 0;
-    answers = {};
-    drawStep();
+  const form = $('[data-form]', plp);
+  let mode = 'consult', step = 0, A = {};
+
+  const paying = () => mode === 'consult' && P.fee > 0;
+  function stepFields(n) {
+    if (n < SECTIONS.length) return SECTIONS[n].fields;
+    if (n === SECTIONS.length) return paying() ? [ACCEPT, PAY] : [ACCEPT];
+    return [];
   }
+  const TOTAL = SECTIONS.length + 2;          // sections, rules, review
+
+  function setMode(m) {
+    mode = m;
+    step = 0;
+    $$('.ef-tab', plp).forEach((b) => {
+      const on = b.dataset.mode === m;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    draw();
+  }
+
+  $$('.ef-tab', plp).forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  $$('[data-go]', plp).forEach((a) => a.addEventListener('click', () => {
+    if (a.dataset.go !== mode) setMode(a.dataset.go);
+  }));
 
   function fieldHtml(f) {
     const id = 'ef-' + f.k;
-    const v = answers[f.k] || '';
+    const v = A[f.k] || '';
     const lab = '<label for="' + id + '">' + f.label
       + (f.req ? '' : ' <span class="hint">optional</span>') + '</label>'
       + (f.hint ? '<span class="hint">' + f.hint + '</span>' : '');
-    let input;
+    let input, wide = false;
+
     if (f.kind === 'select') {
-      input = '<select class="fld" id="' + id + '" data-k="' + f.k + '">'
-        + '<option value="">Choose one</option>'
+      input = '<select class="fld" id="' + id + '" data-k="' + f.k + '"><option value="">Choose one</option>'
         + f.opts.map((o) => '<option' + (o === v ? ' selected' : '') + '>' + o + '</option>').join('')
         + '</select>';
     } else if (f.kind === 'textarea') {
-      input = '<textarea class="fld" id="' + id + '" data-k="' + f.k + '" rows="4">'
-        + v + '</textarea>';
+      wide = true;
+      input = '<textarea class="fld" id="' + id + '" data-k="' + f.k + '" rows="4">' + esc(v) + '</textarea>';
     } else if (f.kind === 'pick') {
-      input = '<div class="ef-pick" id="' + id + '">' + f.opts.map((o, n) =>
-        '<label' + (o === v ? ' class="on"' : '') + '><input type="radio" name="' + f.k + '" value="'
-        + o + '" data-k="' + f.k + '"' + (o === v ? ' checked' : '') + '>' + o + '</label>').join('')
-        + '</div>';
+      wide = true;
+      input = '<div class="ef-pick" id="' + id + '">' + f.opts.map((o) =>
+        '<label' + (o === v ? ' class="on"' : '') + '><input type="radio" name="' + f.k
+        + '" value="' + o + '" data-k="' + f.k + '"' + (o === v ? ' checked' : '') + '>'
+        + o + '</label>').join('') + '</div>';
+    } else if (f.kind === 'tags') {
+      wide = true;
+      input = '<div class="ef-tagbox" data-tags="' + f.k + '">'
+        + v.split(',').filter(Boolean).map((t) =>
+          '<span class="ef-tag">' + esc(t) + '<button type="button" data-drop="' + esc(t)
+          + '" aria-label="Remove ' + esc(t) + '">&times;</button></span>').join('')
+        + '<input id="' + id + '" type="text" placeholder="' + (f.hint || 'Add one and press enter') + '"></div>';
+      return '<div class="ef-field wide"><label for="' + id + '">' + f.label
+        + ' <span class="hint">optional</span></label>' + input
+        + '<span class="ef-err" data-err="' + f.k + '"></span></div>';
+    } else if (f.kind === 'money') {
+      input = '<div class="ef-money"><span>' + NAIRA + '</span>'
+        + '<input class="fld" id="' + id + '" data-k="' + f.k + '" type="number" min="0" step="1000"'
+        + ' value="' + esc(v) + '" placeholder="1,500,000"></div>';
+    } else if (f.kind === 'check') {
+      wide = true;
+      return '<div class="ef-field wide"><div class="ef-rules">'
+        + '<h4>Rules of engagement</h4><ul>'
+        + P.rules.map((r) => '<li>' + esc(r) + '</li>').join('') + '</ul></div>'
+        + '<label class="ef-check"><input type="checkbox" data-k="' + f.k + '"'
+        + (v ? ' checked' : '') + '><span>' + f.text + '</span></label>'
+        + '<span class="ef-err" data-err="' + f.k + '"></span></div>';
     } else {
       input = '<input class="fld" id="' + id + '" data-k="' + f.k + '" type="' + f.type
-        + '" value="' + v + '"' + (f.type === 'number' ? ' min="1" step="1"' : '')
+        + '" value="' + esc(v) + '"' + (f.type === 'number' ? ' min="1" step="1"' : '')
         + (f.type === 'date' ? ' min="' + new Date().toISOString().slice(0, 10) + '"' : '') + '>';
     }
-    return '<div class="ef-field' + (f.kind === 'textarea' || f.kind === 'pick' ? ' wide' : '')
-      + '">' + lab + input + '<span class="ef-err" data-err="' + f.k + '"></span></div>';
+    return '<div class="ef-field' + (wide ? ' wide' : '') + '">' + lab + input
+      + '<span class="ef-err" data-err="' + f.k + '"></span></div>';
   }
 
-  function rail(n, total) {
+  function rail() {
     let bars = '';
-    for (let i = 0; i < total; i++) bars += '<i' + (i <= n ? ' class="on"' : '') + '></i>';
-    return '<div class="ef-rail"><span class="ef-step">Step ' + (n + 1) + ' of ' + total
+    for (let i = 0; i < TOTAL; i++) bars += '<i' + (i <= step ? ' class="on"' : '') + '></i>';
+    return '<div class="ef-rail"><span class="ef-step">Step ' + (step + 1) + ' of ' + TOTAL
       + '</span>' + bars + '</div>';
   }
 
-  function drawStep() {
-    const total = flow.steps.length + 1;              // the review is a step too
-    const d = card.dataset;
-    const head = '<div class="ep-dialog-head"><div class="ep-mono ' + d.tint + '">'
-      + d.initials + '</div><div><h2>' + flow.title + '</h2>'
-      + '<div class="ui-sub">with ' + d.name + ' &middot; ' + d.area + ', ' + d.city
-      + '</div></div>' + X + '</div>';
+  function shown(f) {
+    const v = A[f.k];
+    if (!v) return '';
+    if (f.type === 'date') return niceDate(v);
+    if (f.type === 'time') return niceTime(v);
+    if (f.kind === 'money') return money(v);
+    if (f.kind === 'tags') return v.split(',').filter(Boolean).join(', ');
+    return v;
+  }
 
+  function feePanel() {
+    if (mode !== 'consult') return '';
+    return '<div class="ef-fee' + (P.fee ? '' : ' free') + '">'
+      + '<div><em>' + (P.fee ? 'Consultation fee' : 'This consultation is free') + '</em>'
+      + '<b>' + (P.fee ? money(P.fee) : NAIRA + '0') + '</b></div>'
+      + '<p>' + P.minutes + ' minutes with ' + esc(P.name) + '. '
+      + (P.fee
+        ? 'It comes off your project fee if you go on to book, and it is refunded in full if they cannot take your date.'
+        : 'No card, and nothing to cancel.') + '</p></div>';
+  }
+
+  function draw() {
     let body, foot;
-    if (step < flow.steps.length) {
-      const s = flow.steps[step];
-      body = '<div class="ep-body">' + rail(step, total)
-        + '<h3 style="font-size:15px;margin-bottom:14px">' + s.name + '</h3>'
-        + '<div class="ef-grid">' + s.fields.map(fieldHtml).join('') + '</div></div>';
-      foot = '<div class="ep-foot">'
-        + '<button class="btn btn-light ep-back" type="button" data-back>'
-        + (step ? 'Back' : 'Planner') + '</button>'
-        + '<button class="btn btn-green" type="button" data-next>Continue '
-        + '<span class="cap">&#8599;</span></button></div>';
+    if (step < SECTIONS.length) {
+      const s = SECTIONS[step];
+      body = rail() + '<h3 class="ef-h">' + s.name + '</h3>'
+        + (s.note ? '<p class="ef-note">' + s.note + '</p>' : '')
+        + '<div class="ef-grid">' + s.fields.map(fieldHtml).join('') + '</div>';
+      foot = (step ? '<button class="btn btn-light ef-back" type="button" data-back>Back</button>' : '')
+        + '<button class="btn btn-green" type="button" data-next>Continue <span class="cap">&#8599;</span></button>';
+    } else if (step === SECTIONS.length) {
+      body = rail() + '<h3 class="ef-h">Before you send it</h3>'
+        + feePanel()
+        + '<div class="ef-grid">' + stepFields(step).map(fieldHtml).join('') + '</div>';
+      foot = '<button class="btn btn-light ef-back" type="button" data-back>Back</button>'
+        + '<button class="btn btn-green" type="button" data-next>Continue <span class="cap">&#8599;</span></button>';
     } else {
-      const rows = flow.steps.reduce((all, s) => all.concat(s.fields), [])
-        .filter((f) => answers[f.k])
-        .map((f) => '<div><em>' + f.label + '</em><b>' + esc(show(f, answers[f.k]))
-          + '</b></div>').join('');
-      body = '<div class="ep-body">' + rail(step, total)
-        + '<h3 style="font-size:15px;margin-bottom:14px">Check it over</h3>'
+      const rows = ALL.concat(stepFields(SECTIONS.length))
+        .filter((f) => A[f.k] && f.kind !== 'check')
+        .map((f) => '<div><em>' + f.label + '</em><b>' + esc(shown(f)) + '</b></div>').join('')
+        + (paying() ? '<div><em>Consultation fee</em><b>' + money(P.fee) + '</b></div>' : '');
+      body = rail() + '<h3 class="ef-h">Check it over</h3>'
         + '<div class="ef-review">' + rows + '</div>'
         + '<div class="live-note" style="margin-top:20px">Sending is the one step that needs the '
-        + 'backend. The planner endpoints are not live yet, so nothing leaves this page: you will '
-        + 'get the brief back to keep, and it will reach a planner once the directory goes live.'
-        + '</div></div>';
-      foot = '<div class="ep-foot">'
-        + '<button class="btn btn-light ep-back" type="button" data-back>Back</button>'
-        + '<button class="btn btn-green" type="button" data-send>' + flow.verb
-        + ' <span class="cap">&#8599;</span></button></div>';
+        + 'backend. The planner endpoints are not live yet'
+        + (paying() ? ', and no payment is taken' : '')
+        + ', so nothing leaves this page: you get the brief back to keep, and it reaches '
+        + esc(P.name) + ' once the directory goes live.</div>';
+      foot = '<button class="btn btn-light ef-back" type="button" data-back>Back</button>'
+        + '<button class="btn btn-green" type="button" data-send>'
+        + (mode === 'consult' ? (paying() ? 'Pay and book' : 'Book the consultation') : 'Send the request')
+        + ' <span class="cap">&#8599;</span></button>';
     }
-    dlg.innerHTML = head + body + foot;
-    const first = $('.ef-grid .fld, .ef-grid input', dlg);
-    if (first && step < flow.steps.length) first.focus();
-    wireStep();
+    form.innerHTML = '<div class="ef-body">' + body + '</div><div class="ef-foot">' + foot + '</div>';
+    wire();
+    measure();
   }
 
-  /* A date input hands back 2027-03-14, which is what the field needs and not
-     what anybody wants to read back on a review screen. */
-  function show(f, v) {
-    if (f.type !== 'date' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
-    return new Date(v + 'T00:00:00')
-      .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  }
-
-  function esc(s) {
-    return String(s).replace(/[&<>"]/g, (c) =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  }
-
-  function wireStep() {
-    $$('[data-k]', dlg).forEach((el) => {
-      const ev = el.type === 'radio' ? 'change' : 'input';
+  function wire() {
+    $$('[data-k]', form).forEach((el) => {
+      const ev = (el.type === 'radio' || el.type === 'checkbox') ? 'change' : 'input';
       el.addEventListener(ev, () => {
-        answers[el.dataset.k] = el.value;
+        A[el.dataset.k] = el.type === 'checkbox' ? (el.checked ? 'Accepted' : '') : el.value;
         el.setAttribute('aria-invalid', 'false');
-        const err = $('[data-err="' + el.dataset.k + '"]', dlg);
+        const err = $('[data-err="' + el.dataset.k + '"]', form);
         if (err) err.textContent = '';
         if (el.type === 'radio') {
-          $$('input[name="' + el.name + '"]', dlg)
+          $$('input[name="' + el.name + '"]', form)
             .forEach((r) => r.parentElement.classList.toggle('on', r.checked));
         }
       });
     });
-    const back = $('[data-back]', dlg), next = $('[data-next]', dlg), send = $('[data-send]', dlg);
-    if (back) back.addEventListener('click', () => {
-      if (step === 0) profile(); else { step--; drawStep(); }
+
+    $$('[data-tags]', form).forEach((box) => {
+      const key = box.dataset.tags, input = $('input', box);
+      const add = (t) => {
+        t = t.trim().replace(/,/g, '');
+        if (!t) return;
+        const now = (A[key] || '').split(',').filter(Boolean);
+        if (now.indexOf(t) < 0) now.push(t);
+        A[key] = now.join(',');
+        draw();
+        // Redrawing loses the caret, so put it back where the person was.
+        const again = $('[data-tags="' + key + '"] input', form);
+        if (again) again.focus();
+      };
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(input.value); }
+        else if (e.key === 'Backspace' && !input.value) {
+          const now = (A[key] || '').split(',').filter(Boolean);
+          now.pop(); A[key] = now.join(','); draw();
+          const again = $('[data-tags="' + key + '"] input', form);
+          if (again) again.focus();
+        }
+      });
+      $$('[data-drop]', box).forEach((b) => b.addEventListener('click', () => {
+        A[key] = (A[key] || '').split(',').filter((t) => t && t !== b.dataset.drop).join(',');
+        draw();
+      }));
     });
-    if (next) next.addEventListener('click', () => { if (validate()) { step++; drawStep(); } });
+
+    const back = $('[data-back]', form), next = $('[data-next]', form), send = $('[data-send]', form);
+    if (back) back.addEventListener('click', () => { step--; draw(); jump(); });
+    if (next) next.addEventListener('click', () => { flushTags(); if (ok()) { step++; draw(); jump(); } });
     if (send) send.addEventListener('click', done);
   }
 
-  function validate() {
-    const s = flow.steps[step];
-    let ok = true, firstBad = null;
-    s.fields.forEach((f) => {
-      const v = (answers[f.k] || '').trim();
+  /* A colour typed but never confirmed with enter would be thrown away when
+     the step is redrawn. Committing it on blur instead looked right and was
+     not: the blur fires on mousedown over Continue, the redraw replaces the
+     button, and the click that followed landed on nothing. */
+  function flushTags() {
+    $$('[data-tags]', form).forEach((box) => {
+      const key = box.dataset.tags, input = $('input', box);
+      const t = input.value.trim().replace(/,/g, '');
+      if (!t) return;
+      const now = (A[key] || '').split(',').filter(Boolean);
+      if (now.indexOf(t) < 0) now.push(t);
+      A[key] = now.join(',');
+      input.value = '';
+    });
+  }
+
+  function jump() {
+    const c = document.getElementById('consult');
+    if (c) scrollTo({ top: anchorY(c), behavior: REDUCED ? 'auto' : 'smooth' });
+  }
+
+  function ok() {
+    let good = true, first = null;
+    stepFields(step).forEach((f) => {
+      const v = (A[f.k] || '').trim();
       let why = '';
-      if (f.req && !v) why = 'This one is needed';
+      if (f.req && !v) why = f.kind === 'check' ? 'Please accept these to continue' : 'This one is needed';
       else if (v && f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
         why = 'That does not look like an email address';
+      else if (v && f.type === 'tel' && v.replace(/\D/g, '').length < 7)
+        why = 'That is too short for a phone number';
       else if (v && f.type === 'number' && (+v < 1 || +v > 100000))
         why = 'Give a headcount between 1 and 100,000';
+      else if (v && f.kind === 'money' && +v < 50000)
+        why = 'Give a figure in naira, even a rough one';
       else if (v && f.type === 'date' && v < new Date().toISOString().slice(0, 10))
         why = 'Pick a date that has not already passed';
       if (!why) return;
-      ok = false;
-      const err = $('[data-err="' + f.k + '"]', dlg);
+      good = false;
+      const err = $('[data-err="' + f.k + '"]', form);
       if (err) err.textContent = why;
-      const input = $('[data-k="' + f.k + '"]', dlg);
-      if (input) {
-        input.setAttribute('aria-invalid', 'true');
-        if (!firstBad) firstBad = input;
-      }
+      const el = $('[data-k="' + f.k + '"]', form);
+      if (el) { el.setAttribute('aria-invalid', 'true'); if (!first) first = el; }
     });
-    if (firstBad) firstBad.focus();
-    return ok;
+    if (first) first.focus();
+    return good;
   }
 
   function done() {
     const ref = 'EP-' + Math.random().toString(36).slice(2, 7).toUpperCase();
-    const d = card.dataset;
-    const text = flow.title + ' with ' + d.name + ' (' + d.area + ', ' + d.city + ')\n'
+    const title = mode === 'consult' ? 'Consultation' : 'Booking request';
+    const text = title + ' with ' + P.name + ' (' + P.area + ', ' + P.city + ')\n'
       + 'Reference ' + ref + '\n\n'
-      + flow.steps.reduce((all, s) => all.concat(s.fields), [])
-        .filter((f) => answers[f.k])
-        .map((f) => f.label + ': ' + show(f, answers[f.k]).replace(/\u20A6/g, 'NGN ')).join('\n');
+      + ALL.filter((f) => A[f.k]).map((f) => f.label + ': ' + shown(f)).join('\n')
+      + (paying() ? '\nConsultation fee: ' + money(P.fee) + ' (' + (A.pay || 'unpaid') + ')' : '')
+      + '\n\nNothing was sent. The planner endpoints are not live yet.';
 
-    dlg.innerHTML = '<div class="ep-dialog-head"><div><h2>' + flow.title + '</h2>'
-      + '<div class="ui-sub">' + d.name + '</div></div>' + X + '</div>'
-      + '<div class="ep-body"><div class="ef-done">'
+    form.innerHTML = '<div class="ef-body"><div class="ef-done">'
       + '<div class="ef-tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" '
       + 'stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'
       + '<path d="M20 6 9 17l-5-5"/></svg></div>'
       + '<h3>Your brief is ready</h3>'
       + '<p>Keep this reference. Once the directory is live it is the one you quote, and the brief '
-      + 'below is exactly what reaches ' + esc(d.name) + '.</p>'
+      + 'below is exactly what reaches ' + esc(P.name) + '.</p>'
       + '<div class="ef-ref">' + ref + '</div></div>'
-      + '<div class="live-note" style="margin-top:24px">Nothing was sent. The planner booking '
-      + 'endpoint does not exist on the backend yet, so this is held in your browser only and is '
-      + 'gone when you close the tab. Copy it if you want to keep it.</div></div>'
-      + '<div class="ep-foot">'
-      + '<button class="btn btn-light ep-back" type="button" data-copy>Copy the brief</button>'
-      + '<a class="btn btn-green" href="index.html#start">Create an account '
-      + '<span class="cap">&#8599;</span></a></div>';
-
-    const copy = $('[data-copy]', dlg);
+      + '<div class="live-note" style="margin-top:24px">Nothing was sent'
+      + (paying() ? ' and nothing was charged' : '')
+      + '. The planner endpoints do not exist on the backend yet, so this is held in your browser '
+      + 'only and is gone when you close the tab. Copy it if you want to keep it.</div></div>'
+      + '<div class="ef-foot">'
+      + '<button class="btn btn-light ef-back" type="button" data-copy>Copy the brief</button>'
+      + '<a class="btn btn-green" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>'
+      + '</div>';
+    measure();
+    const copy = $('[data-copy]', form);
     copy.addEventListener('click', () => {
-      const say = (ok) => { copy.textContent = ok ? 'Copied' : 'Could not copy'; };
+      const say = (good) => { copy.textContent = good ? 'Copied' : 'Could not copy'; };
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => say(1), () => say(0));
       else say(0);
     });
   }
+
+  draw();
 }
 
 /* ---------- marquees ---------- */

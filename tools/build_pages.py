@@ -225,7 +225,7 @@ index += """
           <div class="sat" style="left:16%;bottom:8%"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c2478e" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></span></div>
           <div class="sat" style="left:40%;top:1%"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97b3c" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span></div>
         </div>
-        <div class="hub"><img src="assets/logo-dark.svg" alt="EventPlanna"><div style="font-size:10.5px;color:var(--grey);margin-top:6px">one workspace</div></div>
+        <div class="hub"><img src="assets/logo-dark.svg" alt="EventPlanna"><div style="font-size:11.5px;color:var(--grey)">one workspace</div></div>
       </div>
       <div>
         <span class="eyebrow">The workspace</span>
@@ -359,121 +359,17 @@ write("event.html", head("Event | EventPlanna", "An upcoming EventPlanna session
 
 # =========================================================== the directory
 #
-# Twenty four invented profiles. They exist so the search, the filters, the
-# sort, the pager and the booking flow can be seen working against a list long
-# enough to need them; every one of them is labelled as invented on the page
-# and again inside the dialog.
+# The rows live in tools/plannerdata.py, because the profile page behind each
+# card is generated from the same list and a card must never say something the
+# profile contradicts.
 #
-# The shape of a row is the shape the backend has to return. When
-# /public/planners is live, this list is replaced by that response and nothing
-# else on the page has to move.
-N = u"₦"
-BANDS = {1: "Under " + N + "2m", 2: N + "2m to " + N + "5m",
-         3: N + "5m to " + N + "15m", 4: N + "15m and above"}
-TINTS = ["t-blush", "t-lilac", "t-mint", "t-blue", "t-cream", "t-grey"]
+# A card is a link now, not a button that opened a dialog. The whole card is
+# one anchor to planner.html?p=<slug>, so the profile has a URL you can send
+# someone, opens in a new tab on a middle click, and leaves the back button
+# doing what a back button should do.
+from plannerdata import profiles, BANDS, CITIES, TYPE_OPTS
 
-#          name                  area              city          headline spec
-#          type keys                      band rating events team  books up
-#          what they take on
-#          one line about them
-PLANNERS = [
-    ("Adaeze Mbakwe", "Lekki", "Lagos", "Weddings and private dining",
-     "weddings private", 3, 4.9, 64, 6, "4 to 6 months ahead",
-     "Full service planning, Day-of coordination, Traditional weddings, Supplier management",
-     "Full service planning on a fixed project fee, with her own supplier panel and a coordinator on the floor all day."),
-    ("Tobi Adeyinka", "Victoria Island", "Lagos", "Corporate events and launches",
-     "corporate launches conferences", 4, 4.8, 91, 12, "3 months ahead",
-     "Conferences, AGMs, Product launches, Guest movement, Production",
-     "Runs production and guest movement in house, which is why the schedule on the day tends to hold."),
-    ("Nkechi Obiora", "Wuse", "Abuja", "Weddings and private dining",
-     "weddings private", 2, 4.9, 48, 4, "2 to 3 months ahead",
-     "White weddings, Traditional weddings, Intimate dinners, Budget rescue",
-     "Known for keeping a tight budget honest and saying early when a number will not work."),
-    ("Ifeanyi Okonkwo", "GRA", "Port Harcourt", "Corporate events",
-     "corporate conferences", 3, 4.7, 57, 8, "6 to 8 weeks ahead",
-     "Corporate dinners, Award nights, Conferences, Staff events",
-     "Oil and gas corporate work mostly, so he plans around security briefings and late sign off as standard."),
-    ("Zainab Bello", "Maitama", "Abuja", "Luxury weddings",
-     "weddings", 4, 5.0, 38, 9, "8 to 12 months ahead",
-     "Destination weddings, Multi day celebrations, Guest logistics, Styling direction",
-     "Takes a small number of events a year and gives each one a dedicated team from brief to the last guest."),
-    ("Chidinma Eze", "Ikeja", "Lagos", "Birthdays and private dining",
-     "birthdays private", 1, 4.6, 72, 3, "3 to 4 weeks ahead",
-     "Milestone birthdays, Anniversaries, Supper clubs, Baby showers",
-     "High volume and quick to turn around, which suits an event somebody decided on last month."),
-    ("Emeka Nwachukwu", "Independence Layout", "Enugu", "Traditional weddings",
-     "weddings", 2, 4.8, 44, 5, "3 months ahead",
-     "Igbo traditional rites, Wine carrying, Family liaison, Multi venue days",
-     "Grew up doing this work with family and handles the parts of a traditional day that a checklist does not cover."),
-    ("Funmilayo Adeleke", "Bodija", "Ibadan", "Weddings and birthdays",
-     "weddings birthdays", 2, 4.7, 61, 4, "6 to 8 weeks ahead",
-     "White weddings, Engagements, Milestone birthdays, Aso ebi coordination",
-     "Works the Ibadan and Oyo circuit, with suppliers she has used for years and prices she can hold."),
-    ("Hauwa Suleiman", "Nassarawa", "Kano", "Weddings",
-     "weddings", 2, 4.6, 33, 4, "2 months ahead",
-     "Northern weddings, Fatiha, Walima, Family hosting",
-     "Plans around the rhythm of a northern wedding week rather than squeezing it into a single day."),
-    ("Olumide Fashola", "Ikoyi", "Lagos", "Conferences and summits",
-     "conferences corporate", 4, 4.9, 83, 14, "4 months ahead",
-     "Conferences, Summits, Hybrid events, Sponsor management, Registration",
-     "Built his team around registration and sponsor delivery, the two things that sink a conference quietly."),
-    ("Blessing Udo", "Uyo", "Uyo", "Weddings and private dining",
-     "weddings private", 1, 4.8, 29, 3, "4 to 6 weeks ahead",
-     "White weddings, Traditional weddings, Family dinners, Church coordination",
-     "Akwa Ibom and Cross River, with a supplier list that keeps a small budget looking like a larger one."),
-    ("Segun Bakare", "Yaba", "Lagos", "Launches and brand events",
-     "launches corporate", 3, 4.7, 55, 7, "6 weeks ahead",
-     "Product launches, Pop ups, Press days, Brand activations",
-     "Comes from brand side rather than events, so the room is built around what the photographs need to show."),
-    ("Amara Chukwu", "Owerri", "Owerri", "Traditional weddings",
-     "weddings", 1, 4.9, 41, 3, "6 weeks ahead",
-     "Igba nkwu, Traditional rites, Family liaison, Village logistics",
-     "Runs village ceremonies where the venue is a compound and nothing can be hired on the day."),
-    ("Kelechi Agu", "Asokoro", "Abuja", "Corporate and conferences",
-     "corporate conferences", 3, 4.6, 66, 9, "2 months ahead",
-     "Government events, Conferences, Retreats, Protocol",
-     "Handles protocol and the waiting that comes with public sector work without letting it derail the run sheet."),
-    ("Temitope Oladele", "Lekki", "Lagos", "Weddings",
-     "weddings", 3, 4.8, 52, 6, "5 months ahead",
-     "White weddings, Traditional weddings, Destination, Styling direction",
-     "Design led, and will turn down a brief where the budget and the look cannot be reconciled."),
-    ("Grace Ekanem", "Trans Amadi", "Port Harcourt", "Birthdays and anniversaries",
-     "birthdays private", 1, 4.5, 47, 2, "3 weeks ahead",
-     "Milestone birthdays, Anniversaries, Surprise parties, Home events",
-     "Small team, quick decisions, and comfortable running an event in somebody's house rather than a hall."),
-    ("Yusuf Danladi", "Garki", "Abuja", "Conferences and summits",
-     "conferences corporate", 4, 4.7, 74, 11, "4 months ahead",
-     "Summits, Policy events, Delegations, Interpretation, Accreditation",
-     "Does the kind of event where half the guests arrive by delegation and accreditation decides the morning."),
-    ("Ngozi Anyanwu", "GRA", "Benin City", "Weddings and private dining",
-     "weddings private", 2, 4.8, 36, 4, "2 months ahead",
-     "White weddings, Traditional rites, Private dinners, Supplier sourcing",
-     "Edo and Delta work, and keeps a short, tested supplier list rather than a long one."),
-    ("Damilola Sanni", "Surulere", "Lagos", "Birthdays and launches",
-     "birthdays launches", 1, 4.6, 58, 3, "3 weeks ahead",
-     "Milestone birthdays, Pop ups, Listening parties, Brand activations",
-     "Young crowd events, late finishes, and a crew used to turning a bare space around in an afternoon."),
-    ("Chiamaka Nnadi", "Jabi", "Abuja", "Luxury weddings",
-     "weddings", 4, 4.9, 45, 8, "9 months ahead",
-     "Destination weddings, Multi day celebrations, Guest travel, Styling direction",
-     "Takes a handful of weddings a year, usually across two or three days and more than one city."),
-    ("Bukola Ogunleye", "Oluyole", "Ibadan", "Corporate events",
-     "corporate", 2, 4.5, 39, 5, "6 weeks ahead",
-     "Corporate dinners, Staff events, AGMs, Training days",
-     "Corporate work in Oyo and the south west, costed line by line before anything is booked."),
-    ("Uche Ibe", "New Haven", "Enugu", "Weddings and corporate",
-     "weddings corporate", 2, 4.7, 50, 6, "2 months ahead",
-     "White weddings, Traditional rites, Corporate dinners, Award nights",
-     "Splits the year between wedding season and corporate season, so there is usually room in one of them."),
-    ("Rukayat Lawal", "Ikoyi", "Lagos", "Private dining",
-     "private", 3, 4.8, 43, 4, "4 weeks ahead",
-     "Private dinners, Supper clubs, Chef collaborations, Wine evenings",
-     "Builds the evening around the menu first, and works with chefs rather than catering companies."),
-    ("Peter Etim", "Uyo", "Uyo", "Conferences",
-     "conferences corporate", 2, 4.6, 31, 5, "6 weeks ahead",
-     "Conferences, Church conventions, Training days, Registration",
-     "Large room, long programme, many speakers. The kind of event that lives or dies on the run sheet."),
-]
+PS = profiles()
 
 STAR = ('<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">'
         '<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg>')
@@ -483,16 +379,12 @@ CHECK = ('<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="cu
 
 def planner_cards():
     out = ""
-    for n, p in enumerate(PLANNERS):
-        (name, area, city, spec, types, band, rating, events, team, lead, does, bio) = p
-        initials = "".join(w[0] for w in name.split()[:2])
-        tint = TINTS[n % len(TINTS)]
+    for d in PS:
+        hay = " ".join([d["name"], d["area"], d["city"], d["spec"]] + d["does"]).lower()
         out += (
-            '      <article class="dir-card" data-name="%s" data-initials="%s" data-area="%s"\n'
-            '        data-city="%s" data-spec="%s" data-types="%s" data-band="%d" data-rate="%s"\n'
-            '        data-rating="%s" data-events="%d" data-team="%d people" data-lead="%s"\n'
-            '        data-tint="%s" data-does="%s"\n'
-            '        data-bio="%s">\n'
+            '      <a class="dir-card" href="planner.html?p=%s"\n'
+            '        data-hay="%s" data-city="%s" data-types="%s" data-band="%d"\n'
+            '        data-rating="%s" data-events="%d">\n'
             '        <div class="dir-cover %s"><span class="dir-mono">%s</span>'
             '<span class="dir-tag">%s Approved</span></div>\n'
             '        <div class="dir-body">\n'
@@ -501,12 +393,12 @@ def planner_cards():
             '          <div class="dir-spec">%s</div>\n'
             '          <div class="dir-foot"><b>%s</b>'
             '<span class="dir-star">%s %s</span></div>\n'
-            '          <button class="dir-open" type="button">View profile <span>&rarr;</span></button>\n'
+            '          <span class="dir-open">View profile <span>&rarr;</span></span>\n'
             '        </div>\n'
-            '      </article>\n'
-            % (name, initials, area, city, spec, types, band, BANDS[band],
-               rating, events, team, lead, tint, does, bio,
-               tint, initials, CHECK, name, area, city, spec, BANDS[band], STAR, rating))
+            '      </a>\n'
+            % (d["slug"], hay, d["city"], d["types"], d["band"], d["rating"], d["events"],
+               d["tint"], d["initials"], CHECK, d["name"], d["area"], d["city"], d["spec"],
+               d["rate"], STAR, d["rating"]))
     return out
 
 
@@ -515,16 +407,12 @@ def options(name, items):
             + "".join('<option value="%s">%s</option>' % (v, t) for v, t in items))
 
 
-CITIES = sorted(set(p[2] for p in PLANNERS))
-TYPE_OPTS = [("weddings", "Weddings"), ("corporate", "Corporate"), ("conferences", "Conferences"),
-             ("private", "Private dining"), ("launches", "Launches"), ("birthdays", "Birthdays")]
-
 DIRECTORY = """
   <section class="section" id="directory">
     <div class="shead reveal">
       <span class="eyebrow">The directory</span>
       <h2>Browse planners, filtered to your event</h2>
-      <p>Search by name or by what someone does, then narrow it to your city, your event type and the budget you are working to.</p>
+      <p>Search by name or by what someone does, then narrow it to your city, your event type and the budget you are working to. Open a planner to see their past work and book them.</p>
     </div>
     <div data-dir="12">
       <div class="dir-bar">
@@ -532,12 +420,12 @@ DIRECTORY = """
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
           <input type="search" data-dir-q placeholder="Search a name, a city or what they do" aria-label="Search planners">
         </div>
-        <select class="fld" data-dir-pick="city" aria-label="City">""" \
-    + options("Every city", [(c, c) for c in CITIES]) + """</select>
-        <select class="fld" data-dir-pick="type" aria-label="Event type">""" \
-    + options("Every event type", TYPE_OPTS) + """</select>
-        <select class="fld" data-dir-pick="band" aria-label="Budget band">""" \
-    + options("Any budget", [(str(k), v) for k, v in sorted(BANDS.items())]) + """</select>
+        <select class="fld" data-dir-pick="city" aria-label="City">""" + \
+    options("Every city", [(c, c) for c in CITIES]) + """</select>
+        <select class="fld" data-dir-pick="type" aria-label="Event type">""" + \
+    options("Every event type", TYPE_OPTS) + """</select>
+        <select class="fld" data-dir-pick="band" aria-label="Budget band">""" + \
+    options("Any budget", [(str(k), v) for k, v in sorted(BANDS.items())]) + """</select>
         <select class="fld" data-dir-pick="sort" aria-label="Sort by">
           <option value="best">Recommended</option>
           <option value="rating">Highest rated</option>
@@ -550,11 +438,11 @@ DIRECTORY = """
         <button class="dir-reset" type="button" data-dir-reset>Clear everything</button>
       </div>
       <div class="dir-grid" data-dir-grid>
-""" % len(PLANNERS) + planner_cards() + """      </div>
+""" % len(PS) + planner_cards() + """      </div>
       <div class="dir-empty" data-dir-empty hidden>Nothing matches that combination yet. Try a wider budget band, or clear the filters and start again.</div>
       <div class="dir-pager" data-dir-pager hidden></div>
     </div>
-    <p class="live-note reveal">Every profile above is invented, and so is every rating and count on it. They are here so the search, the filters and the booking flow can be used before launch. Real planners appear in their place once the directory endpoints are live on the backend.</p>
+    <p class="live-note reveal">Every profile here is invented, and so is every rating, portfolio and count on it. They are here so the search, the filters and the booking flow can be used before launch. Real planners appear in their place once the directory endpoints are live on the backend.</p>
   </section>
 """
 

@@ -851,10 +851,10 @@ select.fld { padding-right: 38px; cursor: pointer;
 @media (max-width: 1340px) { .dir-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 900px)  { .dir-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px)  { .dir-grid { grid-template-columns: 1fr; } }
-/* .dir-pager, .ep-modal and the cards all set a display of their own, which
-   outranks the browser's rule for [hidden] and leaves a "hidden" element on
-   screen. Say it once, for the three of them. */
-.dir-grid [hidden], .dir-pager[hidden], .dir-empty[hidden], .ep-modal[hidden] { display: none; }
+/* .dir-pager and the cards both set a display of their own, which outranks
+   the browser's rule for [hidden] and leaves a "hidden" element on screen.
+   Say it once, for the three of them. */
+.dir-grid [hidden], .dir-pager[hidden], .dir-empty[hidden] { display: none; }
 
 .dir-card { position: relative; text-align: left; font: inherit; cursor: pointer;
   display: flex; flex-direction: column; overflow: hidden;
@@ -907,50 +907,11 @@ select.fld { padding-right: 38px; cursor: pointer;
 .dir-pager .gap { color: var(--grey); padding: 0 2px; }
 
 /* ============================================================
-   MODAL
-   Appended to <body> by assets/app.js, never left inside .smooth: that
-   wrapper is fixed and transformed, and a transformed ancestor makes
-   position:fixed resolve against it instead of the window.
-
-   The page behind is deliberately not frozen. Locking it would mean setting
-   overflow:hidden on the document, which drops scrollY to 0, and the motion
-   engine reads scrollY every frame: the page would silently rewind to the top
-   underneath the dialog.
+   CHIPS
+   What a planner takes on, and where they work. All that is left of the
+   dialog the directory used to open: a card opens planner.html now, so the
+   overlay, its head, its body and its footer have gone with it.
    ============================================================ */
-.ep-modal { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center;
-  padding: clamp(12px,3vw,34px); opacity: 0; pointer-events: none;
-  transition: opacity .28s var(--ease); }
-.ep-modal.on { opacity: 1; pointer-events: auto; }
-.ep-modal::before { content: ""; position: absolute; inset: 0; background: rgba(12,13,30,.52);
-  backdrop-filter: blur(3px); }
-.ep-dialog { position: relative; width: min(680px, 100%); max-height: min(88vh, 860px);
-  display: flex; flex-direction: column; overflow: hidden;
-  background: var(--white); color: var(--ink); border-radius: var(--r-xl);
-  box-shadow: var(--shadow-lg); transform: translateY(14px) scale(.985);
-  transition: transform .34s var(--ease); }
-.ep-modal.on .ep-dialog { transform: none; }
-.ep-dialog-head { display: flex; gap: 14px; align-items: flex-start;
-  padding: 22px clamp(18px,3vw,30px) 16px; border-bottom: 1px solid var(--border); }
-.ep-dialog-head h2 { font-size: clamp(20px,2.4vw,26px); }
-.ep-dialog-head .ui-sub { margin-top: 5px; font-size: 13px; }
-.ep-body { padding: clamp(18px,3vw,26px) clamp(18px,3vw,30px); overflow-y: auto; flex: 1; }
-.ep-foot { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
-  padding: 16px clamp(18px,3vw,30px); border-top: 1px solid var(--border); background: var(--tile); }
-.ep-foot .ep-back { margin-right: auto; }
-.ep-x { flex: none; width: 34px; height: 34px; margin-left: auto; border-radius: 50%; cursor: pointer;
-  display: grid; place-items: center; background: var(--tile); border: 1px solid var(--border);
-  color: var(--ink); transition: background .2s, transform .3s var(--ease); }
-.ep-x:hover { background: var(--green-100); transform: rotate(90deg); }
-
-.ep-mono { flex: none; width: 54px; height: 54px; border-radius: 16px; display: grid;
-  place-items: center; font-size: 19px; font-weight: 600; color: rgba(31,41,55,.56); }
-.ep-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 18px; }
-@media (max-width: 520px) { .ep-facts { grid-template-columns: 1fr; } }
-.ep-fact { border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px;
-  background: var(--tile); }
-.ep-fact em { font-style: normal; display: block; font-size: 10px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
-.ep-fact b { display: block; font-size: 14.5px; font-weight: 600; margin-top: 4px; }
 .ep-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
 .ep-chips span { font-size: 12.5px; padding: 6px 12px; border-radius: 999px;
   background: var(--green-100); color: var(--green); }
@@ -1034,4 +995,356 @@ select.fld { padding-right: 38px; cursor: pointer;
 :root[data-theme="dark"] select.fld {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca2b3' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
 :root[data-theme="dark"] .dir-tag { background: rgba(255,255,255,.9); }
-:root[data-theme="dark"] .ep-modal::before { background: rgba(0,0,0,.66); }
+
+/* ============================================================
+   A PLANNER'S PAGE
+   planner.html is one shell that assets/app.js fills from ?p=<slug>. Every
+   rule below is written against whatever profile it finds, and --brand is set
+   on the container from the planner's own brand colour, the way the app lets
+   them set one on their consultation page. It is used for the cover wash, the
+   approved badge and the section marks only: never as type on white, where a
+   planner could pick a colour nobody can read.
+   ============================================================ */
+.plp { --brand: var(--green); padding-top: clamp(84px,10vw,120px); }
+.plp-back { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px;
+  font-weight: 600; color: var(--grey); text-decoration: none; margin-bottom: 16px;
+  transition: color .2s, transform .3s var(--ease); }
+.plp-back:hover { color: var(--ink); transform: translateX(-3px); }
+
+.plp-cover { position: relative; border-radius: var(--r-xl); overflow: hidden;
+  height: clamp(180px, 26vw, 330px); }
+.plp-veil { position: absolute; inset: 0;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 62%, transparent) 0%,
+    rgba(10,11,22,.18) 52%, rgba(10,11,22,.46) 100%); }
+
+/* The identity block sits half over the cover, which is the one place the
+   avatar can go without either stealing a whole row or shrinking the picture. */
+.plp-ident { display: flex; align-items: flex-end; gap: clamp(14px,2.2vw,24px);
+  margin: -46px clamp(6px,1.6vw,26px) 0; position: relative; z-index: 2; flex-wrap: wrap; }
+.plp-avatar { flex: none; width: clamp(76px,9vw,104px); height: clamp(76px,9vw,104px);
+  border-radius: 24px; display: grid; place-items: center; font-weight: 600;
+  font-size: clamp(25px,3vw,33px); letter-spacing: -.03em; color: rgba(31,41,55,.56);
+  border: 4px solid var(--white); box-shadow: var(--shadow); }
+.plp-who { flex: 1 1 280px; padding-bottom: 4px; }
+.plp-who h1 { font-size: clamp(27px,3.6vw,46px); margin-top: 10px; }
+.plp-who .plp-where { font-size: 14.5px; color: var(--grey); margin-top: 8px; }
+.plp-badges { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.plp-badges span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px;
+  font-weight: 600; padding: 5px 11px; border-radius: 999px; }
+.plp-ok { background: var(--brand); color: #fff; }
+.plp-rate { background: var(--amber-bg); color: #7c4a06; }
+.plp-years { background: var(--tile); color: var(--grey); border: 1px solid var(--border); }
+.plp-act { display: flex; gap: 9px; flex-wrap: wrap; padding-bottom: 4px; }
+
+.plp-stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px;
+  margin-top: clamp(26px,3.4vw,40px); }
+@media (max-width: 900px) { .plp-stats { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 440px) { .plp-stats { grid-template-columns: 1fr; } }
+.plp-stat { border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px;
+  background: var(--tile); }
+.plp-stat em { font-style: normal; display: block; font-size: 10px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.plp-stat b { display: block; font-size: 15.5px; font-weight: 600; margin-top: 5px;
+  letter-spacing: -.01em; }
+
+.plp-main { display: grid; grid-template-columns: minmax(0,1.55fr) minmax(0,.9fr);
+  gap: clamp(26px,3.6vw,54px); margin-top: clamp(34px,5vw,64px); align-items: start; }
+@media (max-width: 1040px) { .plp-main { grid-template-columns: 1fr; } }
+
+.plp-block + .plp-block { margin-top: clamp(34px,5vw,58px); padding-top: clamp(30px,4vw,48px);
+  border-top: 1px solid var(--border); }
+.plp-block h2 { font-size: clamp(21px,2.6vw,30px); }
+.plp-block > p { color: var(--grey); margin-top: 12px; font-size: 15px; max-width: 62ch; }
+.plp-block .ep-chips { margin-top: 18px; }
+.plp-block .ep-chips span { background: color-mix(in srgb, var(--brand) 12%, transparent);
+  color: color-mix(in srgb, var(--brand) 78%, var(--ink)); }
+
+/* ---- the portfolio ---- */
+.plp-gal { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 20px; }
+@media (max-width: 760px) { .plp-gal { grid-template-columns: repeat(2,1fr); } }
+/* The first tile runs double width, so the grid reads as a portfolio rather
+   than as a contact sheet of identical squares. */
+.plp-gal .plp-tile:first-child { grid-column: span 2; }
+@media (max-width: 480px) { .plp-gal { grid-template-columns: 1fr; }
+  .plp-gal .plp-tile:first-child { grid-column: auto; } }
+.plp-tile { position: relative; border: 0; padding: 0; cursor: pointer; overflow: hidden;
+  border-radius: var(--r-lg); aspect-ratio: 4/3; display: block;
+  transition: transform .45s var(--ease), box-shadow .4s var(--ease); }
+.plp-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.plp-tile:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.plp-tile::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(10,11,22,.68) 100%); }
+.plp-cap { position: absolute; left: 12px; right: 12px; bottom: 11px; z-index: 2;
+  color: #fff; font-size: 12px; font-weight: 500; text-align: left; }
+.plp-play { position: absolute; inset: 0; z-index: 2; margin: auto; width: 54px; height: 54px;
+  border-radius: 50%; display: grid; place-items: center; color: #14163a;
+  background: rgba(255,255,255,.94); box-shadow: 0 10px 30px rgba(10,11,22,.3);
+  transition: transform .35s var(--ease); }
+.plp-tile:hover .plp-play { transform: scale(1.08); }
+
+/* ---- past events ---- */
+.plp-past { margin-top: 20px; border: 1px solid var(--border); border-radius: var(--r-lg);
+  overflow: hidden; }
+.plp-ev { display: grid; grid-template-columns: 1fr auto auto; gap: 16px; align-items: center;
+  padding: 15px 18px; border-top: 1px solid var(--border); }
+.plp-ev:first-child { border-top: 0; }
+.plp-ev b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.plp-ev small { display: block; font-size: 12.5px; color: var(--grey); margin-top: 3px; }
+.plp-ev-n { text-align: right; }
+.plp-ev-n b { font-size: 16px; }
+.plp-ev-w { font-size: 12.5px; color: var(--grey); min-width: 108px; text-align: right; }
+@media (max-width: 620px) {
+  .plp-ev { grid-template-columns: 1fr auto; }
+  .plp-ev-w { grid-column: 1 / -1; text-align: left; }
+}
+
+/* ---- reviews ---- */
+.plp-says { display: grid; gap: 12px; margin-top: 20px; }
+.plp-say { margin: 0; border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 20px 22px; background: var(--tile); }
+.plp-stars { color: #d9a106; display: flex; gap: 2px; }
+.plp-say blockquote { margin: 12px 0 0; font-size: 15.5px; line-height: 1.55;
+  letter-spacing: -.01em; }
+.plp-say figcaption { margin-top: 12px; font-size: 12.5px; color: var(--grey); }
+
+/* ---- the sidebar ---- */
+/* No position:sticky on this column, however much it looks like it wants one.
+   Everything below the nav sits inside .smooth, which is fixed and
+   transformed, so there is no scrolling ancestor for sticky to stick to and
+   the rule would simply do nothing. The column is short enough not to need
+   it. */
+.plp-side { display: grid; gap: 12px; align-content: start; }
+.plp-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 22px;
+  background: var(--white); }
+.plp-card h3 { font-size: 15.5px; }
+.plp-note { font-size: 12.5px; color: var(--grey); margin-top: 7px; }
+.plp-fee { border-color: color-mix(in srgb, var(--brand) 40%, var(--border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 22%, transparent); }
+.plp-fee-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.plp-fee-top em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--grey); }
+.plp-fee-top b { font-size: clamp(22px,2.6vw,28px); letter-spacing: -.03em;
+  color: color-mix(in srgb, var(--brand) 82%, var(--ink)); }
+.plp-fee-sub { font-size: 12.5px; color: var(--grey); margin-top: 5px; }
+.plp-covers { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 9px; }
+.plp-covers li { display: flex; gap: 9px; align-items: flex-start; font-size: 13.5px; }
+.plp-covers svg { flex: none; margin-top: 2px; color: var(--brand); }
+.plp-fee .btn { width: 100%; justify-content: center; margin-top: 18px; }
+.plp-soc { display: flex; align-items: center; gap: 11px; margin-top: 13px; }
+.plp-soc i { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid;
+  place-items: center; background: var(--tile); border: 1px solid var(--border); color: var(--ink); }
+.plp-soc b { display: block; font-size: 13px; font-weight: 600; }
+.plp-soc small { display: block; font-size: 12px; color: var(--grey); margin-top: 1px;
+  word-break: break-word; }
+
+.plp-miss { text-align: center; padding: clamp(40px,8vw,90px) 0; }
+.plp-miss h1 { font-size: clamp(27px,4vw,44px); }
+.plp-miss p { color: var(--grey); margin: 16px auto 26px; max-width: 42ch; }
+
+/* ---- the lightbox ---- */
+.lb { position: fixed; inset: 0; z-index: 420; display: grid; place-items: center;
+  padding: clamp(14px,4vw,54px); background: rgba(8,9,18,.84); opacity: 0;
+  pointer-events: none; transition: opacity .26s var(--ease); }
+.lb.on { opacity: 1; pointer-events: auto; }
+.lb[hidden] { display: none; }
+.lb-fig { margin: 0; width: min(1080px, 100%); }
+.lb-img { width: 100%; aspect-ratio: 16/10; border-radius: var(--r-lg);
+  background-size: cover; background-position: center; }
+.lb-fig figcaption { color: rgba(255,255,255,.84); font-size: 13.5px; margin-top: 14px;
+  text-align: center; }
+.lb-film { display: block; max-width: 56ch; margin: 8px auto 0; font-size: 12.5px;
+  color: rgba(255,255,255,.6); }
+.lb-x, .lb-nav { position: absolute; border-radius: 50%; cursor: pointer; display: grid;
+  place-items: center; color: #fff; background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(8px);
+  transition: background .25s, transform .3s var(--ease); }
+.lb-x { top: clamp(14px,3vw,30px); right: clamp(14px,3vw,30px); width: 42px; height: 42px; }
+.lb-nav { top: 50%; transform: translateY(-50%); width: 46px; height: 46px; font-size: 22px;
+  line-height: 1; padding-bottom: 3px; }
+.lb-nav.prev { left: clamp(8px,2vw,26px); }
+.lb-nav.next { right: clamp(8px,2vw,26px); }
+.lb-x:hover, .lb-nav:hover { background: rgba(255,255,255,.3); }
+@media (max-width: 620px) { .lb-nav { top: auto; bottom: 16px; transform: none; }
+  .lb-nav.prev { left: 28%; } .lb-nav.next { right: 28%; } }
+
+/* ============================================================
+   THE CONSULTATION FORM
+   The sections, the field types and the order are the ones a planner sets up
+   in the app, so the questions a client answers here are the questions that
+   planner chose to ask.
+   ============================================================ */
+.ef-tabs { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px;
+  background: var(--tile); border: 1px solid var(--border); margin-top: 28px; flex-wrap: wrap; }
+.ef-tab { font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 0;
+  padding: 9px 18px; border-radius: 999px; background: none; color: var(--grey);
+  transition: background .25s, color .25s; }
+.ef-tab:hover { color: var(--ink); }
+.ef-tab.on { background: var(--white); color: var(--ink); box-shadow: var(--shadow); }
+
+.ef-shell { margin-top: 20px; border: 1px solid var(--border); border-radius: var(--r-xl);
+  overflow: hidden; background: var(--white); max-width: 880px; }
+.ef-body { padding: clamp(22px,3.4vw,34px); }
+.ef-foot { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+  padding: 16px clamp(20px,3vw,34px); border-top: 1px solid var(--border); background: var(--tile); }
+.ef-foot .ef-back { margin-right: auto; }
+.ef-h { font-size: 16px; }
+.ef-note { font-size: 13px; color: var(--grey); margin-top: 6px; }
+.ef-h + .ef-grid, .ef-note + .ef-grid { margin-top: 18px; }
+
+.ef-money { display: flex; align-items: stretch; }
+.ef-money span { display: grid; place-items: center; padding: 0 13px; font-weight: 600;
+  font-size: 15px; color: var(--grey); background: var(--tile);
+  border: 1px solid var(--border); border-right: 0; border-radius: var(--r) 0 0 var(--r); }
+.ef-money .fld { border-radius: 0 var(--r) var(--r) 0; }
+
+.ef-tagbox { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: var(--r); background: var(--white);
+  transition: border-color .22s, box-shadow .22s; }
+.ef-tagbox:focus-within { border-color: var(--green); box-shadow: 0 0 0 3px rgba(80,71,225,.14); }
+.ef-tagbox input { flex: 1 1 140px; min-width: 120px; border: 0; outline: 0; font: inherit;
+  font-size: 14.5px; padding: 4px 2px; background: none; color: var(--ink); }
+.ef-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+  padding: 5px 7px 5px 12px; border-radius: 999px; background: var(--green-100); color: var(--green); }
+.ef-tag button { border: 0; background: none; cursor: pointer; color: inherit; font-size: 15px;
+  line-height: 1; padding: 0 2px; opacity: .7; }
+.ef-tag button:hover { opacity: 1; }
+
+.ef-rules { border: 1px solid var(--border); border-radius: var(--r); background: var(--tile);
+  padding: 18px 20px; max-height: 230px; overflow-y: auto; }
+.ef-rules h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--grey); }
+.ef-rules ul { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 9px; }
+.ef-rules li { font-size: 13.5px; color: var(--grey); line-height: 1.55; }
+.ef-check { display: flex; gap: 11px; align-items: flex-start; margin-top: 14px;
+  font-size: 14px; cursor: pointer; }
+.ef-check input { width: 18px; height: 18px; flex: none; margin-top: 1px; accent-color: var(--green); }
+
+.ef-fee { display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline;
+  border: 1px solid color-mix(in srgb, var(--brand) 36%, var(--border));
+  background: color-mix(in srgb, var(--brand) 7%, var(--white));
+  border-radius: var(--r); padding: 16px 18px; margin-top: 16px; }
+.ef-fee > div { display: flex; align-items: baseline; gap: 12px; flex: none; }
+.ef-fee em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--grey); }
+.ef-fee b { font-size: 21px; letter-spacing: -.02em;
+  color: color-mix(in srgb, var(--brand) 82%, var(--ink)); }
+.ef-fee p { flex: 1 1 260px; font-size: 13px; color: var(--grey); line-height: 1.5; }
+.ef-fee.free b { color: var(--green); }
+
+/* ---- dark mode ---- */
+:root[data-theme="dark"] .plp-avatar { border-color: var(--white); }
+:root[data-theme="dark"] .plp-rate { color: #f0c86a; }
+:root[data-theme="dark"] .ef-tagbox input { color: var(--ink); }
+:root[data-theme="dark"] .plp-say { background: color-mix(in srgb, var(--white) 70%, var(--tile)); }
+
+/* ============================================================
+   THE PROBLEM, DRAWN
+   Six cards, each one a small picture of its own problem with the prose under
+   it. Everything is CSS and text: no images, no chart library, and nothing
+   that stops working when the type scales. The figures all share one height so
+   the headlines line up across a row.
+   ============================================================ */
+.probs { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 38px; }
+@media (max-width: 1080px) { .probs { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 680px)  { .probs { grid-template-columns: 1fr; } }
+
+.prob { display: flex; flex-direction: column; overflow: hidden;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+.prob:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.prob-body { padding: 20px 22px 24px; }
+.prob-tag { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--green); background: var(--green-100);
+  padding: 4px 10px; border-radius: 999px; }
+.prob-body h3 { font-size: 18px; margin-top: 12px; }
+.prob-body p { font-size: 14px; color: var(--grey); margin-top: 9px; }
+
+.pfig { position: relative; height: 164px; padding: 20px 22px; background: var(--tile);
+  border-bottom: 1px solid var(--border); overflow: hidden; }
+
+/* ---- ten suppliers against one budget line ---- */
+.pfig-bars { display: flex; align-items: flex-end; gap: 6px; }
+.pfig-bars i { flex: 1; height: var(--h); border-radius: 4px 4px 2px 2px; background: #c9c5f2;
+  transform-origin: 50% 100%; transform: scaleY(0);
+  transition: transform .8s var(--ease-out) var(--d, 0s); }
+.pfig-bars i:nth-child(2) { --d: .04s } .pfig-bars i:nth-child(3) { --d: .08s }
+.pfig-bars i:nth-child(4) { --d: .12s } .pfig-bars i:nth-child(5) { --d: .16s }
+.pfig-bars i:nth-child(6) { --d: .2s }  .pfig-bars i:nth-child(7) { --d: .24s }
+.pfig-bars i:nth-child(8) { --d: .28s } .pfig-bars i:nth-child(9) { --d: .32s }
+.pfig-bars i:nth-child(10) { --d: .36s } .pfig-bars i:nth-child(11) { --d: .4s }
+.in .pfig-bars i, .prob.in .pfig-bars i { transform: scaleY(1); }
+.pfig-bars i.over { background: var(--red); }
+.pf-line { position: absolute; left: 0; right: 0; top: 46px; height: 0;
+  border-top: 1.5px dashed var(--grey); opacity: .5; }
+/* The label sits on the line, so a bar that crosses the line would otherwise
+   run straight through the word. It carries the figure's own background. */
+.pf-line em { position: absolute; left: 0; top: -15px; font-style: normal; font-size: 10px;
+  font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--grey);
+  background: var(--tile); padding-right: 6px; }
+
+/* ---- a recommendation going round in a circle ---- */
+.pfig-chat { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+.pf-b { font-size: 12px; line-height: 1.4; padding: 9px 13px; max-width: 86%;
+  border: 1px solid var(--border); background: var(--white); }
+.pf-b.them { align-self: flex-start; border-radius: 14px 14px 14px 4px; }
+.pf-b.you { align-self: flex-end; border-radius: 14px 14px 4px 14px;
+  background: var(--green-100); border-color: #d7d3f5; color: var(--green); }
+
+/* ---- seven tools collapsing into one ---- */
+.pfig-tools { display: flex; flex-wrap: wrap; gap: 6px; align-content: center;
+  align-items: center; }
+.pf-chip { font-size: 11px; font-weight: 500; padding: 6px 10px; border-radius: 7px;
+  background: var(--white); border: 1px solid var(--border); color: var(--grey); }
+.pf-chip.on { background: var(--green); border-color: var(--green); color: #fff;
+  font-weight: 600; }
+.pf-arrow { color: var(--grey); font-size: 14px; padding: 0 2px; }
+
+/* ---- four payments, one with nothing to show for it ---- */
+.pfig-pay { display: flex; flex-direction: column; gap: 7px; justify-content: center; }
+.pf-row { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font-size: 11.5px; background: var(--white); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 11px; }
+.pf-row em { font-style: normal; color: var(--ink); }
+.pf-row b { font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px; }
+.pf-row b.ok { background: var(--green-100); color: var(--green); }
+.pf-row b.no { background: var(--red-bg); color: var(--red); }
+
+/* ---- a thread with the middle of it missing ---- */
+.pfig-thread { display: flex; flex-direction: column; justify-content: center; gap: 0; }
+.pf-node { position: relative; padding: 0 0 22px 26px; font-size: 12.5px; color: var(--ink); }
+.pf-node:last-child { padding-bottom: 0; }
+.pf-node i { position: absolute; left: 0; top: 2px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 0 3px var(--green-100); }
+.pf-node::before { content: ""; position: absolute; left: 5.5px; top: 16px; bottom: 2px;
+  width: 1.5px; background: var(--border); }
+.pf-node:last-child::before { display: none; }
+.pf-node.gone { color: var(--grey); text-decoration: line-through; }
+.pf-node.gone i { background: var(--white); border: 1.5px dashed var(--red);
+  box-shadow: none; }
+.pf-node.gone::before { background: none;
+  background-image: linear-gradient(var(--border) 50%, transparent 0);
+  background-size: 1.5px 6px; }
+
+/* ---- fifty five of them, and none of them here ---- */
+.pfig-dots { display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start;
+  padding-bottom: 34px; }
+.pfig-dots i { width: 9px; height: 9px; border-radius: 50%; background: #cfd3de; }
+.pf-none { position: absolute; left: 22px; right: 22px; bottom: 16px; font-size: 11px;
+  font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--red); }
+
+:root[data-theme="dark"] .pfig-bars i { background: #46418f; }
+:root[data-theme="dark"] .pfig-dots i { background: #353a4d; }
+:root[data-theme="dark"] .pf-chip { background: var(--tile); }
+
+/* ---- what makes it different, as a list rather than six more boxes ---- */
+.diffs { display: grid; gap: 14px; margin-top: 22px; }
+/* Two columns when it is the whole width of the page rather than one half of
+   a pair, which is what it became once the city list came out of the column
+   beside it. */
+.diffs.wide { margin-top: 34px; gap: 20px clamp(26px,4vw,62px); }
+@media (min-width: 860px) { .diffs.wide { grid-template-columns: 1fr 1fr; } }
+.diff { display: flex; gap: 12px; align-items: flex-start; }
+.diff svg { flex: none; margin-top: 3px; color: var(--green); }
+.diff b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.diff p { font-size: 13.5px; color: var(--grey); margin-top: 4px; }

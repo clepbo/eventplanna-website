@@ -32,6 +32,11 @@ const PAGES = [
   ['faq',         'faq.html'],
   ['post',        'post.html?slug=festive-season-event-planning-tips'],
   ['event',       'event.html?slug=the-future-of-event-planning'],
+  // Two planners, not one: a profile is rendered from whatever ?p= names, and
+  // the one difference between them that changes the markup is whether that
+  // planner charges for a consultation.
+  ['planner',     'planner.html?p=adaeze-mbakwe'],
+  ['planner-free', 'planner.html?p=zainab-bello'],
 ];
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true });

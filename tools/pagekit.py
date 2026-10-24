@@ -11,7 +11,7 @@ Information architecture, after the October stakeholder review:
 import io, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = "7"                       # asset cache-busting version
+V = "8"                       # asset cache-busting version
 
 # One marketplace entry, not two. "Find a planner" and "For planners" sat next
 # to each other reading as near-duplicates, so both audiences now live on
