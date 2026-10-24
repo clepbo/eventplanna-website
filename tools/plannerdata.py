@@ -6,8 +6,10 @@ marketplace.html, and tools/build_planners.py writes assets/planners.js and the
 profile page those cards link to. Keeping the list in one place is what stops a
 card saying one thing and the profile behind it saying another.
 
-Everything here is invented, and the pages say so in three places: on the
-directory, on every profile, and inside the booking flow.
+Everything here is invented. The pages used to say so on every panel; the
+client asked for those labels off, so the only one left is a single line on
+the booking confirmation, where somebody who has just pressed "Pay and book"
+has to be told that nothing was sent and nothing was charged.
 
 The twenty four rows are written out by hand. The detail hanging off each one
 (the portfolio, the past events, the reviews, the consultation terms) is

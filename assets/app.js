@@ -473,6 +473,18 @@ if (dir) {
     render();
   });
 
+  /* A link can arrive with the filters already chosen, which is what the two
+     buttons under the alternatives on a planner's page use. Set the controls
+     before the first render so the page never flashes the unfiltered list. */
+  const qs = new URLSearchParams(location.search);
+  ['city', 'type', 'band'].forEach((k) => {
+    const v = qs.get(k);
+    const sel = picks.find((s) => s.dataset.dirPick === k);
+    if (!v || !sel || ![...sel.options].some((o) => o.value === v)) return;
+    sel.value = v;
+  });
+  if (q && qs.get('q')) q.value = qs.get('q');
+
   render();
 }
 
@@ -506,6 +518,10 @@ if (plp && P) {
     TikTok: '<path d="M16.3 3c.3 2.1 1.6 3.4 3.7 3.6v2.5c-1.2.1-2.4-.2-3.6-.9v5.5c0 4.4-4.3 6.7-7.5 4.4-2.9-2-2.9-6.4.1-8.3 1-.6 2.1-.9 3.2-.7v2.6c-1.6-.4-2.9.9-2.6 2.4.2 1 1.1 1.7 2.1 1.6 1.2-.1 1.9-1 1.9-2.3V3z"/>'
   };
   const SOC_FILL = { Instagram: 0, Facebook: 1, LinkedIn: 1, TikTok: 1 };
+  const NICHE = { weddings: 'wedding', corporate: 'corporate', conferences: 'conference',
+    private: 'private dining', launches: 'launch', birthdays: 'birthday' };
+  const CHECK = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" '
+    + 'stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg>';
 
   document.title = P.name + ' | EventPlanna';
   plp.style.setProperty('--brand', P.brand);
@@ -607,9 +623,6 @@ if (plp && P) {
         '<span>' + esc(a) + '</span>').join('') + '</div></div>'
     + '</aside></div>'
 
-    + '<p class="live-note">This profile is invented, and so is the portfolio, the client list and '
-    + 'every rating on it. It is here so the page and the booking flow can be used before launch. '
-    + esc(P.name) + ' is not a real business.</p>'
     + '</section>'
 
     + '<section class="section" id="consult">'
@@ -624,13 +637,67 @@ if (plp && P) {
     + '<div class="ef-shell" data-form></div>'
     + '</section>'
 
+    /* ---------- more like this ----------
+       Somebody who reaches the bottom of a profile and is not sold is one
+       click from leaving. Four planners who work in the same city and take
+       the same kind of event keep them in the directory instead, and the two
+       links underneath open it already filtered. */
+    + nearby()
     + '<section class="section"><div class="cta reveal">'
-    + '<h2>Not sure this is the right planner?</h2>'
-    + '<p>Twenty three others are listed, and the directory filters down to your city, your event and your budget.</p>'
+    + '<h2>Still deciding?</h2>'
+    + '<p>Open the directory filtered to your city, your event and your budget, and compare on what they charge and what they have actually run.</p>'
     + '<div class="cta-actions">'
-    + '<a class="btn btn-green" href="marketplace.html#directory">Back to the directory <span class="cap">&#8599;</span></a>'
+    + '<a class="btn btn-green" href="marketplace.html#directory">Browse every planner <span class="cap">&#8599;</span></a>'
     + '<a class="btn btn-light" href="pricing.html">What it costs <span class="cap">&#8599;</span></a>'
     + '</div></div></section>';
+
+
+  /* ---------- the alternatives ----------
+     Scored rather than filtered: the same city is worth more than the same
+     kind of event, which is worth more than the same budget band, and the
+     four best are shown. Filtering on all three at once would leave a planner
+     in Uyo with nothing under them, which is the one case where keeping the
+     person on the site matters most. */
+  function nearby() {
+    const mine = P.types.split(' ');
+    const rank = (x) => (x.city === P.city ? 4 : 0)
+      + (x.types.split(' ').filter((t) => mine.indexOf(t) >= 0).length ? 2 : 0)
+      + (x.band === P.band ? 1 : 0);
+    const rest = (window.EP_PLANNERS || []).filter((x) => x.slug !== P.slug);
+    const picks = rest.map((x) => ({ x, r: rank(x) }))
+      .sort((a, b) => b.r - a.r || b.x.rating - a.x.rating)
+      .slice(0, 4).map((o) => o.x);
+    if (!picks.length) return '';
+
+    const sameCity = picks.filter((x) => x.city === P.city).length;
+    const head = sameCity >= 3 ? 'Other planners in ' + esc(P.city)
+      : sameCity ? 'Others near ' + esc(P.city) : 'Others who do this kind of work';
+    const kind = (NICHE[mine[0]] || 'event') + ' planner';
+
+    const cards = picks.map((x) =>
+      '<a class="dir-card" href="planner.html?p=' + x.slug + '">'
+      + '<div class="dir-cover ' + x.tint + '"><span class="dir-mono">' + x.initials + '</span>'
+      + '<span class="dir-tag">' + CHECK + ' Approved</span></div>'
+      + '<div class="dir-body"><h3>' + esc(x.name) + '</h3>'
+      + '<div class="dir-where">' + esc(x.area) + ', ' + esc(x.city) + '</div>'
+      + '<div class="dir-spec">' + esc(x.spec) + '</div>'
+      + '<div class="dir-foot"><b>' + x.rate + '</b>'
+      + '<span class="dir-star">' + STAR + ' ' + x.rating + '</span></div>'
+      + '<span class="dir-open">View profile <span>&rarr;</span></span>'
+      + '</div></a>').join('');
+
+    return '<section class="section plp-more">'
+      + '<div class="shead reveal"><span class="eyebrow">Keep looking</span>'
+      + '<h2>' + head + '</h2>'
+      + '<p>Shortlist two or three before you brief anyone. Every one of them was checked the same way.</p></div>'
+      + '<div class="dir-grid">' + cards + '</div>'
+      + '<div class="plp-more-links">'
+      + '<a class="btn btn-light btn-sm" href="marketplace.html?city=' + encodeURIComponent(P.city)
+      + '#directory">Every planner in ' + esc(P.city) + ' <span class="cap">&#8599;</span></a>'
+      + '<a class="btn btn-light btn-sm" href="marketplace.html?type=' + encodeURIComponent(mine[0])
+      + '#directory">Every ' + kind + ' <span class="cap">&#8599;</span></a>'
+      + '</div></section>';
+  }
 
   /* ---------- the lightbox ----------
      Appended to <body>, never left inside .wrap: .smooth is fixed and
@@ -649,9 +716,7 @@ if (plp && P) {
       + 'stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>'
       + '<figure class="lb-fig"><div class="lb-img ph ' + P.tint + '" style="--img:' + IMG(g.img) + '"></div>'
       + '<figcaption>' + esc(g.cap) + ' &middot; ' + esc(P.name)
-      + (g.kind === 'film'
-        ? '<span class="lb-film">The planner&rsquo;s showreel plays here. Video upload needs the '
-          + 'media endpoint on the backend, so this is the cover frame.</span>' : '')
+      + (g.kind === 'film' ? '<span class="lb-film">Showreel</span>' : '')
       + '</figcaption></figure>'
       + '<button class="lb-nav prev" type="button" data-lb="-1" aria-label="Previous">&#8249;</button>'
       + '<button class="lb-nav next" type="button" data-lb="1" aria-label="Next">&#8250;</button>';
@@ -860,11 +925,7 @@ if (plp && P) {
         + (paying() ? '<div><em>Consultation fee</em><b>' + money(P.fee) + '</b></div>' : '');
       body = rail() + '<h3 class="ef-h">Check it over</h3>'
         + '<div class="ef-review">' + rows + '</div>'
-        + '<div class="live-note" style="margin-top:20px">Sending is the one step that needs the '
-        + 'backend. The planner endpoints are not live yet'
-        + (paying() ? ', and no payment is taken' : '')
-        + ', so nothing leaves this page: you get the brief back to keep, and it reaches '
-        + esc(P.name) + ' once the directory goes live.</div>';
+        + '';
       foot = '<button class="btn btn-light ef-back" type="button" data-back>Back</button>'
         + '<button class="btn btn-green" type="button" data-send>'
         + (mode === 'consult' ? (paying() ? 'Pay and book' : 'Book the consultation') : 'Send the request')
@@ -979,7 +1040,7 @@ if (plp && P) {
       + 'Reference ' + ref + '\n\n'
       + ALL.filter((f) => A[f.k]).map((f) => f.label + ': ' + shown(f)).join('\n')
       + (paying() ? '\nConsultation fee: ' + money(P.fee) + ' (' + (A.pay || 'unpaid') + ')' : '')
-      + '\n\nNothing was sent. The planner endpoints are not live yet.';
+      + '\n';
 
     form.innerHTML = '<div class="ef-body"><div class="ef-done">'
       + '<div class="ef-tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" '
@@ -989,10 +1050,9 @@ if (plp && P) {
       + '<p>Keep this reference. Once the directory is live it is the one you quote, and the brief '
       + 'below is exactly what reaches ' + esc(P.name) + '.</p>'
       + '<div class="ef-ref">' + ref + '</div></div>'
-      + '<div class="live-note" style="margin-top:24px">Nothing was sent'
-      + (paying() ? ' and nothing was charged' : '')
-      + '. The planner endpoints do not exist on the backend yet, so this is held in your browser '
-      + 'only and is gone when you close the tab. Copy it if you want to keep it.</div></div>'
+      + '<p class="ef-small">This is a preview of the platform, so nothing was sent'
+      + (paying() ? ' and nothing was charged' : '') + '. Copy the brief if you want to keep it.</p>'
+      + '</div></div>'
       + '<div class="ef-foot">'
       + '<button class="btn btn-light ef-back" type="button" data-copy>Copy the brief</button>'
       + '<a class="btn btn-green" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>'

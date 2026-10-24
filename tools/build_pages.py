@@ -16,6 +16,13 @@ Written after the October stakeholder review. What changed and why:
                        class in the nav and read from the real endpoints.
   denser pages         The review said there was too much air and not enough on
                        the page. More sections, less space between them.
+  no demo labels       The sample content used to carry a label on every panel
+                       saying it was a sample. The client asked for them off:
+                       anyone looking at a pre-launch site knows what they are
+                       looking at, and the labels were louder than the design.
+                       The one line that stayed is on the booking confirmation,
+                       where someone could otherwise go away believing a real
+                       planner had been contacted.
 
 And after the second review:
 
@@ -442,7 +449,6 @@ DIRECTORY = """
       <div class="dir-empty" data-dir-empty hidden>Nothing matches that combination yet. Try a wider budget band, or clear the filters and start again.</div>
       <div class="dir-pager" data-dir-pager hidden></div>
     </div>
-    <p class="live-note reveal">Every profile here is invented, and so is every rating, portfolio and count on it. They are here so the search, the filters and the booking flow can be used before launch. Real planners appear in their place once the directory endpoints are live on the backend.</p>
   </section>
 """
 
@@ -481,7 +487,6 @@ mk += """
           <div class="prow"><span class="nm">Photography</span><span class="track"><i style="--w:50%"></i></span><span class="val">50%</span></div>
           <div class="prow"><span class="nm">Decor</span><span class="track"><i style="--w:0%"></i></span><span class="val">0%</span></div>
         </div>
-        <div class="ui-sub" style="margin-top:12px">An illustration of the workspace, not a real account.</div>
       </div></div>
     </div>
   </header>
@@ -513,7 +518,6 @@ mk += """
           <div class="prow"><span class="nm">Okafor 50th</span><span class="track"><i style="--w:34%;background:var(--c6)"></i></span><span class="val">34%</span></div>
           <div class="prow"><span class="nm">Ire launch</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
         </div>
-        <div class="ui-sub" style="margin-top:12px">An illustration of the workspace, not a real account.</div>
       </div></div>
     </div>
   </section>
@@ -539,7 +543,6 @@ mk += """
              "The cities and areas you genuinely cover",
              "A price range, so briefs reach you in the right band",
              "The event types you want, and the ones you do not"]) + """        </ul>
-        <div class="live-note" style="margin-top:20px">The application form is not wired up yet. Planner submission needs its endpoint on the backend first, so this points at account signup for now.</div>
         <div class="hero-actions" style="margin-top:20px">
           <a class="btn btn-dark" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>
         </div>

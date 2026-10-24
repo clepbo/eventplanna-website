@@ -856,7 +856,10 @@ select.fld { padding-right: 38px; cursor: pointer;
    Say it once, for the three of them. */
 .dir-grid [hidden], .dir-pager[hidden], .dir-empty[hidden] { display: none; }
 
+/* The card is an anchor, so without this the browser underlines everything
+   inside it: the name, the city, the price and the monogram. */
 .dir-card { position: relative; text-align: left; font: inherit; cursor: pointer;
+  text-decoration: none; color: inherit;
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
   transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .25s; }
@@ -1136,6 +1139,17 @@ select.fld { padding-right: 38px; cursor: pointer;
 .plp-soc b { display: block; font-size: 13px; font-weight: 600; }
 .plp-soc small { display: block; font-size: 12px; color: var(--grey); margin-top: 1px;
   word-break: break-word; }
+
+/* ---- the alternatives at the foot of a profile ----
+   The same cards as the directory, so arriving here from a profile and
+   arriving from the directory look like the same shortlist. */
+.plp-more { padding-top: clamp(40px,5vw,70px); }
+.plp-more .dir-grid { margin-top: 26px; }
+.plp-more-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* One line on the confirmation, where somebody has just pressed a button that
+   looks like it paid for something. */
+.ef-small { font-size: 13px; color: var(--grey); text-align: center; margin-top: 22px; }
 
 .plp-miss { text-align: center; padding: clamp(40px,8vw,90px) 0; }
 .plp-miss h1 { font-size: clamp(27px,4vw,44px); }
