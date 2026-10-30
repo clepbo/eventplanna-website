@@ -14,6 +14,14 @@
    allocated with N752,000 left), so a planner who met it on the marketplace
    page meets the same event here.
 
+   The shell, the nav order and the wording come from the real app in the
+   sandbox rather than from imagination: Dashboard, Events, Tasks, Bookings,
+   Vendors, Team, Leads and Reviews down the left, the credit balance under
+   them, search and the account chip across the top. Where the sandbox names
+   a thing (Task Management, Vendor Marketplace, Potential clients, and the
+   lead statuses New through Archived) that name is used here, so somebody
+   who signs up after playing with this meets the same words.
+
    This is deliberately not in assets/app.js. That file is the scroll and
    motion engine and has nothing to do with any of this; it is only loaded on
    playground.html.
@@ -32,7 +40,7 @@
   function fresh() {
     return {
       role: 'manager',
-      tab: 'overview',
+      tab: 'dashboard',
       client: false,
       alerted: {},
       event: {
@@ -100,6 +108,34 @@
         { who: 'Tunde', role: 'Coordinator', on: 'This event' },
         { who: 'Ify', role: 'Assistant', on: 'This event' }
       ],
+      /* Four actions draw credits down at the prices the pricing page
+         quotes: create an event 5, a booking request 5, a team invite 2, an
+         export 1. 200 to start, less this event and its five requests. */
+      credits: 170,
+      /* The consultation form on a planner's public profile lands here. The
+         statuses are the sandbox's own: New, Reviewed, Contacted, Converted,
+         Archived. */
+      leads: [
+        { who: 'Chinwe Okafor', what: 'Traditional wedding', when: '12 Dec 2026',
+          guests: 400, budget: 9500000, at: 'Converted', via: 'Consultation page' },
+        { who: 'Bola Ajayi', what: 'Corporate dinner', when: '4 Feb 2027',
+          guests: 180, budget: 4200000, at: 'Contacted', via: 'Consultation page' },
+        { who: 'Ngozi Ude', what: 'Anniversary dinner', when: '21 Mar 2027',
+          guests: 60, budget: 1800000, at: 'Reviewed', via: 'Directory profile' },
+        { who: 'Emeka Bassey', what: 'Product launch', when: '9 Apr 2027',
+          guests: 250, budget: 6000000, at: 'New', via: 'Consultation page' }
+      ],
+      /* The categories are the sandbox marketplace's own. The businesses are
+         not: putting real suppliers' names and prices on a marketing page is
+         not something to do without asking them first. */
+      vendors: [
+        { name: 'Harbourline Catering', cat: 'Catering', area: 'Lekki, Lagos', from: 650000, saved: false, used: true },
+        { name: 'Studio Ember', cat: 'Photography', area: 'Ikoyi, Lagos', from: 300000, saved: true, used: true },
+        { name: 'Drape & Bloom', cat: 'Decoration', area: 'Ikeja, Lagos', from: 480000, saved: false, used: false },
+        { name: 'The Lagos Collective', cat: 'Live Band', area: 'Yaba, Lagos', from: 160000, saved: false, used: false },
+        { name: 'Gilded Hall', cat: 'Venue', area: 'Ikeja, Lagos', from: 500000, saved: true, used: true },
+        { name: 'Ada Makeup Studio', cat: 'Makeup & Hair', area: 'Lekki, Lagos', from: 120000, saved: false, used: false }
+      ],
       feed: []
     };
   }
@@ -107,6 +143,23 @@
   var S = fresh();
 
   /* ---------------------------------------------------------------- helpers */
+  /* Order and labels straight off the sandbox sidebar. `needs` names the
+     permission a role has to hold for the item to appear at all. */
+  var NAV = [
+    { k: 'dashboard', t: 'Dashboard' },
+    { k: 'events', t: 'Events' },
+    { k: 'tasks', t: 'Tasks' },
+    { k: 'bookings', t: 'Bookings' },
+    { k: 'vendors', t: 'Vendors' },
+    { k: 'team', t: 'Team', needs: 'team' },
+    { k: 'leads', t: 'Leads', needs: 'money' },
+    { k: 'reviews', t: 'Reviews', needs: 'team' },
+    { k: 'portal', t: 'Client portal', needs: 'portal' }
+  ];
+  var LEAD_FLOW = ['New', 'Reviewed', 'Contacted', 'Converted'];
+  var VCATS = ['All Categories', 'Photography', 'Catering', 'Venue', 'DJ/Entertainment',
+    'Decoration', 'Makeup & Hair', 'Videography', 'Live Band'];
+
   function money(n) { return N + Number(n).toLocaleString('en-NG'); }
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -391,27 +444,147 @@
       + '<p class="pg-hint">Every task has an owner and a date. Tick one and the overview, the phase bar and the client portal all move, because they are all counting the same thing.</p>';
   }
 
-  var VIEWS = { overview: overview, budget: budget, tasks: tasksView,
-                bookings: bookings, team: team, portal: portal };
+
+  /* ---- Events ---------------------------------------------------------- */
+  function events() {
+    var a = alloc(), sp = spent(), done = doneCount(), all = tasks().length;
+    return head2('Events', 'One event open. Creating another costs 5 credits.')
+      + '<div class="pg-viewbar"><span class="pg-seg on">List</span>'
+      + '<span class="pg-seg">Table</span><span class="pg-seg">Calendar</span>'
+      + '<span class="pg-seg">Timeline</span>'
+      + '<span class="pg-spacer"></span><span class="pg-seg">All Status</span>'
+      + '<span class="pg-seg">All Categories</span></div>'
+      + '<div class="pg-eventcard"><div class="pg-eventcard-top">'
+      + '<div><b>' + esc(S.event.name) + '</b><small>' + whenLabel() + ' &middot; '
+      + S.event.guests + ' guests &middot; ' + esc(S.event.client) + '</small></div>'
+      + '<span class="pg-state s-confirmed">In progress</span></div>'
+      + '<div class="pg-row"><span class="nm">Plan</span>' + bar(pct(done, all))
+      + '<span class="val">' + pct(done, all) + '%</span></div>'
+      + (can().money
+        ? '<div class="pg-row"><span class="nm">Budget</span>' + bar(pct(sp, a))
+          + '<span class="val">' + money(a - sp) + ' left</span></div>' : '')
+      + '<div class="pg-eventcard-act">'
+      + '<button class="pg-mini" type="button" data-pg-tab="tasks">Tasks</button>'
+      + '<button class="pg-mini" type="button" data-pg-tab="bookings">Bookings</button>'
+      + (can().money
+        ? '<button class="pg-mini" type="button" data-pg-tab="budget">Budget</button>' : '')
+      + '</div></div>'
+      + '<p class="pg-hint">In the app an event opens onto its own budget, phases and bookings. Here they are the tabs beside this one, so there is less to click through.</p>';
+  }
+
+  /* ---- Vendors --------------------------------------------------------- */
+  function vendors() {
+    return head2('Vendor Marketplace', 'Discover, save and book trusted vendors for your events.')
+      + '<div class="pg-chips">' + VCATS.map(function (c, i) {
+          return '<span class="pg-chip' + (i === 0 ? ' on' : '') + '">' + c + '</span>';
+        }).join('') + '</div>'
+      + '<div class="pg-vendors">' + S.vendors.map(function (v, i) {
+          return '<div class="pg-vendor"><div class="pg-vendor-top">'
+            + '<span class="pg-cat">' + esc(v.cat) + '</span>'
+            + '<button class="pg-heart' + (v.saved ? ' on' : '') + '" type="button" '
+            + 'data-save="' + i + '" aria-label="Save ' + esc(v.name) + '">'
+            + (v.saved ? HEART_ON : HEART) + '</button></div>'
+            + '<b>' + esc(v.name) + '</b><small>' + esc(v.area) + '</small>'
+            + (can().money ? '<div class="pg-from"><em>Starting from</em><b>'
+                + money(v.from) + '</b></div>' : '')
+            + (v.used ? '<span class="pg-onthis">' + TICK + ' On this event</span>' : '')
+            + '</div>';
+        }).join('') + '</div>'
+      + '<p class="pg-hint">Saving a vendor is free. A booking request costs 5 credits and carries the date, the headcount and the budget with it, so what comes back is a price rather than a question.</p>';
+  }
+
+  /* ---- Leads ----------------------------------------------------------- */
+  function leads() {
+    if (!can().money) return locked('leads');
+    return head2('Potential clients', 'Every consultation booked from your public profile arrives here.')
+      + '<div class="pg-chips">' + ['All'].concat(LEAD_FLOW).concat(['Archived']).map(function (c, i) {
+          return '<span class="pg-chip' + (i === 0 ? ' on' : '') + '">' + c + '</span>';
+        }).join('') + '</div>'
+      + '<div class="pg-leads">' + S.leads.map(function (l, i) {
+          var at = LEAD_FLOW.indexOf(l.at);
+          return '<div class="pg-lead"><div class="pg-lead-top">'
+            + '<div><b>' + esc(l.who) + '</b><small>' + esc(l.what) + ' &middot; '
+            + esc(l.when) + ' &middot; ' + l.guests + ' guests</small></div>'
+            + '<span class="pg-state s-' + l.at.toLowerCase() + '">' + l.at + '</span></div>'
+            + '<div class="pg-lead-foot"><span>' + money(l.budget) + ' budget</span>'
+            + '<span>via ' + esc(l.via) + '</span>'
+            + (can().edit && at >= 0 && at < LEAD_FLOW.length - 1
+              ? '<button class="pg-mini" type="button" data-lead="' + i + '">Mark '
+                + LEAD_FLOW[at + 1] + '</button>' : '')
+            + '</div></div>';
+        }).join('') + '</div>'
+      + '<p class="pg-hint">This is the other end of the consultation form on a planner profile. Somebody fills it in on the public page and lands here as New, before anybody has paid for anything.</p>';
+  }
+
+  /* ---- Reviews --------------------------------------------------------- */
+  function reviews() {
+    if (!can().team) return locked('reviews');
+    var done = S.bookings.filter(function (b) { return b.state === 'Completed'; });
+    return head2('Reviews &amp; ratings', 'A rating can only be left against a completed booking.')
+      + '<div class="pg-chips"><span class="pg-chip on">Published</span>'
+      + '<span class="pg-chip">Pending</span><span class="pg-chip">Hidden</span></div>'
+      + '<div class="pg-reviews">'
+      + '<figure class="pg-review"><div class="pg-stars">' + STARS(5) + '</div>'
+      + '<blockquote>The run sheet went out eight days before and everything on it happened at the minute it said.</blockquote>'
+      + '<figcaption>Bisi A. &middot; a wedding &middot; published</figcaption></figure>'
+      + '<figure class="pg-review"><div class="pg-stars">' + STARS(5) + '</div>'
+      + '<blockquote>Every naira was against a line, and the final invoice was the number we agreed in month one.</blockquote>'
+      + '<figcaption>Tunde O. &middot; a corporate dinner &middot; published</figcaption></figure>'
+      + '</div>'
+      + '<p class="pg-hint">' + done.length + ' booking' + (done.length === 1 ? '' : 's')
+      + ' on this event ' + (done.length === 1 ? 'is' : 'are') + ' completed, so '
+      + (done.length === 1 ? 'that one' : 'those') + ' can be reviewed. Nothing else can.</p>';
+  }
+
+  function head2(t, sub) {
+    return '<div class="pg-h2"><h2>' + t + '</h2><p>' + sub + '</p></div>';
+  }
+
+  var HEART = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+    + ' stroke-width="2"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20z"/></svg>';
+  var HEART_ON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"'
+    + ' stroke="none"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20z"/></svg>';
+  function STARS(n) {
+    var st = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">'
+      + '<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg>';
+    var out = ''; for (var i = 0; i < n; i++) out += st; return out;
+  }
+
+  var VIEWS = { dashboard: overview, events: events, budget: budget,
+                tasks: tasksView, bookings: bookings, vendors: vendors,
+                team: team, leads: leads, reviews: reviews, portal: portal };
 
   /* ------------------------------------------------------------------ paint */
+  var WHO = { manager: ['AM', 'Adaeze Mbakwe'], coordinator: ['TO', 'Tunde Okoro'],
+              assistant: ['IE', 'Ify Eze'] };
+
   function paint() {
-    var body = $('[data-pg-body]', root);
-    body.innerHTML = '<div class="pg-event"><div><b>' + esc(S.event.name) + '</b>'
+    // The sidebar is rebuilt from NAV every paint, so an item a role cannot
+    // open is absent rather than present-but-dead.
+    var nav = $('[data-pg-nav]', root);
+    if (nav) {
+      nav.innerHTML = NAV.filter(function (n) { return !n.needs || can()[n.needs]; })
+        .map(function (n) {
+          return '<button class="pg-navitem' + (n.k === S.tab ? ' on' : '') + '" type="button"'
+            + ' data-pg-tab="' + n.k + '">' + n.t + '</button>';
+        }).join('');
+      if (!NAV.some(function (n) { return n.k === S.tab; }) && S.tab !== 'budget') {
+        S.tab = 'dashboard';
+      }
+    }
+    var c = $('[data-pg-credits]', root);
+    if (c) c.textContent = S.credits;
+    var ini = $('[data-pg-ini]', root), nm = $('[data-pg-name]', root);
+    if (ini) ini.textContent = WHO[S.role][0];
+    if (nm) nm.textContent = WHO[S.role][1];
+
+    $('[data-pg-body]', root).innerHTML =
+      '<div class="pg-event"><div><b>' + esc(S.event.name) + '</b>'
       + '<small>' + whenLabel() + ' &middot; ' + S.event.guests + ' guests &middot; '
       + esc(S.event.client) + '</small></div>'
       + '<span class="pg-badge">' + S.role.charAt(0).toUpperCase() + S.role.slice(1)
       + ' view</span></div>'
       + (VIEWS[S.tab] || overview)();
-    $$('.pg-tab', root).forEach(function (b) {
-      var on = b.dataset.pgTab === S.tab;
-      b.classList.toggle('on', on);
-      b.setAttribute('aria-selected', String(on));
-      // The budget tab is simply not there for somebody who cannot open it.
-      if (b.dataset.pgTab === 'budget') b.hidden = !can().money;
-      if (b.dataset.pgTab === 'team') b.hidden = !can().team;
-      if (b.dataset.pgTab === 'portal') b.hidden = !can().portal;
-    });
   }
 
   /* ----------------------------------------------------------------- events */
@@ -455,6 +628,25 @@
       return;
     }
 
+    var sv = t.closest('[data-save]');
+    if (sv) {
+      var v = S.vendors[+sv.dataset.save];
+      v.saved = !v.saved;
+      note((v.saved ? 'Saved ' : 'Unsaved ') + v.name + '. Saving a vendor is free.');
+      paint();
+      return;
+    }
+    var ld = t.closest('[data-lead]');
+    if (ld) {
+      var lead = S.leads[+ld.dataset.lead];
+      var at = LEAD_FLOW.indexOf(lead.at);
+      if (at < 0 || at >= LEAD_FLOW.length - 1) return;
+      lead.at = LEAD_FLOW[at + 1];
+      note(lead.who + ' moved to ' + lead.at + '.');
+      paint();
+      return;
+    }
+
     var cl = t.closest('[data-client]');
     if (cl) { S.client = cl.dataset.client === '1'; paint(); return; }
   });
@@ -486,9 +678,9 @@
   var roleSel = $('[data-pg-role]');
   if (roleSel) roleSel.addEventListener('change', function () {
     S.role = roleSel.value;
-    if (!can().money && S.tab === 'budget') S.tab = 'overview';
-    if (!can().team && S.tab === 'team') S.tab = 'overview';
-    if (!can().portal && S.tab === 'portal') S.tab = 'overview';
+    if (!can().money && S.tab === 'budget') S.tab = 'dashboard';
+    if (!can().team && S.tab === 'team') S.tab = 'dashboard';
+    if (!can().portal && S.tab === 'portal') S.tab = 'dashboard';
     paint();
   });
 

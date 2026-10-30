@@ -62,16 +62,23 @@
 
   <section class="section" id="workspace" style="padding-top:0">
     <div class="pg" data-pg>
-      <div class="pg-tabs" role="tablist">
-        <button class="pg-tab on" type="button" role="tab" data-pg-tab="overview">Overview</button>
-        <button class="pg-tab" type="button" role="tab" data-pg-tab="budget">Budget</button>
-        <button class="pg-tab" type="button" role="tab" data-pg-tab="tasks">Phases &amp; tasks</button>
-        <button class="pg-tab" type="button" role="tab" data-pg-tab="bookings">Bookings</button>
-        <button class="pg-tab" type="button" role="tab" data-pg-tab="team">Team</button>
-        <button class="pg-tab" type="button" role="tab" data-pg-tab="portal">Client portal</button>
-      </div>
-      <div class="pg-body" data-pg-body>
-        <div class="pg-boot">Loading the workspace&hellip;</div>
+      <div class="pg-app">
+        <aside class="pg-side">
+          <div class="pg-brand"><img src="assets/logo-dark.svg" alt="EventPlanna"></div>
+          <nav class="pg-nav" data-pg-nav></nav>
+          <div class="pg-credits">
+            <em>Credit balance</em>
+            <b data-pg-credits>200</b><span>/200</span>
+            <small>Four actions draw it down. <a href="pricing.html">What they cost</a></small>
+          </div>
+        </aside>
+        <div class="pg-main">
+          <div class="pg-top">
+            <span class="pg-search">Search workspace&hellip;<i>/</i></span>
+            <span class="pg-user"><i data-pg-ini>AM</i><b data-pg-name>Adaeze Mbakwe</b></span>
+          </div>
+          <div class="pg-view" data-pg-body><div class="pg-boot">Loading the workspace&hellip;</div></div>
+        </div>
       </div>
     </div>
     <p class="pg-note">A sample event, held in this page only. Reload and it is back how it started.</p>
