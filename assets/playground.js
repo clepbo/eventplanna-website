@@ -29,6 +29,20 @@
 (function () {
   'use strict';
 
+  /* ---------------------------------------------------------------- back ---
+     The page is reached from the home page and from two places on the
+     marketplace, so there is no one previous page to hard-code. Take a real
+     history step when the visitor came from somewhere on this site, and fall
+     back to the href otherwise: opened cold from a pasted link or a new tab,
+     history.back() would either do nothing or throw them out of the site. */
+  var back = document.querySelector('.plp-back[data-back]');
+  if (back) back.addEventListener('click', function (e) {
+    var from = document.referrer;
+    var same = from && from.indexOf(location.origin + '/') === 0
+      && from.replace(/#.*$/, '') !== location.href.replace(/#.*$/, '');
+    if (same && history.length > 1) { e.preventDefault(); history.back(); }
+  });
+
   var root = document.querySelector('[data-pg]');
   if (!root) return;
 

@@ -21,6 +21,11 @@ planner sees on the marketplace page is the figure they see here.
 
 The behaviour is in assets/playground.js rather than assets/app.js, which is
 the scroll and motion engine and has nothing to do with this.
+
+The back link is a real href, to the planner half of the marketplace, because
+that is where most people arrive from and because a link has to go somewhere
+with the script off. assets/playground.js upgrades it to a true history step
+when there is one to take.
 """
 import sys, os
 
@@ -34,6 +39,7 @@ p = head("The workspace | EventPlanna",
 
 p += """
   <header class="phero" style="padding-bottom:clamp(20px,3vw,34px)">
+    <a class="plp-back" href="marketplace.html#for-planners" data-back>&#8249; Back</a>
     <div class="pg-head">
       <div>
         <span class="eyebrow fade-up">The workspace</span>
