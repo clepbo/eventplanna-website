@@ -244,7 +244,7 @@ index += """
              "A client portal that shows progress, not your margins",
              "Every message sitting against the booking it belongs to"]) + """        </ul>
         <div class="hero-actions" style="margin-top:26px">
-          <a class="btn btn-dark" href="marketplace.html#workspace">See the workspace <span class="cap">&#8599;</span></a>
+          <a class="btn btn-dark" href="playground.html">Try the workspace <span class="cap">&#8599;</span></a>
           <a class="btn btn-light" href="pricing.html">What it costs <span class="cap">&#8599;</span></a>
         </div>
       </div>
@@ -374,9 +374,28 @@ write("event.html", head("Event | EventPlanna", "An upcoming EventPlanna session
 # one anchor to planner.html?p=<slug>, so the profile has a URL you can send
 # someone, opens in a new tab on a middle click, and leaves the back button
 # doing what a back button should do.
-from plannerdata import profiles, BANDS, CITIES, TYPE_OPTS
+from plannerdata import profiles, BANDS, CITIES, TYPE_OPTS, N
 
 PS = profiles()
+
+def fee_flag(d):
+    """Whether a planner charges for a consultation, at a glance.
+
+    It is the first thing a client wants to know and it was only visible
+    inside the profile, so it now sits on the card in the directory, on the
+    top-rated strip and in the badge row on the profile itself."""
+    if d["fee"]:
+        return ('<span class="fee-flag paid">%s %s consult</span>'
+                % (COIN, money(d["fee"])))
+    return '<span class="fee-flag free">%s Free consult</span>' % COIN
+
+
+def money(n):
+    return N + "{:,}".format(n)
+
+
+COIN = ('<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        'stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg>')
 
 STAR = ('<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none">'
         '<path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg>')
@@ -393,7 +412,7 @@ def planner_cards():
             '        data-hay="%s" data-city="%s" data-types="%s" data-band="%d"\n'
             '        data-rating="%s" data-events="%d">\n'
             '        <div class="dir-cover %s"><span class="dir-mono">%s</span>'
-            '<span class="dir-tag">%s Approved</span></div>\n'
+            '<span class="dir-tag">%s Approved</span>%s</div>\n'
             '        <div class="dir-body">\n'
             '          <h3>%s</h3>\n'
             '          <div class="dir-where">%s, %s</div>\n'
@@ -404,8 +423,32 @@ def planner_cards():
             '        </div>\n'
             '      </a>\n'
             % (d["slug"], hay, d["city"], d["types"], d["band"], d["rating"], d["events"],
-               d["tint"], d["initials"], CHECK, d["name"], d["area"], d["city"], d["spec"],
+               d["tint"], d["initials"], CHECK, fee_flag(d),
+               d["name"], d["area"], d["city"], d["spec"],
                d["rate"], STAR, d["rating"]))
+    return out
+
+
+# The five highest rated, by rating and then by how many events they have
+# actually delivered, so a 5.0 from a handful of jobs does not outrank a 4.9
+# from eighty. Rendered into the markup rather than sorted by script: it is
+# the first thing on the directory and it should be there before any
+# JavaScript runs.
+def top_rated(n=5):
+    best = sorted(PS, key=lambda d: (-float(d["rating"]), -d["events"]))[:n]
+    out = ""
+    for i, d in enumerate(best):
+        out += (
+            '        <a class="tr-card" href="planner.html?p=%s">\n'
+            '          <span class="tr-rank">%d</span>\n'
+            '          <span class="tr-mono %s">%s</span>\n'
+            '          <span class="tr-name">%s</span>\n'
+            '          <span class="tr-where">%s</span>\n'
+            '          <span class="tr-rate">%s %s <em>%d events</em></span>\n'
+            '          %s\n'
+            '        </a>\n'
+            % (d["slug"], i + 1, d["tint"], d["initials"], d["name"],
+               d["city"], STAR, d["rating"], d["events"], fee_flag(d)))
     return out
 
 
@@ -421,6 +464,13 @@ DIRECTORY = """
       <h2>Browse planners, filtered to your event</h2>
       <p>Search by name or by what someone does, then narrow it to your city, your event type and the budget you are working to. Open a planner to see their past work and book them.</p>
     </div>
+
+    <div class="top-rated reveal">
+      <div class="tr-head"><h3>Highest rated</h3><p>By client rating, then by events delivered. Ratings can only be left against a completed booking.</p></div>
+      <div class="tr-grid">
+""" + top_rated() + """      </div>
+    </div>
+
     <div data-dir="12">
       <div class="dir-bar">
         <div class="dir-search">
@@ -475,7 +525,11 @@ mk += """
         <p class="lead fade-up d2">Planners apply with a portfolio, a price range and the cities they cover, and <b>a person reviews it before anything goes live</b>.</p>
         <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#directory">Browse the directory <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a></div>
       </div>
-      <div class="fade-up d2"><div class="ui-card chartbox">
+      <div class="fade-up d2 illus" aria-hidden="true">
+        <span class="illus-blob a"></span><span class="illus-blob b"></span>
+        <div class="illus-stack">
+        <div class="illus-ghost"></div>
+        <div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">Traditional wedding, Ikeja</div><div class="ui-sub">12 Dec 2026, 400 guests</div></div><span class="delta info">Shortlisting</span></div>
         <div class="kpi-row">
           <div class="kpi"><div class="kpi-label">Budget</div><div class="kpi-value" data-count="&#8358;1,600,000">&#8358;0</div><div class="delta up">&#8358;752,000 left</div></div>
@@ -487,7 +541,7 @@ mk += """
           <div class="prow"><span class="nm">Photography</span><span class="track"><i style="--w:50%"></i></span><span class="val">50%</span></div>
           <div class="prow"><span class="nm">Decor</span><span class="track"><i style="--w:0%"></i></span><span class="val">0%</span></div>
         </div>
-      </div></div>
+      </div></div></div>
     </div>
   </header>
 """ + DIRECTORY + """
@@ -503,10 +557,14 @@ mk += """
         <p class="lead" style="margin-top:18px">Apply once to be listed. Once you are approved, clients can find you, brief you and book you, and <b>budgets, tasks, your team and the client portal</b> live in the same place. You pay for actions, not for access, so a quiet quarter costs you nothing.</p>
         <div class="hero-actions" style="margin-top:26px">
           <a class="btn btn-dark" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
-          <a class="btn btn-light" href="#workspace">Tour the workspace <span class="cap">&#8599;</span></a>
+          <a class="btn btn-light" href="playground.html">Try the workspace <span class="cap">&#8599;</span></a>
         </div>
       </div>
-      <div><div class="ui-card chartbox">
+      <div class="illus" aria-hidden="true">
+        <span class="illus-blob a"></span><span class="illus-blob b"></span>
+        <div class="illus-stack">
+        <div class="illus-ghost"></div>
+        <div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">Your events</div><div class="ui-sub">October 2026, 6 active</div></div><span class="delta up">2 new briefs</span></div>
         <div class="kpi-row">
           <div class="kpi"><div class="kpi-label">Under management</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;24.6M">&#8358;0</div><div class="delta up">Across 6 events</div></div>
@@ -518,7 +576,7 @@ mk += """
           <div class="prow"><span class="nm">Okafor 50th</span><span class="track"><i style="--w:34%;background:var(--c6)"></i></span><span class="val">34%</span></div>
           <div class="prow"><span class="nm">Ire launch</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
         </div>
-      </div></div>
+      </div></div></div>
     </div>
   </section>
 
@@ -554,7 +612,7 @@ mk += """
     <div class="shead reveal">
       <span class="eyebrow">The workspace</span>
       <h2>Six things that stop falling through <span class="mark">the cracks</span></h2>
-      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong.</p>
+      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong. <a href="playground.html">Open the workspace and use it</a>, no account needed.</p>
     </div>
     <div class="cards cap-grid stagger">
       <div class="card"><h3>Budgets that reconcile</h3><p>Allocate by category, land every quote and payment against a line, and watch allocated, spent and remaining stay in agreement. An alert fires at 85%.</p></div>

@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.eventplanna.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=8">
-<link rel="stylesheet" href="assets/components.css?v=8">
+<link rel="stylesheet" href="assets/styles.css?v=9">
+<link rel="stylesheet" href="assets/components.css?v=9">
 </head>
 <body>
 
@@ -47,7 +47,11 @@
         <p class="lead fade-up d2">Planners apply with a portfolio, a price range and the cities they cover, and <b>a person reviews it before anything goes live</b>.</p>
         <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="#directory">Browse the directory <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#for-planners">I&rsquo;m a planner <span class="cap">&#8599;</span></a></div>
       </div>
-      <div class="fade-up d2"><div class="ui-card chartbox">
+      <div class="fade-up d2 illus" aria-hidden="true">
+        <span class="illus-blob a"></span><span class="illus-blob b"></span>
+        <div class="illus-stack">
+        <div class="illus-ghost"></div>
+        <div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">Traditional wedding, Ikeja</div><div class="ui-sub">12 Dec 2026, 400 guests</div></div><span class="delta info">Shortlisting</span></div>
         <div class="kpi-row">
           <div class="kpi"><div class="kpi-label">Budget</div><div class="kpi-value" data-count="&#8358;1,600,000">&#8358;0</div><div class="delta up">&#8358;752,000 left</div></div>
@@ -59,7 +63,7 @@
           <div class="prow"><span class="nm">Photography</span><span class="track"><i style="--w:50%"></i></span><span class="val">50%</span></div>
           <div class="prow"><span class="nm">Decor</span><span class="track"><i style="--w:0%"></i></span><span class="val">0%</span></div>
         </div>
-      </div></div>
+      </div></div></div>
     </div>
   </header>
 
@@ -69,6 +73,53 @@
       <h2>Browse planners, filtered to your event</h2>
       <p>Search by name or by what someone does, then narrow it to your city, your event type and the budget you are working to. Open a planner to see their past work and book them.</p>
     </div>
+
+    <div class="top-rated reveal">
+      <div class="tr-head"><h3>Highest rated</h3><p>By client rating, then by events delivered. Ratings can only be left against a completed booking.</p></div>
+      <div class="tr-grid">
+        <a class="tr-card" href="planner.html?p=zainab-bello">
+          <span class="tr-rank">1</span>
+          <span class="tr-mono t-cream">ZB</span>
+          <span class="tr-name">Zainab Bello</span>
+          <span class="tr-where">Abuja</span>
+          <span class="tr-rate"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg> 5.0 <em>38 events</em></span>
+          <span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span>
+        </a>
+        <a class="tr-card" href="planner.html?p=olumide-fashola">
+          <span class="tr-rank">2</span>
+          <span class="tr-mono t-blue">OF</span>
+          <span class="tr-name">Olumide Fashola</span>
+          <span class="tr-where">Lagos</span>
+          <span class="tr-rate"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg> 4.9 <em>83 events</em></span>
+          <span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span>
+        </a>
+        <a class="tr-card" href="planner.html?p=adaeze-mbakwe">
+          <span class="tr-rank">3</span>
+          <span class="tr-mono t-blush">AM</span>
+          <span class="tr-name">Adaeze Mbakwe</span>
+          <span class="tr-where">Lagos</span>
+          <span class="tr-rate"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg> 4.9 <em>64 events</em></span>
+          <span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span>
+        </a>
+        <a class="tr-card" href="planner.html?p=nkechi-obiora">
+          <span class="tr-rank">4</span>
+          <span class="tr-mono t-mint">NO</span>
+          <span class="tr-name">Nkechi Obiora</span>
+          <span class="tr-where">Abuja</span>
+          <span class="tr-rate"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg> 4.9 <em>48 events</em></span>
+          <span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span>
+        </a>
+        <a class="tr-card" href="planner.html?p=chiamaka-nnadi">
+          <span class="tr-rank">5</span>
+          <span class="tr-mono t-lilac">CN</span>
+          <span class="tr-name">Chiamaka Nnadi</span>
+          <span class="tr-where">Abuja</span>
+          <span class="tr-rate"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/></svg> 4.9 <em>45 events</em></span>
+          <span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span>
+        </a>
+      </div>
+    </div>
+
     <div data-dir="12">
       <div class="dir-bar">
         <div class="dir-search">
@@ -93,7 +144,7 @@
       <a class="dir-card" href="planner.html?p=adaeze-mbakwe"
         data-hay="adaeze mbakwe lekki lagos weddings and private dining full service planning day-of coordination traditional weddings supplier management" data-city="Lagos" data-types="weddings private" data-band="3"
         data-rating="4.9" data-events="64">
-        <div class="dir-cover t-blush"><span class="dir-mono">AM</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blush"><span class="dir-mono">AM</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Adaeze Mbakwe</h3>
           <div class="dir-where">Lekki, Lagos</div>
@@ -105,7 +156,7 @@
       <a class="dir-card" href="planner.html?p=tobi-adeyinka"
         data-hay="tobi adeyinka victoria island lagos corporate events and launches conferences agms product launches guest movement production" data-city="Lagos" data-types="corporate launches conferences" data-band="4"
         data-rating="4.8" data-events="91">
-        <div class="dir-cover t-lilac"><span class="dir-mono">TA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-lilac"><span class="dir-mono">TA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span></div>
         <div class="dir-body">
           <h3>Tobi Adeyinka</h3>
           <div class="dir-where">Victoria Island, Lagos</div>
@@ -117,7 +168,7 @@
       <a class="dir-card" href="planner.html?p=nkechi-obiora"
         data-hay="nkechi obiora wuse abuja weddings and private dining white weddings traditional weddings intimate dinners budget rescue" data-city="Abuja" data-types="weddings private" data-band="2"
         data-rating="4.9" data-events="48">
-        <div class="dir-cover t-mint"><span class="dir-mono">NO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-mint"><span class="dir-mono">NO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Nkechi Obiora</h3>
           <div class="dir-where">Wuse, Abuja</div>
@@ -129,7 +180,7 @@
       <a class="dir-card" href="planner.html?p=ifeanyi-okonkwo"
         data-hay="ifeanyi okonkwo gra port harcourt corporate events corporate dinners award nights conferences staff events" data-city="Port Harcourt" data-types="corporate conferences" data-band="3"
         data-rating="4.7" data-events="57">
-        <div class="dir-cover t-blue"><span class="dir-mono">IO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blue"><span class="dir-mono">IO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Ifeanyi Okonkwo</h3>
           <div class="dir-where">GRA, Port Harcourt</div>
@@ -141,7 +192,7 @@
       <a class="dir-card" href="planner.html?p=zainab-bello"
         data-hay="zainab bello maitama abuja luxury weddings destination weddings multi day celebrations guest logistics styling direction" data-city="Abuja" data-types="weddings" data-band="4"
         data-rating="5.0" data-events="38">
-        <div class="dir-cover t-cream"><span class="dir-mono">ZB</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-cream"><span class="dir-mono">ZB</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span></div>
         <div class="dir-body">
           <h3>Zainab Bello</h3>
           <div class="dir-where">Maitama, Abuja</div>
@@ -153,7 +204,7 @@
       <a class="dir-card" href="planner.html?p=chidinma-eze"
         data-hay="chidinma eze ikeja lagos birthdays and private dining milestone birthdays anniversaries supper clubs baby showers" data-city="Lagos" data-types="birthdays private" data-band="1"
         data-rating="4.6" data-events="72">
-        <div class="dir-cover t-grey"><span class="dir-mono">CE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-grey"><span class="dir-mono">CE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦7,500 consult</span></div>
         <div class="dir-body">
           <h3>Chidinma Eze</h3>
           <div class="dir-where">Ikeja, Lagos</div>
@@ -165,7 +216,7 @@
       <a class="dir-card" href="planner.html?p=emeka-nwachukwu"
         data-hay="emeka nwachukwu independence layout enugu traditional weddings igbo traditional rites wine carrying family liaison multi venue days" data-city="Enugu" data-types="weddings" data-band="2"
         data-rating="4.8" data-events="44">
-        <div class="dir-cover t-blush"><span class="dir-mono">EN</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blush"><span class="dir-mono">EN</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Emeka Nwachukwu</h3>
           <div class="dir-where">Independence Layout, Enugu</div>
@@ -177,7 +228,7 @@
       <a class="dir-card" href="planner.html?p=funmilayo-adeleke"
         data-hay="funmilayo adeleke bodija ibadan weddings and birthdays white weddings engagements milestone birthdays aso ebi coordination" data-city="Ibadan" data-types="weddings birthdays" data-band="2"
         data-rating="4.7" data-events="61">
-        <div class="dir-cover t-lilac"><span class="dir-mono">FA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-lilac"><span class="dir-mono">FA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Funmilayo Adeleke</h3>
           <div class="dir-where">Bodija, Ibadan</div>
@@ -189,7 +240,7 @@
       <a class="dir-card" href="planner.html?p=hauwa-suleiman"
         data-hay="hauwa suleiman nassarawa kano weddings northern weddings fatiha walima family hosting" data-city="Kano" data-types="weddings" data-band="2"
         data-rating="4.6" data-events="33">
-        <div class="dir-cover t-mint"><span class="dir-mono">HS</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-mint"><span class="dir-mono">HS</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Hauwa Suleiman</h3>
           <div class="dir-where">Nassarawa, Kano</div>
@@ -201,7 +252,7 @@
       <a class="dir-card" href="planner.html?p=olumide-fashola"
         data-hay="olumide fashola ikoyi lagos conferences and summits conferences summits hybrid events sponsor management registration" data-city="Lagos" data-types="conferences corporate" data-band="4"
         data-rating="4.9" data-events="83">
-        <div class="dir-cover t-blue"><span class="dir-mono">OF</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blue"><span class="dir-mono">OF</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span></div>
         <div class="dir-body">
           <h3>Olumide Fashola</h3>
           <div class="dir-where">Ikoyi, Lagos</div>
@@ -213,7 +264,7 @@
       <a class="dir-card" href="planner.html?p=blessing-udo"
         data-hay="blessing udo uyo uyo weddings and private dining white weddings traditional weddings family dinners church coordination" data-city="Uyo" data-types="weddings private" data-band="1"
         data-rating="4.8" data-events="29">
-        <div class="dir-cover t-cream"><span class="dir-mono">BU</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-cream"><span class="dir-mono">BU</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span></div>
         <div class="dir-body">
           <h3>Blessing Udo</h3>
           <div class="dir-where">Uyo, Uyo</div>
@@ -225,7 +276,7 @@
       <a class="dir-card" href="planner.html?p=segun-bakare"
         data-hay="segun bakare yaba lagos launches and brand events product launches pop ups press days brand activations" data-city="Lagos" data-types="launches corporate" data-band="3"
         data-rating="4.7" data-events="55">
-        <div class="dir-cover t-grey"><span class="dir-mono">SB</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-grey"><span class="dir-mono">SB</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Segun Bakare</h3>
           <div class="dir-where">Yaba, Lagos</div>
@@ -237,7 +288,7 @@
       <a class="dir-card" href="planner.html?p=amara-chukwu"
         data-hay="amara chukwu owerri owerri traditional weddings igba nkwu traditional rites family liaison village logistics" data-city="Owerri" data-types="weddings" data-band="1"
         data-rating="4.9" data-events="41">
-        <div class="dir-cover t-blush"><span class="dir-mono">AC</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blush"><span class="dir-mono">AC</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span></div>
         <div class="dir-body">
           <h3>Amara Chukwu</h3>
           <div class="dir-where">Owerri, Owerri</div>
@@ -249,7 +300,7 @@
       <a class="dir-card" href="planner.html?p=kelechi-agu"
         data-hay="kelechi agu asokoro abuja corporate and conferences government events conferences retreats protocol" data-city="Abuja" data-types="corporate conferences" data-band="3"
         data-rating="4.6" data-events="66">
-        <div class="dir-cover t-lilac"><span class="dir-mono">KA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-lilac"><span class="dir-mono">KA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Kelechi Agu</h3>
           <div class="dir-where">Asokoro, Abuja</div>
@@ -261,7 +312,7 @@
       <a class="dir-card" href="planner.html?p=temitope-oladele"
         data-hay="temitope oladele lekki lagos weddings white weddings traditional weddings destination styling direction" data-city="Lagos" data-types="weddings" data-band="3"
         data-rating="4.8" data-events="52">
-        <div class="dir-cover t-mint"><span class="dir-mono">TO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-mint"><span class="dir-mono">TO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Temitope Oladele</h3>
           <div class="dir-where">Lekki, Lagos</div>
@@ -273,7 +324,7 @@
       <a class="dir-card" href="planner.html?p=grace-ekanem"
         data-hay="grace ekanem trans amadi port harcourt birthdays and anniversaries milestone birthdays anniversaries surprise parties home events" data-city="Port Harcourt" data-types="birthdays private" data-band="1"
         data-rating="4.5" data-events="47">
-        <div class="dir-cover t-blue"><span class="dir-mono">GE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blue"><span class="dir-mono">GE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span></div>
         <div class="dir-body">
           <h3>Grace Ekanem</h3>
           <div class="dir-where">Trans Amadi, Port Harcourt</div>
@@ -285,7 +336,7 @@
       <a class="dir-card" href="planner.html?p=yusuf-danladi"
         data-hay="yusuf danladi garki abuja conferences and summits summits policy events delegations interpretation accreditation" data-city="Abuja" data-types="conferences corporate" data-band="4"
         data-rating="4.7" data-events="74">
-        <div class="dir-cover t-cream"><span class="dir-mono">YD</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-cream"><span class="dir-mono">YD</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span></div>
         <div class="dir-body">
           <h3>Yusuf Danladi</h3>
           <div class="dir-where">Garki, Abuja</div>
@@ -297,7 +348,7 @@
       <a class="dir-card" href="planner.html?p=ngozi-anyanwu"
         data-hay="ngozi anyanwu gra benin city weddings and private dining white weddings traditional rites private dinners supplier sourcing" data-city="Benin City" data-types="weddings private" data-band="2"
         data-rating="4.8" data-events="36">
-        <div class="dir-cover t-grey"><span class="dir-mono">NA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-grey"><span class="dir-mono">NA</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Ngozi Anyanwu</h3>
           <div class="dir-where">GRA, Benin City</div>
@@ -309,7 +360,7 @@
       <a class="dir-card" href="planner.html?p=damilola-sanni"
         data-hay="damilola sanni surulere lagos birthdays and launches milestone birthdays pop ups listening parties brand activations" data-city="Lagos" data-types="birthdays launches" data-band="1"
         data-rating="4.6" data-events="58">
-        <div class="dir-cover t-blush"><span class="dir-mono">DS</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blush"><span class="dir-mono">DS</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag free"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> Free consult</span></div>
         <div class="dir-body">
           <h3>Damilola Sanni</h3>
           <div class="dir-where">Surulere, Lagos</div>
@@ -321,7 +372,7 @@
       <a class="dir-card" href="planner.html?p=chiamaka-nnadi"
         data-hay="chiamaka nnadi jabi abuja luxury weddings destination weddings multi day celebrations guest travel styling direction" data-city="Abuja" data-types="weddings" data-band="4"
         data-rating="4.9" data-events="45">
-        <div class="dir-cover t-lilac"><span class="dir-mono">CN</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-lilac"><span class="dir-mono">CN</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦50,000 consult</span></div>
         <div class="dir-body">
           <h3>Chiamaka Nnadi</h3>
           <div class="dir-where">Jabi, Abuja</div>
@@ -333,7 +384,7 @@
       <a class="dir-card" href="planner.html?p=bukola-ogunleye"
         data-hay="bukola ogunleye oluyole ibadan corporate events corporate dinners staff events agms training days" data-city="Ibadan" data-types="corporate" data-band="2"
         data-rating="4.5" data-events="39">
-        <div class="dir-cover t-mint"><span class="dir-mono">BO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-mint"><span class="dir-mono">BO</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Bukola Ogunleye</h3>
           <div class="dir-where">Oluyole, Ibadan</div>
@@ -345,7 +396,7 @@
       <a class="dir-card" href="planner.html?p=uche-ibe"
         data-hay="uche ibe new haven enugu weddings and corporate white weddings traditional rites corporate dinners award nights" data-city="Enugu" data-types="weddings corporate" data-band="2"
         data-rating="4.7" data-events="50">
-        <div class="dir-cover t-blue"><span class="dir-mono">UI</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-blue"><span class="dir-mono">UI</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Uche Ibe</h3>
           <div class="dir-where">New Haven, Enugu</div>
@@ -357,7 +408,7 @@
       <a class="dir-card" href="planner.html?p=rukayat-lawal"
         data-hay="rukayat lawal ikoyi lagos private dining private dinners supper clubs chef collaborations wine evenings" data-city="Lagos" data-types="private" data-band="3"
         data-rating="4.8" data-events="43">
-        <div class="dir-cover t-cream"><span class="dir-mono">RL</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-cream"><span class="dir-mono">RL</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦25,000 consult</span></div>
         <div class="dir-body">
           <h3>Rukayat Lawal</h3>
           <div class="dir-where">Ikoyi, Lagos</div>
@@ -369,7 +420,7 @@
       <a class="dir-card" href="planner.html?p=peter-etim"
         data-hay="peter etim uyo uyo conferences conferences church conventions training days registration" data-city="Uyo" data-types="conferences corporate" data-band="2"
         data-rating="4.6" data-events="31">
-        <div class="dir-cover t-grey"><span class="dir-mono">PE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span></div>
+        <div class="dir-cover t-grey"><span class="dir-mono">PE</span><span class="dir-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M20 6 9 17l-5-5"/></svg> Approved</span><span class="fee-flag paid"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg> ₦15,000 consult</span></div>
         <div class="dir-body">
           <h3>Peter Etim</h3>
           <div class="dir-where">Uyo, Uyo</div>
@@ -396,10 +447,14 @@
         <p class="lead" style="margin-top:18px">Apply once to be listed. Once you are approved, clients can find you, brief you and book you, and <b>budgets, tasks, your team and the client portal</b> live in the same place. You pay for actions, not for access, so a quiet quarter costs you nothing.</p>
         <div class="hero-actions" style="margin-top:26px">
           <a class="btn btn-dark" href="#apply">Apply to be listed <span class="cap">&#8599;</span></a>
-          <a class="btn btn-light" href="#workspace">Tour the workspace <span class="cap">&#8599;</span></a>
+          <a class="btn btn-light" href="playground.html">Try the workspace <span class="cap">&#8599;</span></a>
         </div>
       </div>
-      <div><div class="ui-card chartbox">
+      <div class="illus" aria-hidden="true">
+        <span class="illus-blob a"></span><span class="illus-blob b"></span>
+        <div class="illus-stack">
+        <div class="illus-ghost"></div>
+        <div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">Your events</div><div class="ui-sub">October 2026, 6 active</div></div><span class="delta up">2 new briefs</span></div>
         <div class="kpi-row">
           <div class="kpi"><div class="kpi-label">Under management</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;24.6M">&#8358;0</div><div class="delta up">Across 6 events</div></div>
@@ -411,7 +466,7 @@
           <div class="prow"><span class="nm">Okafor 50th</span><span class="track"><i style="--w:34%;background:var(--c6)"></i></span><span class="val">34%</span></div>
           <div class="prow"><span class="nm">Ire launch</span><span class="track"><i style="--w:11%;background:var(--c-neutral)"></i></span><span class="val">11%</span></div>
         </div>
-      </div></div>
+      </div></div></div>
     </div>
   </section>
 
@@ -448,7 +503,7 @@
     <div class="shead reveal">
       <span class="eyebrow">The workspace</span>
       <h2>Six things that stop falling through <span class="mark">the cracks</span></h2>
-      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong.</p>
+      <p>Winning the brief is the visible part of the job. Everything after it is where events quietly go wrong. <a href="playground.html">Open the workspace and use it</a>, no account needed.</p>
     </div>
     <div class="cards cap-grid stagger">
       <div class="card"><h3>Budgets that reconcile</h3><p>Allocate by category, land every quote and payment against a line, and watch allocated, spent and remaining stay in agreement. An alert fires at 85%.</p></div>
@@ -484,7 +539,7 @@
     </div>
     <div class="foot-bot">
       <div>
-        <div>EventPlanna &middot; Nigeria</div>
+        <div>EventPlanna Limited</div>
         <div style="margin-top:6px">&copy; 2026 EventPlanna. All rights reserved.</div>
       </div>
       <div class="socials"><a class="soc" href="https://www.instagram.com/theeventplanna/" target="_blank" rel="noopener" aria-label="EventPlanna on Instagram" title="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="2.7" y="2.7" width="18.6" height="18.6" rx="5.4"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.3" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a><a class="soc" href="https://www.facebook.com/profile.php?id=61594179380852" target="_blank" rel="noopener" aria-label="EventPlanna on Facebook" title="Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-linejoin="round"><path d="M13.5 21.9v-8.2h2.76l.41-3.2h-3.17V8.44c0-.93.26-1.56 1.59-1.56h1.7V4.01c-.3-.04-1.3-.13-2.48-.13-2.45 0-4.13 1.5-4.13 4.25v2.37H7.42v3.2h2.76v8.2z"/></svg></a><a class="soc" href="https://www.linkedin.com/company/112656623/" target="_blank" rel="noopener" aria-label="EventPlanna on LinkedIn" title="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-linejoin="round"><path d="M6.17 21.3H2.72V9.2h3.45zM4.44 7.69a2 2 0 1 1 0-4.01 2 2 0 0 1 0 4.01M21.28 21.3h-3.44v-5.89c0-1.4-.03-3.2-1.96-3.2-1.96 0-2.26 1.53-2.26 3.1v5.99h-3.45V9.2h3.31v1.65h.05c.46-.87 1.58-1.79 3.26-1.79 3.49 0 4.13 2.3 4.13 5.28z"/></svg></a></div>
@@ -493,7 +548,7 @@
   <div class="foot-mark" aria-hidden="true">EventPlanna</div>
 </footer>
 
-<script src="assets/app.js?v=8"></script>
-<script src="assets/data.js?v=8"></script>
+<script src="assets/app.js?v=9"></script>
+<script src="assets/data.js?v=9"></script>
 </body>
 </html>

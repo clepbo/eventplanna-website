@@ -119,10 +119,11 @@ p += """
   </section>
 
   <section class="section">
-    <div class="shead reveal"><span class="eyebrow">Planners</span><h2>Planners do not pay to be listed</h2></div>
-    <div class="split-2 stagger">
+    <div class="shead reveal"><span class="eyebrow">Planners</span><h2>Planners do not pay to be listed</h2><p>Being listed is free. The only money that reaches us from a planner is a share of a paid consultation.</p></div>
+    <div class="cards stagger">
       <div class="card"><h3>Listing is free</h3><p>Applying, being reviewed, appearing in the directory and receiving briefs all cost nothing. Replying to a brief with a quote costs nothing either, because the credit was spent by whoever sent it.</p></div>
-      <div class="card"><h3>Payment processing, at cost</h3><p>Deposits and balances are paid in-app. Card payments carry the gateway fee plus VAT on that fee, itemised before anyone confirms; bank transfer is free. Funds are released once delivery is confirmed.</p></div>
+      <div class="card"><h3>Consultation fee, 1.5%</h3><p>Where a planner charges for a consultation, EventPlanna takes <b>1.5% of that fee</b>. That is our share only. The payment provider&rsquo;s own charges sit on top and are paid by the client when they pay for the consultation.</p></div>
+      <div class="card"><h3>Payment processing, at cost</h3><p>Deposits and balances are paid in-app through a payment provider. Whichever method the client picks, the provider&rsquo;s charge and the VAT on it are passed through at cost and itemised before anyone confirms. Funds are released once delivery is confirmed.</p></div>
     </div>
   </section>
 

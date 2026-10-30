@@ -5,7 +5,7 @@ The old site had an About page at /about/ and the new one had dropped it. The
 substance here is carried over from that page rather than invented: the mission
 and vision, the problem statement and the founding team are all theirs.
 
-Four deliberate departures from the old copy:
+Five deliberate departures from the old copy:
   * every reference to the vendor directory is rewritten to the planner
     marketplace, because vendors are no longer part of the product;
   * the "2,400+ Vendors Onboard" figure is dropped rather than restated about
@@ -14,6 +14,8 @@ Four deliberate departures from the old copy:
   * the counting stat strip is gone at the client's request. The same figures
     still appear once, as prose, in the problem statement where they are
     making an argument rather than being decoration;
+  * the founders section is gone at the client's request. Nothing else on the
+    page named a person, so no other copy had to move;
   * everything about the company's registration and its address is gone at the
     client's request: the CAC number, the date of incorporation, the registered
     address, the headquarters and the whole "Verified and registered" section.
@@ -27,22 +29,6 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pagekit import head, FOOTER, write
 
-FOUNDERS = [
-    ("Peter Abraham Asuquo", "CEO, Co-founder",
-     "Sets product strategy and company direction, and still writes backend code."),
-    ("Uyanwune Chukwuebuka", "COO, Co-founder",
-     "Runs operations, HR and people strategy, and contributes to backend engineering, "
-     "so the team and the codebase scale together."),
-    ("Imoni Christopher Adobunu", "CTO, Co-founder",
-     "Owns the technical vision: architecture, infrastructure decisions and the technology roadmap."),
-    ("Adebodun Samuel", "DevOps Engineer, Co-founder",
-     "Heads infrastructure and DevOps, from cloud architecture to CI/CD, so the platform stays "
-     "scalable, secure and available."),
-    ("Israel Oni", "Product Designer, Co-founder",
-     "Leads product design, making every interface intuitive and tailored to African event professionals."),
-    ("Emmanuel Anebi", "Senior Frontend Engineer, Co-founder",
-     "Leads frontend engineering, turning the designs into fast, precise interfaces on every device."),
-]
 
 # Each problem carries a small drawing of itself. The review asked for the
 # section to be infographic rather than six paragraphs in six boxes, so the
@@ -161,7 +147,7 @@ p += """
         <span class="eyebrow fade-up">Who we are</span>
         <h1 class="fade-up d1">Building the future of <span class="hl">event planning</span> in Nigeria.</h1>
         <p class="lead fade-up d2">EventPlanna is Nigeria&rsquo;s first all in one event management platform, built for the professional planners who run other people&rsquo;s biggest days for a living.</p>
-        <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="index.html#start">Get started <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#team">Meet the founders <span class="cap">&#8599;</span></a></div>
+        <div class="hero-actions fade-up d3"><a class="btn btn-dark" href="index.html#start">Get started <span class="cap">&#8599;</span></a><a class="btn btn-light" href="#problem">The problem we are solving <span class="cap">&#8599;</span></a></div>
       </div>
       <div class="fade-up d2"><div class="ui-card chartbox">
         <div class="ui-head"><div><div class="ui-title">One tool instead of seven</div><div class="ui-sub">What a Nigerian planner runs on today</div></div><span class="delta warn">Replaced</span></div>
@@ -211,17 +197,6 @@ p += """
     </div>
     <div class="diffs wide stagger">
 """ + diffs(DIFFS) + """    </div>
-  </section>
-
-  <section class="section" id="team">
-    <div class="shead reveal">
-      <span class="eyebrow">The team</span>
-      <h2>Meet the founders</h2>
-      <p>Builders from different disciplines, with one shared aim: fix event planning in Africa.</p>
-    </div>
-    <div class="cards cap-grid stagger">
-""" + "".join('      <div class="card"><h3>%s</h3><p class="muted" style="margin-bottom:8px">%s</p><p>%s</p></div>\n'
-              % (n, role, bio) for n, role, bio in FOUNDERS) + """    </div>
   </section>
 
   <section class="section" id="cta">

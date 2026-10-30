@@ -518,6 +518,9 @@ if (plp && P) {
     TikTok: '<path d="M16.3 3c.3 2.1 1.6 3.4 3.7 3.6v2.5c-1.2.1-2.4-.2-3.6-.9v5.5c0 4.4-4.3 6.7-7.5 4.4-2.9-2-2.9-6.4.1-8.3 1-.6 2.1-.9 3.2-.7v2.6c-1.6-.4-2.9.9-2.6 2.4.2 1 1.1 1.7 2.1 1.6 1.2-.1 1.9-1 1.9-2.3V3z"/>'
   };
   const SOC_FILL = { Instagram: 0, Facebook: 1, LinkedIn: 1, TikTok: 1 };
+  const COIN = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" '
+    + 'stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="8.5"/>'
+    + '<path d="M12 7.6v8.8M9.4 10h5.2M9.4 14h5.2"/></svg>';
   const NICHE = { weddings: 'wedding', corporate: 'corporate', conferences: 'conference',
     private: 'private dining', launches: 'launch', birthdays: 'birthday' };
   const CHECK = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" '
@@ -525,6 +528,13 @@ if (plp && P) {
 
   document.title = P.name + ' | EventPlanna';
   plp.style.setProperty('--brand', P.brand);
+
+  /* Charged or free, said once in the badge row where the eye already is. */
+  function feeFlag() {
+    return P.fee
+      ? '<span class="fee-flag paid">' + COIN + ' Consultation ' + money(P.fee) + '</span>'
+      : '<span class="fee-flag free">' + COIN + ' Free consultation</span>';
+  }
 
   const facts = [
     ['Typical budget', P.rate],
@@ -569,13 +579,13 @@ if (plp && P) {
     + '<div class="plp-who">'
     + '<div class="plp-badges"><span class="plp-ok">' + TICK + ' Approved</span>'
     + '<span class="plp-rate">' + STAR + ' ' + P.rating + '</span>'
-    + '<span class="plp-years">' + P.years + ' years</span></div>'
+    + '<span class="plp-years">' + P.years + ' years</span>'
+    + feeFlag() + '</div>'
     + '<h1>' + esc(P.name) + '</h1>'
     + '<div class="plp-where">' + esc(P.area) + ', ' + esc(P.city) + ' &middot; '
     + esc(P.spec) + '</div></div>'
     + '<div class="plp-act">'
-    + '<a class="btn btn-light" href="#consult" data-go="book">Request a booking <span class="cap">&#8599;</span></a>'
-    + '<a class="btn btn-green" href="#consult" data-go="consult">'
+    + '<a class="btn btn-green" href="#consult">'
     + (P.fee ? 'Book a consultation' : 'Book a free consultation') + ' <span class="cap">&#8599;</span></a>'
     + '</div></div>'
 
@@ -629,11 +639,6 @@ if (plp && P) {
     + '<div class="shead reveal"><span class="eyebrow">Get in touch</span>'
     + '<h2>Book ' + esc(P.name.split(' ')[0]) + '</h2>'
     + '<p>' + esc(P.welcome[0]) + '</p><p style="margin-top:12px">' + esc(P.welcome[1]) + '</p></div>'
-    + '<div class="ef-tabs" role="tablist">'
-    + '<button class="ef-tab on" type="button" role="tab" aria-selected="true" data-mode="consult">'
-    + 'Consultation' + (P.fee ? ' &middot; ' + money(P.fee) : ' &middot; free') + '</button>'
-    + '<button class="ef-tab" type="button" role="tab" aria-selected="false" data-mode="book">Request a booking</button>'
-    + '</div>'
     + '<div class="ef-shell" data-form></div>'
     + '</section>'
 
@@ -797,31 +802,15 @@ if (plp && P) {
                    text: 'I have read the rules of engagement and accept them.' };
 
   const form = $('[data-form]', plp);
-  let mode = 'consult', step = 0, A = {};
+  let step = 0, A = {};
 
-  const paying = () => mode === 'consult' && P.fee > 0;
+  const paying = () => P.fee > 0;
   function stepFields(n) {
     if (n < SECTIONS.length) return SECTIONS[n].fields;
     if (n === SECTIONS.length) return paying() ? [ACCEPT, PAY] : [ACCEPT];
     return [];
   }
   const TOTAL = SECTIONS.length + 2;          // sections, rules, review
-
-  function setMode(m) {
-    mode = m;
-    step = 0;
-    $$('.ef-tab', plp).forEach((b) => {
-      const on = b.dataset.mode === m;
-      b.classList.toggle('on', on);
-      b.setAttribute('aria-selected', String(on));
-    });
-    draw();
-  }
-
-  $$('.ef-tab', plp).forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
-  $$('[data-go]', plp).forEach((a) => a.addEventListener('click', () => {
-    if (a.dataset.go !== mode) setMode(a.dataset.go);
-  }));
 
   function fieldHtml(f) {
     const id = 'ef-' + f.k;
@@ -928,7 +917,7 @@ if (plp && P) {
         + '';
       foot = '<button class="btn btn-light ef-back" type="button" data-back>Back</button>'
         + '<button class="btn btn-green" type="button" data-send>'
-        + (mode === 'consult' ? (paying() ? 'Pay and book' : 'Book the consultation') : 'Send the request')
+        + (paying() ? 'Pay and book' : 'Book the consultation')
         + ' <span class="cap">&#8599;</span></button>';
     }
     form.innerHTML = '<div class="ef-body">' + body + '</div><div class="ef-foot">' + foot + '</div>';
@@ -1035,7 +1024,7 @@ if (plp && P) {
 
   function done() {
     const ref = 'EP-' + Math.random().toString(36).slice(2, 7).toUpperCase();
-    const title = mode === 'consult' ? 'Consultation' : 'Booking request';
+    const title = 'Consultation';
     const text = title + ' with ' + P.name + ' (' + P.area + ', ' + P.city + ')\n'
       + 'Reference ' + ref + '\n\n'
       + ALL.filter((f) => A[f.k]).map((f) => f.label + ': ' + shown(f)).join('\n')

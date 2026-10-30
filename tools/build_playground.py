@@ -1,0 +1,88 @@
+# -*- coding: utf-8 -*-
+"""Generate playground.html, the workspace you can use without an account.
+
+    python tools/build_playground.py
+
+"Tour the workspace" used to scroll to six paragraphs describing the product.
+A planner deciding whether to sign up does not want to read six paragraphs;
+they want to know what it is like to run an event on it. So this is the
+workspace, loaded with one event already in flight, and everything on it
+works: tick a task and the progress and the dashboard move, record a payment
+and the budget reconciles and the overspend alert fires, push a booking
+through its six states and the timeline stamps, switch role and the money
+disappears for the people who should not see it, open the client view and
+only the client's slice is left.
+
+It is a simulation, not a demo video and not a signed-out copy of the real
+app: the state lives in the page and resets on reload, so nothing can be
+broken and nothing has to be cleaned up afterwards. The numbers are the ones
+the rest of the site already uses for this sample event, so the figure a
+planner sees on the marketplace page is the figure they see here.
+
+The behaviour is in assets/playground.js rather than assets/app.js, which is
+the scroll and motion engine and has nothing to do with this.
+"""
+import sys, os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from pagekit import head, FOOTER, write, V
+
+p = head("The workspace | EventPlanna",
+         "Run a sample event on EventPlanna without signing up: budget, phases and tasks, "
+         "bookings, team roles and the client portal, all working, all in your browser.",
+         "marketplace.html")
+
+p += """
+  <header class="phero" style="padding-bottom:clamp(20px,3vw,34px)">
+    <div class="pg-head">
+      <div>
+        <span class="eyebrow fade-up">The workspace</span>
+        <h1 class="fade-up d1">Run an event on it. <span class="hl">No account.</span></h1>
+        <p class="lead fade-up d2">This is the workspace with one wedding already in flight. Everything on this page works: tick a task, record a payment, move a booking on, change who you are. <b>Nothing is saved and nothing can be broken</b>, so go and break it.</p>
+      </div>
+      <div class="pg-controls fade-up d2">
+        <label class="pg-role">
+          <span>You are</span>
+          <select class="fld" data-pg-role aria-label="Your role on this event">
+            <option value="manager">Manager</option>
+            <option value="coordinator">Coordinator</option>
+            <option value="assistant">Assistant</option>
+          </select>
+        </label>
+        <button class="btn btn-light btn-sm" type="button" data-pg-reset>Start over</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="workspace" style="padding-top:0">
+    <div class="pg" data-pg>
+      <div class="pg-tabs" role="tablist">
+        <button class="pg-tab on" type="button" role="tab" data-pg-tab="overview">Overview</button>
+        <button class="pg-tab" type="button" role="tab" data-pg-tab="budget">Budget</button>
+        <button class="pg-tab" type="button" role="tab" data-pg-tab="tasks">Phases &amp; tasks</button>
+        <button class="pg-tab" type="button" role="tab" data-pg-tab="bookings">Bookings</button>
+        <button class="pg-tab" type="button" role="tab" data-pg-tab="team">Team</button>
+        <button class="pg-tab" type="button" role="tab" data-pg-tab="portal">Client portal</button>
+      </div>
+      <div class="pg-body" data-pg-body>
+        <div class="pg-boot">Loading the workspace&hellip;</div>
+      </div>
+    </div>
+    <p class="pg-note">A sample event, held in this page only. Reload and it is back how it started.</p>
+  </section>
+
+  <section class="section">
+    <div class="cta reveal">
+      <h2>That, with your own events in it</h2>
+      <p>Everything you just used is what you get on signup, with 200 free credits and no card.</p>
+      <div class="cta-actions">
+        <a class="btn btn-green" href="index.html#start">Create an account <span class="cap">&#8599;</span></a>
+        <a class="btn btn-light" href="pricing.html">What it costs <span class="cap">&#8599;</span></a>
+      </div>
+    </div>
+  </section>
+"""
+
+tail = FOOTER.replace('<script src="assets/app.js',
+                      '<script src="assets/playground.js?v=%s"></script>\n<script src="assets/app.js' % V)
+write("playground.html", p + tail)

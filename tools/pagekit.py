@@ -11,7 +11,7 @@ Information architecture, after the October stakeholder review:
 import io, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = "8"                       # asset cache-busting version
+V = "9"                       # asset cache-busting version
 
 # One marketplace entry, not two. "Find a planner" and "For planners" sat next
 # to each other reading as near-duplicates, so both audiences now live on
@@ -131,7 +131,7 @@ FOOTER = """</div></div>
     </div>
     <div class="foot-bot">
       <div>
-        <div>EventPlanna &middot; Nigeria</div>
+        <div>EventPlanna Limited</div>
         <div style="margin-top:6px">&copy; 2026 EventPlanna. All rights reserved.</div>
       </div>
       <div class="socials">""" + SOCIAL_LINKS + """</div>

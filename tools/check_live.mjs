@@ -37,6 +37,7 @@ const PAGES = [
   // planner charges for a consultation.
   ['planner',     'planner.html?p=adaeze-mbakwe'],
   ['planner-free', 'planner.html?p=zainab-bello'],
+  ['playground',  'playground.html'],
 ];
 
 if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true });
