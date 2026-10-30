@@ -47,6 +47,20 @@
   if (!root) return;
 
   var N = '₦';
+
+  /* Everything is dated off the day the page is opened, so the sample event
+     is always a sensible distance away and the dashboard always has
+     something due today and something late. */
+  function iso(dt) {
+    return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0')
+      + '-' + String(dt.getDate()).padStart(2, '0');
+  }
+  function d(days) {
+    var x = new Date(); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() + days);
+    return iso(x);
+  }
+  var TODAY = d(0);
+  var EVENT = d(43);
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
 
@@ -55,11 +69,13 @@
     return {
       role: 'manager',
       tab: 'dashboard',
+      nudge: false,
+      cal: null,
       client: false,
       alerted: {},
       event: {
         name: 'Traditional wedding, Ikeja',
-        date: '2026-12-12',
+        date: EVENT,
         guests: 400,
         client: 'The Adeyemi family'
       },
@@ -72,32 +88,37 @@
         { k: 'decor', name: 'Decor', alloc: 256000, spent: 0 },
         { k: 'other', name: 'Printing and other', alloc: 172000, spent: 56800 }
       ],
+      /* Dates are real so the dashboard can count what is due today, what is
+         late and what is live, instead of asserting it. They are set
+         relative to the day the page is opened, which is what stops a demo
+         going stale: `d(-6)` is six days ago. `doing` is the third state the
+         app's task list carries, and ticking a task clears it. */
       phases: [
         { name: 'Booked and briefed', tasks: [
-          { t: 'Signed contract filed', who: 'Adaeze', due: '14 Sep', done: true },
-          { t: 'Deposit received and receipted', who: 'Adaeze', due: '16 Sep', done: true },
-          { t: 'Budget split by category', who: 'Adaeze', due: '20 Sep', done: true },
-          { t: 'Client kickoff call', who: 'Adaeze', due: '24 Sep', done: true }
+          { t: 'Signed contract filed', who: 'Adaeze', due: d(-46), done: true },
+          { t: 'Deposit received and receipted', who: 'Adaeze', due: d(-44), done: true },
+          { t: 'Budget split by category', who: 'Adaeze', due: d(-40), done: true },
+          { t: 'Client kickoff call', who: 'Adaeze', due: d(-36), done: true }
         ] },
         { name: 'Suppliers', tasks: [
-          { t: 'Venue confirmed and paid', who: 'Adaeze', due: '2 Oct', done: true },
-          { t: 'Caterer booked, menu agreed', who: 'Tunde', due: '10 Oct', done: true },
-          { t: 'Photographer booked', who: 'Tunde', due: '14 Oct', done: true },
-          { t: 'Decor quotes compared', who: 'Ify', due: '3 Nov', done: false },
-          { t: 'Live band confirmed', who: 'Tunde', due: '8 Nov', done: false }
+          { t: 'Venue confirmed and paid', who: 'Adaeze', due: d(-28), done: true },
+          { t: 'Caterer booked, menu agreed', who: 'Tunde', due: d(-20), done: true },
+          { t: 'Photographer booked', who: 'Tunde', due: d(-16), done: true },
+          { t: 'Live band confirmed', who: 'Tunde', due: d(-6), done: false },
+          { t: 'Decor quotes compared', who: 'Ify', due: d(0), done: false, doing: true }
         ] },
         { name: 'The weeks before', tasks: [
-          { t: 'Final guest count to caterer', who: 'Ify', due: '21 Nov', done: false },
-          { t: 'Seating plan approved by client', who: 'Adaeze', due: '26 Nov', done: false },
-          { t: 'Run sheet out to every supplier', who: 'Tunde', due: '4 Dec', done: false },
-          { t: 'Balances due and chased', who: 'Adaeze', due: '5 Dec', done: false },
-          { t: 'Venue walkthrough', who: 'Tunde', due: '9 Dec', done: false }
+          { t: 'Final guest count to caterer', who: 'Ify', due: d(4), done: false, doing: true },
+          { t: 'Seating plan approved by client', who: 'Adaeze', due: d(9), done: false },
+          { t: 'Run sheet out to every supplier', who: 'Tunde', due: d(18), done: false },
+          { t: 'Balances due and chased', who: 'Adaeze', due: d(21), done: false },
+          { t: 'Venue walkthrough', who: 'Tunde', due: d(26), done: false }
         ] },
         { name: 'On the day', tasks: [
-          { t: 'Supplier arrivals checked in', who: 'Tunde', due: '12 Dec', done: false },
-          { t: 'Room set and photographed', who: 'Ify', due: '12 Dec', done: false },
-          { t: 'Guest movement to reception', who: 'Tunde', due: '12 Dec', done: false },
-          { t: 'Final payments released', who: 'Adaeze', due: '12 Dec', done: false }
+          { t: 'Supplier arrivals checked in', who: 'Tunde', due: EVENT, done: false },
+          { t: 'Room set and photographed', who: 'Ify', due: EVENT, done: false },
+          { t: 'Guest movement to reception', who: 'Tunde', due: EVENT, done: false },
+          { t: 'Final payments released', who: 'Adaeze', due: EVENT, done: false }
         ] }
       ],
       /* The six states the rest of the site names: Pending, Accepted and
@@ -230,74 +251,136 @@
       + (colour ? ';background:' + colour : '') + '"></i></span>';
   }
 
+  /* ---- Dashboard -------------------------------------------------------
+     Laid out like the real one: the date, the consultation nudge, then a row
+     of three (today's tasks, the next event, create-new plus a calendar),
+     then two rows of three counters. Every number is counted off the state,
+     so ticking a task on the Tasks view moves six of them at once. */
   function overview() {
-    var a = alloc(), sp = spent(), left = a - sp;
-    /* A line that is settled at exactly its allocation is not a problem, it
-       is a line that came in on budget: Venue is paid in full from the start
-       and was being reported as a risk. Only 85% up to the allocation is
-       worth a warning, and past it is a different, louder thing. */
-    /* Threshold on the rounded figure, the same one the table prints. On the
-       raw ratio a line showing "85%" could sit at 84.6% and not fire, which
-       reads as the alert being broken. */
-    var tight = S.budget.filter(function (b) {
-      return b.alloc && pct(b.spent, b.alloc) >= 85 && b.spent < b.alloc; });
-    var over = S.budget.filter(function (b) { return b.alloc && b.spent > b.alloc; });
+    var open = tasks().filter(function (t) { return !t.done; });
+    var dueToday = open.filter(function (t) { return t.due === TODAY; });
+    var overdue = open.filter(function (t) { return t.due < TODAY; });
+    var doing = open.filter(function (t) { return t.doing; });
     var done = doneCount(), all = tasks().length;
-    var confirmed = S.bookings.filter(function (b) {
-      return b.state === 'Confirmed' || b.state === 'Completed'; }).length;
+    var now = new Date();
+    var soon = open.slice().sort(function (a, b) { return a.due < b.due ? -1 : 1; }).slice(0, 4);
 
-    var cards = [
-      ['Days to go', daysToGo(), whenLabel()],
-      ['Tasks done', done + ' of ' + all, pct(done, all) + '% of the plan'],
-      ['Bookings confirmed', confirmed + ' of ' + S.bookings.length, 'Across every category']
+    var tiles = [
+      ['Tasks due today', dueToday.length, 'due'],
+      ['Tasks in progress', doing.length, 'doing'],
+      ['Tasks overdue', overdue.length, overdue.length ? 'late' : ''],
+      ['Events created', 1, ''],
+      ['Tasks completed', done, ''],
+      ['Pending tasks', all - done, '']
     ];
-    if (can().money) {
-      cards.unshift(['Budget left', money(left),
-        money(sp) + ' of ' + money(a) + ' spent']);
-    }
 
-    return '<div class="pg-kpis">' + cards.map(function (c) {
-      return '<div class="pg-kpi"><em>' + c[0] + '</em><b>' + c[1] + '</b><small>'
-        + c[2] + '</small></div>';
-    }).join('') + '</div>'
+    return '<div class="pg-date"><div><h2>' + now.toLocaleDateString('en-GB',
+        { month: 'long' }) + ', ' + now.getDate() + '</h2>'
+      + '<small>' + now.toLocaleDateString('en-GB', { weekday: 'long' }) + '</small></div>'
+      + '<span class="pg-badge">' + S.role.charAt(0).toUpperCase() + S.role.slice(1)
+      + ' view</span></div>'
 
-      + (can().money && over.length
-        ? '<div class="pg-alert bad">' + WARN + '<div><b>' + over.length + ' categor'
-          + (over.length === 1 ? 'y is' : 'ies are') + ' over allocation</b><span>'
-          + over.map(function (b) {
-              return esc(b.name) + ' ' + pct(b.spent, b.alloc) + '%, '
-                + money(b.spent - b.alloc) + ' over'; }).join('; ')
-          + '. Move the allocation or the money has to come from somewhere else.'
-          + '</span></div></div>'
-        : '')
-      + (can().money && tight.length
-        ? '<div class="pg-alert">' + WARN + '<div><b>' + tight.length + ' categor'
-          + (tight.length === 1 ? 'y is' : 'ies are') + ' at 85% or more of allocation</b>'
-          + '<span>' + tight.map(function (b) {
-              return esc(b.name) + ' ' + pct(b.spent, b.alloc) + '%'; }).join(', ')
-          + '. Nothing is overspent yet, which is the point of saying so now.</span></div></div>'
-        : '')
+      + (S.nudge ? '' : '<div class="pg-nudge"><span class="pg-nudge-i">' + SPARK + '</span>'
+        + '<div><b>Set up your consultation page</b>'
+        + '<span>Turn your bio link into a polished consultation flow. Add your terms, choose what to ask prospects, and start capturing leads.</span></div>'
+        + '<a class="btn btn-green btn-sm" href="planner.html?p=adaeze-mbakwe#consult" target="_blank" rel="noopener">Configure consultation <span class="cap">&#8599;</span></a>'
+        + '<button class="pg-nudge-x" type="button" data-nudge aria-label="Dismiss">&times;</button></div>')
 
-      + '<div class="pg-two">'
-      + '<div class="pg-panel"><h3>Where the plan is</h3>'
-      + S.phases.map(function (p) {
-          var d = p.tasks.filter(function (t) { return t.done; }).length;
-          return '<div class="pg-row"><span class="nm">' + esc(p.name) + '</span>'
-            + bar(pct(d, p.tasks.length)) + '<span class="val">' + d + '/' + p.tasks.length
-            + '</span></div>';
-        }).join('')
-      + '<p class="pg-hint">Progress counts finished tasks. It is not an estimate, which is why it only moves when you tick something.</p>'
+      + '<div class="pg-three">'
+
+      + '<div class="pg-col"><div class="pg-col-h"><h3>Your tasks today</h3>'
+      + '<p>' + (dueToday.length || overdue.length
+          ? 'Keep up the good work.' : 'Nothing due today.') + '</p></div>'
+      + (soon.length
+        ? '<div class="pg-todo">' + soon.map(function (t) {
+            var late = t.due < TODAY, today = t.due === TODAY;
+            return '<label class="pg-todo-row' + (late ? ' late' : today ? ' today' : '') + '">'
+              + '<input type="checkbox" data-task="' + taskIx(t) + '">'
+              + '<span class="pg-box">' + TICK + '</span>'
+              + '<span class="pg-todo-t">' + esc(t.t) + '<small>' + esc(t.who) + '</small></span>'
+              + '<span class="pg-when">' + (late ? 'Overdue' : today ? 'Today' : dayLabel(t.due))
+              + '</span></label>';
+          }).join('') + '</div>'
+        : '<div class="pg-empty"><b>Nothing to work on yet</b><span>Every task on this event is done.</span></div>')
       + '</div>'
 
-      + '<div class="pg-panel"><h3>Latest</h3>'
-      + (S.feed.length
-        ? '<ul class="pg-feed">' + S.feed.map(function (f) {
-            return '<li><i></i><div>' + esc(f.t) + '<small>'
-              + f.at.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-              + '</small></div></li>'; }).join('') + '</ul>'
-        : '<p class="pg-hint">Nothing yet. Tick a task, record a payment or move a booking on and it shows up here, the way it would for everyone else on the event.</p>')
-      + '</div></div>';
+      + '<div class="pg-col"><div class="pg-col-h"><h3>Upcoming event '
+      + '<i class="pg-count">1</i></h3><p>The next one in the diary.</p></div>'
+      + '<div class="pg-next"><div class="pg-next-top"><b>' + esc(S.event.name) + '</b>'
+      + '<span class="pg-state s-confirmed">In progress</span></div>'
+      + '<small>' + whenLabel() + ' &middot; ' + S.event.guests + ' guests</small>'
+      + '<div class="pg-next-n"><b>' + daysToGo() + '</b><span>days to go</span></div>'
+      + '<div class="pg-row"><span class="nm">Plan</span>' + bar(pct(done, all))
+      + '<span class="val">' + pct(done, all) + '%</span></div>'
+      + (can().money ? '<div class="pg-row"><span class="nm">Budget</span>'
+          + bar(pct(spent(), alloc())) + '<span class="val">'
+          + money(alloc() - spent()) + ' left</span></div>' : '')
+      + '<button class="pg-mini" type="button" data-pg-tab="events">Open the event</button>'
+      + '</div></div>'
+
+      + '<div class="pg-col">'
+      + '<button class="pg-create" type="button" data-pg-tab="events">Create new event <i>+</i></button>'
+      + calendar() + '</div>'
+
+      + '</div>'
+
+      + '<div class="pg-tiles">' + tiles.map(function (t) {
+          return '<div class="pg-tile' + (t[2] ? ' ' + t[2] : '') + '"><em>' + t[0]
+            + '</em><b>' + t[1] + '</b></div>';
+        }).join('') + '</div>'
+
+      + (can().money && S.feed.length
+        ? '<div class="pg-panel" style="margin-top:14px"><h3>Latest</h3><ul class="pg-feed">'
+          + S.feed.map(function (f) {
+              return '<li><i></i><div>' + esc(f.t) + '<small>'
+                + f.at.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+                + '</small></div></li>'; }).join('') + '</ul></div>'
+        : '');
   }
+
+  /* The checkbox on the dashboard has to drive the same task object the
+     Tasks view does, so it carries the same phase:index address. */
+  function taskIx(task) {
+    for (var p = 0; p < S.phases.length; p++) {
+      var k = S.phases[p].tasks.indexOf(task);
+      if (k >= 0) return p + ':' + k;
+    }
+    return '';
+  }
+  function dayLabel(isoDate) {
+    return new Date(isoDate + 'T00:00:00')
+      .toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  }
+
+  /* A real month, navigable, with today ringed and the event day marked. */
+  function calendar() {
+    var cur = S.cal ? new Date(S.cal + 'T00:00:00') : new Date();
+    var y = cur.getFullYear(), m = cur.getMonth();
+    var first = new Date(y, m, 1), lead = first.getDay();
+    var len = new Date(y, m + 1, 0).getDate();
+    var cells = '';
+    for (var i = 0; i < lead; i++) cells += '<span></span>';
+    for (var day = 1; day <= len; day++) {
+      var key = iso(new Date(y, m, day));
+      var cls = key === TODAY ? ' now' : key === S.event.date ? ' event' : '';
+      cells += '<span class="pg-day' + cls + '">' + day + '</span>';
+    }
+    return '<div class="pg-cal"><div class="pg-cal-top">'
+      + '<button class="pg-cal-nav" type="button" data-cal="-1" aria-label="Previous month">&#8249;</button>'
+      + '<b>' + first.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }) + '</b>'
+      + '<button class="pg-cal-nav" type="button" data-cal="1" aria-label="Next month">&#8250;</button>'
+      + '</div><div class="pg-cal-grid">'
+      + ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].map(function (w) {
+          return '<em>' + w + '</em>'; }).join('')
+      + cells + '</div>'
+      + (S.event.date.slice(0, 7) === iso(first).slice(0, 7)
+        ? '<p class="pg-cal-note"><i></i> ' + esc(S.event.name) + '</p>' : '')
+      + '</div>';
+  }
+
+  var SPARK = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+    + ' stroke-width="1.9" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>'
+    + '<path d="M18.5 15.5 19 17l1.5.5L19 18l-.5 1.5L18 18l-1.5-.5L18 17z"/></svg>';
 
   function budget() {
     if (!can().money) return locked('the budget');
@@ -594,12 +677,16 @@
     if (ini) ini.textContent = WHO[S.role][0];
     if (nm) nm.textContent = WHO[S.role][1];
 
+    /* The dashboard is workspace-level in the real app and carries the date
+       rather than the event, so it writes its own header. Every other view is
+       scoped to an event and keeps the event strip. */
     $('[data-pg-body]', root).innerHTML =
-      '<div class="pg-event"><div><b>' + esc(S.event.name) + '</b>'
-      + '<small>' + whenLabel() + ' &middot; ' + S.event.guests + ' guests &middot; '
-      + esc(S.event.client) + '</small></div>'
-      + '<span class="pg-badge">' + S.role.charAt(0).toUpperCase() + S.role.slice(1)
-      + ' view</span></div>'
+      (S.tab === 'dashboard' ? ''
+        : '<div class="pg-event"><div><b>' + esc(S.event.name) + '</b>'
+          + '<small>' + whenLabel() + ' &middot; ' + S.event.guests + ' guests &middot; '
+          + esc(S.event.client) + '</small></div>'
+          + '<span class="pg-badge">' + S.role.charAt(0).toUpperCase() + S.role.slice(1)
+          + ' view</span></div>')
       + (VIEWS[S.tab] || overview)();
   }
 
@@ -644,6 +731,18 @@
       return;
     }
 
+    if (t.closest('[data-nudge]')) { S.nudge = true; paint(); return; }
+
+    var cal = t.closest('[data-cal]');
+    if (cal) {
+      var cur = S.cal ? new Date(S.cal + 'T00:00:00') : new Date();
+      cur.setDate(1);
+      cur.setMonth(cur.getMonth() + (+cal.dataset.cal));
+      S.cal = iso(cur);
+      paint();
+      return;
+    }
+
     var sv = t.closest('[data-save]');
     if (sv) {
       var v = S.vendors[+sv.dataset.save];
@@ -673,6 +772,7 @@
     var ix = box.dataset.task.split(':');
     var task = S.phases[+ix[0]].tasks[+ix[1]];
     task.done = box.checked;
+    if (task.done) task.doing = false;
     note((task.done ? 'Ticked' : 'Reopened') + ': ' + task.t);
     paint();
   });
