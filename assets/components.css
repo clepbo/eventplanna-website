@@ -100,6 +100,9 @@ a.card:hover .card-link span { transform: translateX(4px); }
 .dark .faq-a p { color: rgba(255,255,255,.72); }
 
 /* ---------- comparison table ---------- */
+/* Right-aligned, tabular figures for a column of credit costs. */
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
 .tbl-wrap { overflow-x: auto; margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); background: var(--white); -webkit-overflow-scrolling: touch; }
 table { border-collapse: collapse; width: 100%; min-width: 600px; font-size: 14.5px; }
 th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--border); }

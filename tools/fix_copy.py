@@ -60,6 +60,14 @@ EDITS = {
    "Search is filtered by the areas a planner has confirmed they cover, not the ones they would like to."),
   ("Vendors see the brief for their own booking and the messages on it,",
    "A planner sees the brief for their own booking and the messages on it,"),
+  # The credit model, corrected against the matrix in the Figma file
+  # (node 2778-24553). The four-action model these two answers described is
+  # not what the product charges for: creating an event alone is 50 credits,
+  # a team member is 30 a month, and guests are priced per head above 50.
+  ("There is no subscription. You buy credits and spend them on four actions: creating an event (5), sending a booking request (5), inviting a team member (2) and exporting a report (1). Every account starts with 200 free credits, which covers a real wedding about six times over.",
+   "There is no subscription. You buy credits and spend them as you go, on eight groups of action: setting up events, budgets, vendors, guests, collaboration, AI features, design and notifications. Creating an event is 50 credits, adding a team member is 30 a month, contacting a vendor for the first time is 15 and guests are 0.5 each above the first 50. Browsing the directory, push notifications and the first 100 emails a month cost nothing. Every account starts with 200 free credits."),
+  ("A 400-guest wedding with four vendors booked, two coordinators invited and two client exports comes to 31 credits: 5 to create, 20 for the requests, 4 for the invites and 2 for the exports. At the Starter rate that is &#8358;620 for the whole event.",
+   "A 400-guest traditional wedding comes to about 470 credits: 50 to create it, 25 for the budget, 165 for a 400-name guest list, 40 for the RSVP form, 60 to contact four vendors, 60 for two coordinators, 50 for the client portal and 20 for budget tracking. At the Starter rate that is &#8358;9,400, or &#8358;7,050 on Professional. A 60-guest dinner with two vendors and no portal is nearer 150 credits."),
  ],
 }
 

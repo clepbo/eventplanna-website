@@ -108,10 +108,12 @@
         { who: 'Tunde', role: 'Coordinator', on: 'This event' },
         { who: 'Ify', role: 'Assistant', on: 'This event' }
       ],
-      /* Four actions draw credits down at the prices the pricing page
-         quotes: create an event 5, a booking request 5, a team invite 2, an
-         export 1. 200 to start, less this event and its five requests. */
-      credits: 170,
+      /* Priced off the credit matrix in the Figma file (node 2778-24553):
+         creating this event 50, its budget 25, a 400-name guest list 165,
+         the RSVP form 40, four first contacts with vendors 60, two
+         coordinators 60, the client portal 50 and budget tracking 20. That
+         is 470 against a 1,200-credit Standard pack. */
+      credits: 730,
       /* The consultation form on a planner's public profile lands here. The
          statuses are the sandbox's own: New, Reviewed, Contacted, Converted,
          Archived. */

@@ -18,9 +18,13 @@ about those figures:
     divided out, and the Premium discrepancy is flagged to the client.
   * "about N events" is gone. It was derived from a 5-credit event and read as
     a claim about capacity rather than a unit price;
-  * the "What a credit buys" section came out at the client's request. The four
-    chargeable actions are still priced on the page, in the worked example
-    immediately below the packs, and answered at length in the FAQ.
+  * the "What a credit buys" section came out at the client's request;
+  * the worked example is built from the credit matrix in the Figma file
+    (node 2778-24553), read out of the live document. The page previously said
+    a wedding came to 31 credits off a four-action model that the product does
+    not have: creating an event alone is 50, a team member is 30 a month, and
+    guests are charged per head above the first 50. There are eight categories
+    of chargeable action, not four.
 
 Nothing here invents a figure. The free 200 credits on signup and the four
 chargeable actions are the product's own, carried over unchanged.
@@ -82,7 +86,7 @@ def rows():
 
 p = head("Pricing | EventPlanna",
          "Credit packs from &#8358;10,000. No subscription and no card on file: you buy credits once "
-         "and spend them on four actions. Every new account starts with 200 free credits.",
+         "and spend them as you go. Every new account starts with 200 free credits.",
          "pricing.html")
 
 p += """
@@ -90,7 +94,7 @@ p += """
     <div class="shead center reveal">
       <span class="eyebrow">Pricing</span>
       <h2>No subscription. <span class="mark">You pay for actions.</span></h2>
-      <p>Event work is seasonal, so a monthly fee through a quiet quarter is a tax on a bad month. Buy a pack of credits, spend them on four actions, and let the account sit idle for free when there is nothing on.</p>
+      <p>Event work is seasonal, so a monthly fee through a quiet quarter is a tax on a bad month. Buy a pack of credits, spend them only when you do something, and let the account sit idle for free when there is nothing on.</p>
     </div>
     <div class="packs stagger">
 """ + packs() + """    </div>
@@ -98,23 +102,41 @@ p += """
   </section>
 
   <section class="section">
-    <div class="shead reveal"><span class="eyebrow">Worked example</span><h2>What one real event actually costs</h2><p>A 400-guest traditional wedding: four booking requests, two coordinators and two client exports.</p></div>
+    <div class="shead reveal"><span class="eyebrow">Worked example</span><h2>What one real event actually costs</h2><p>A 400-guest traditional wedding: the event set up, its budget, the guest list and RSVPs, four vendors contacted, two coordinators added and the client portal opened.</p></div>
     <div class="split-2 stagger">
       <div class="card">
-        <h3>31 credits, end to end</h3>
-        <p>Create the event: 5. Four booking requests: 20. Two team invites: 4. Two client exports: 2.</p>
-        <div class="rail">
-          <span class="done">5 create</span><span class="done">20 requests</span><span class="done">4 invites</span><span class="done">2 exports</span><span class="now">31 total</span>
+        <h3>470 credits, end to end</h3>
+        <div class="tbl-wrap" style="margin-top:14px">
+          <table>
+            <tbody>
+              <tr><td>Create the event</td><td class="num">50</td></tr>
+              <tr><td>Budget set up</td><td class="num">25</td></tr>
+              <tr><td>Guest list, first 50</td><td class="num">30</td></tr>
+              <tr><td>Guests 51 to 200, at 0.5 each</td><td class="num">75</td></tr>
+              <tr><td>Guests 201 to 400, at 0.3 each</td><td class="num">60</td></tr>
+              <tr><td>RSVP form</td><td class="num">40</td></tr>
+              <tr><td>First contact with 4 vendors, at 15</td><td class="num">60</td></tr>
+              <tr><td>2 coordinators added, at 30</td><td class="num">60</td></tr>
+              <tr><td>Client portal for the event</td><td class="num">50</td></tr>
+              <tr><td>Budget versus actual tracking</td><td class="num">20</td></tr>
+              <tr><td><b>Total</b></td><td class="num"><b>470</b></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="card">
-        <h3>&#8358;620 on the Starter pack</h3>
-        <p>31 credits at &#8358;20 each. On Professional the same event costs &#8358;465, and on Enterprise &#8358;372. Your 200 free credits cover it six times over before you pay anything.</p>
+        <h3>&#8358;9,400 on the Starter pack</h3>
+        <p>470 credits at &#8358;20 each. On Professional the same event costs &#8358;7,050, and on Enterprise &#8358;5,640. Basic vendor search, archiving the event, push notifications and the first 100 emails a month are all free and are not in that number.</p>
         <div class="kpi-row" style="margin-top:4px">
-          <div class="kpi"><div class="kpi-label">Starter</div><div class="kpi-value" data-count="&#8358;620">&#8358;0</div><div class="delta info">&#8358;20 / credit</div></div>
-          <div class="kpi"><div class="kpi-label">Professional</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;465">&#8358;0</div><div class="delta up">&#8358;15 / credit</div></div>
+          <div class="kpi"><div class="kpi-label">Starter</div><div class="kpi-value" data-count="&#8358;9,400">&#8358;0</div><div class="delta info">&#8358;20 / credit</div></div>
+          <div class="kpi"><div class="kpi-label">Professional</div><div class="kpi-value" style="color:var(--green)" data-count="&#8358;7,050">&#8358;0</div><div class="delta up">&#8358;15 / credit</div></div>
         </div>
+        <p class="muted" style="font-size:13.5px;margin-top:14px">Your 200 free credits cover creating a first event, its budget, a 50-guest list and four vendor conversations, with a little left over.</p>
       </div>
+    </div>
+    <div class="note reveal">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5047e1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Not every event needs every line. A 60-guest dinner with two vendors and no portal is nearer 150 credits.
     </div>
   </section>
 
